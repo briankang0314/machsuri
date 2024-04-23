@@ -1,0 +1,28 @@
+$sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+
+@media (max-width: 690px) {
+  // .masterProfile {
+  // }
+}
+
+@media (min-width: 691px) and (max-width: 890px) {
+  // .masterProfile {
+  // }
+}
+
+@media (min-width: 891px) {
+  .masterProfile {
+    .masterProfileHeader {
+      width: 840px;
+      margin: 0 auto;
+    }
+    .masterProfileContents {
+      width: 840px;
+      margin: 0 auto;
+    }
+  }
+}
+
+.masterProfile {
+  padding-top: 110px;
+}

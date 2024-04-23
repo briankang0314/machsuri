@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0 6.25rem;
+  line-height: 1.5;
+}
+
+.masterProfile {
+  position: relative;
+}
+
+.pageNav {
+  display: block;
+  position: sticky;
+  top: 4rem;
+  background-color: #fff;
+  z-index: 2;
+  margin: 0;
+}
+
+.requestContainer {
+  padding-left: 2.5rem;
+  max-width: 20rem;
+  flex: 1 1 auto;
+}
+
+.detailContainer {
+  max-width: 40.625rem;
+  flex: 1 1 auto;
+}
+
+.detailContainer,
+.masterIntro,
+.masterInfoContainer,
+.lessonCategory,
+.masterImages,
+.masterReview {
+  padding: 1.5625rem 0;
+  font-size: 1rem;
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.03125rem;
+    margin-bottom: 0.875rem;
+    color: #323232;
+  }
+
+  //text-size
+  letter-spacing: -0.01875rem;
+  color: #737373;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.masterIntro {
+  white-space: normal;
+}
+
+.masterIntro,
+.masterImages,
+.masterReview {
+  scroll-margin-top: 7rem;
+  // header, navbar height 변수로 가져오기
+}
+
+.container {
+  @media (max-width: 760px) {
+    flex-direction: column;
+    padding: 0;
+    .detailContainer {
+      max-width: 100%;
+      padding: 0 1rem;
+    }
+    .pageNav {
+      top: 5.5rem;
+    }
+  }
+  @media (min-width: 761px) and (max-width: 990px) {
+    .pageNav {
+      top: 4rem;
+    }
+  }
+}

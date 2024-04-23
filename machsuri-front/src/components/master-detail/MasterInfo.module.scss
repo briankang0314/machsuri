@@ -1,0 +1,26 @@
+.masterInfoContainer {
+  display: flex;
+
+  .infoBox:first-child {
+    width: 60%;
+  }
+  .infoBox:last-child {
+    width: 40%;
+  }
+  .infoBox {
+    white-space: nowrap;
+
+    span {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      margin-left: 1rem;
+    }
+  }
+
+  .Off {
+    display: none;
+  }
+  @media (max-width: 760px) {
+    flex-direction: column;
+  }
+}

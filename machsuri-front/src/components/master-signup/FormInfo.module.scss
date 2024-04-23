@@ -1,0 +1,167 @@
+.section {
+  background: #fafafa;
+  padding: 140px 0 5rem 0;
+}
+
+.formTitle {
+  margin: 4.5rem 0;
+  font-size: 1.5rem;
+  text-align: center;
+  color: rgb(53, 27, 27);
+  line-height: normal;
+}
+
+.inputBox {
+  margin-bottom: 1rem;
+}
+
+.inputName {
+  font-size: 1rem;
+  padding-bottom: 0.375rem;
+}
+
+.gender {
+  display: flex;
+  justify-content: space-between;
+}
+
+.genderRadio {
+  display: none;
+}
+
+.genderBtnWrapper {
+  width: 100%;
+  text-align: center;
+}
+
+.gap {
+  margin: 0.5rem;
+}
+
+.addressLabel {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.options {
+  all: unset;
+  padding: 1rem 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.options:hover {
+  border: 1px solid #03c7ae;
+}
+
+.genderRadio + label {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border: 0.0625rem solid #e1e1e1;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.genderRadio:first-child + label {
+  margin-right: 100px;
+}
+
+.genderRadio:checked + label {
+  background: #03c7ae;
+  color: #fff;
+}
+
+.inputValue {
+  all: unset;
+  width: 100%;
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.75rem 0 0.75rem 0.5rem;
+  box-sizing: border-box;
+  border: 0.0625rem solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.inputValue:focus {
+  box-shadow: 0 0 0.2rem 0.1rem #03c7ae;
+}
+
+.invalid {
+  border: 1px solid #ff2323;
+}
+
+.invalid:focus {
+  box-shadow: 0 0 0.2rem 0.1rem #fc5050;
+}
+
+.inputValue::placeholder {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #c6c6c6;
+}
+
+.pwBox {
+  position: relative;
+}
+
+.pwType {
+  all: unset;
+  position: absolute;
+  top: 0.2rem;
+  right: 0;
+  padding: 1rem;
+  font-size: 0.7rem;
+  color: #03c7ae;
+  cursor: pointer;
+}
+
+.invalidInput {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #ff2323;
+}
+
+.Off {
+  display: none;
+}
+
+.checkBox {
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+}
+
+.checkBox:last-of-type {
+  margin-bottom: 1.75rem;
+}
+
+.checkBox input {
+  display: none;
+}
+
+.checkboxCSS + label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: text-top;
+  background: #e1e1e1;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkBox input:checked + label {
+  background: #03c7ae;
+}
+
+.checkInner {
+  color: white;
+  position: absolute;
+  left: 0.3rem;
+  top: 0.1rem;
+}

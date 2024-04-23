@@ -1,0 +1,92 @@
+[
+  {
+    "name": "설혜원",
+    "image": "/images/thump/goso1.jpg",
+    "category": "프론트 개발",
+    "review": {
+      "total_grade": 4,
+      "review_number": 12
+    }
+  },
+  {
+    "name": "김연주",
+    "image": "/images/thump/goso2.jpg",
+    "category": "백앤드 개발",
+    "review": {
+      "total_grade": 5,
+      "review_number": 22
+    }
+  },
+  {
+    "name": "이택우",
+    "image": "/images/thump/goso3.jpg",
+    "category": "하드웨어 개발",
+    "review": {
+      "total_grade": 5,
+      "review_number": 32
+    }
+  },
+  {
+    "name": "손성호",
+    "image": "/images/thump/goso4.jpg",
+    "category": "풀스택 개발",
+    "review": {
+      "total_grade": 5,
+      "review_number": 26
+    }
+  },
+  {
+    "name": "마승우",
+    "image": "/images/thump/goso5.jpg",
+    "category": "소프트웨어 개발",
+    "review": {
+      "total_grade": 5,
+      "review_number": 112
+    }
+  },
+  {
+    "name": "홍길동",
+    "image": "/images/thump/goso6.jpg",
+    "category": "집 인테리어",
+    "review": {
+      "total_grade": 3,
+      "review_number": 127
+    }
+  },
+  {
+    "name": "김철수",
+    "image": "/images/thump/goso7.jpg",
+    "category": "영어 과외",
+    "review": {
+      "total_grade": 2,
+      "review_number": 1200
+    }
+  },
+  {
+    "name": "김민아",
+    "image": "/images/thump/goso8.jpg",
+    "category": "핼스 트레이닝",
+    "review": {
+      "total_grade": 1,
+      "review_number": 12456
+    }
+  },
+  {
+    "name": "백종원",
+    "image": "/images/thump/goso9.jpg",
+    "category": "요리/제과",
+    "review": {
+      "total_grade": 5,
+      "review_number": 22
+    }
+  },
+  {
+    "name": "강동원",
+    "image": "/images/thump/goso10.jpg",
+    "category": "방송댄스",
+    "review": {
+      "total_grade": 2,
+      "review_number": 325
+    }
+  }
+]

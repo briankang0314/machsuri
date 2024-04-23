@@ -1,0 +1,44 @@
+[
+  {
+    "goso_name": "김연주",
+    "star": 5,
+    "review_sum": 20,
+    "recruit": 9,
+    "price": 89000,
+    "image": "/images/thump/human1.jpg"
+  },
+  {
+    "goso_name": "설혜원",
+    "star": 5,
+    "review_sum": 12,
+    "recruit": 5,
+    "price": 100000,
+    "image": "/images/thump/human2.jpg"
+  },
+  {
+    "goso_name": "홍길동",
+    "star": 2,
+    "review_sum": 42,
+    "recruit": 65,
+    "price": 1000000,
+    "image": "/images/thump/human1.jpg"
+  },
+
+  {
+    "goso_name": "아이유",
+    "star": 4,
+    "review_sum": 36,
+    "recruit": 27,
+    "price": 270000,
+    "image": "/images/thump/human1.jpg"
+  },
+
+  {
+    "goso_name": "김똘똘",
+    "star": 5,
+    "review_sum": 12,
+    "recruit": 5,
+    "price": 100000,
+    "image": "/images/thump/human1.jpg"
+  }
+]

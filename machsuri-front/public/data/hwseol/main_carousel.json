@@ -1,0 +1,32 @@
+[
+  {
+    "title": "디자인",
+    "image": "/images/thump/design.jpg",
+    "request": 30
+  },
+  {
+    "title": "소프트웨어 개발",
+    "image": "/images/thump/developer.jpg",
+    "request": 42
+  },
+  {
+    "title": "스피치 컨설팅",
+    "image": "/images/thump/speach.jpg",
+    "request": 10
+  },
+  {
+    "title": "노래 레슨",
+    "image": "/images/thump/sing.jpg",
+    "request": 23
+  },
+  {
+    "title": "인테리어",
+    "image": "/images/thump/interior.jpg",
+    "request": 5
+  },
+  {
+    "title": "화장실 인테리어",
+    "image": "/images/thump/bathroom_interior.jpg",
+    "request": 67
+  }
+]

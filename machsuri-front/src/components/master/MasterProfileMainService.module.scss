@@ -1,0 +1,29 @@
+$sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+
+.myInfoMainCategoryWrap {
+  display: flex;
+  .mainCategoryColor {
+    button {
+      background-color: $sign-color;
+      color: #ffff;
+      &:hover {
+        color: #ffff;
+        background-color: #03c7ad94;
+      }
+    }
+  }
+  button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-size: 15px;
+    border: 0.5px solid #cecece9c;
+    background-color: #ffff;
+    font-weight: 500;
+    cursor: pointer;
+    color: #666;
+    &:hover {
+      color: #b0b0b0;
+    }
+  }
+}

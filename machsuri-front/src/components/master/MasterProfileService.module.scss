@@ -1,0 +1,81 @@
+$sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+
+@media (max-width: 690px) {
+  .myInfo {
+    padding: 30px 25px !important;
+  }
+}
+
+@media (min-width: 691px) and (max-width: 890px) {
+  .myInfo {
+    padding: 30px 25px !important;
+  }
+}
+
+@media (min-width: 891px) {
+}
+.myInfo {
+  padding: 30px 0px;
+  border-bottom: 1px solid #bfbfbf2b;
+
+  .myInfoTitle {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    span:nth-child(1) {
+      font-weight: 600;
+    }
+    span:nth-child(2) {
+      font-weight: 500;
+      font-size: 13px;
+      color: $sign-color;
+      cursor: pointer;
+    }
+  }
+
+  .myServiceWrap {
+    display: flex;
+    flex-wrap: wrap;
+    .addServiceBtn {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: 0.5px solid #cecece9c;
+      border-radius: 15px;
+      background-color: $sign-color;
+      font-size: 15px;
+      font-weight: 500;
+      color: #ffff;
+      cursor: pointer;
+      span {
+        margin-left: 3px;
+      }
+      &:hover {
+        background-color: #03c7ad94;
+      }
+    }
+    .myUpdateServiceList {
+      cursor: pointer;
+      svg {
+        margin-left: 4px;
+      }
+      &:hover {
+        color: #b0b0b0;
+      }
+    }
+    .myServiceList,
+    .myUpdateServiceList {
+      padding: 10px 15px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: 0.5px solid #cecece9c;
+      border-radius: 15px;
+      background-color: #ffff;
+      font-size: 15px;
+      font-weight: 500;
+      color: #666;
+    }
+  }
+}

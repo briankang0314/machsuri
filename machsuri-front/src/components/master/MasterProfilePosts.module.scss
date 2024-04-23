@@ -1,0 +1,65 @@
+$sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+$post-width: 130px;
+$post-height: 120px;
+
+@media (max-width: 690px) {
+  .myInfo {
+    padding: 30px 25px !important;
+  }
+}
+
+@media (min-width: 691px) and (max-width: 890px) {
+  .myInfo {
+    padding: 30px 25px !important;
+  }
+}
+
+@media (min-width: 891px) {
+}
+
+.myInfo {
+  padding: 30px 0px;
+  border-bottom: 1px solid #bfbfbf2b;
+
+  .myInfoTitle {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    span:nth-child(1) {
+      font-weight: 600;
+    }
+    span:nth-child(2) {
+      font-weight: 500;
+      font-size: 13px;
+      color: $sign-color;
+      cursor: pointer;
+    }
+  }
+  .pictureWrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    picture:first-child {
+      width: $post-width;
+      height: $post-height;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      svg {
+        flex: 1;
+        color: $sign-color;
+      }
+    }
+    picture {
+      width: $post-width;
+      height: $post-height;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid #eaeaea;
+      border-radius: 6px;
+      img {
+        width: $post-width;
+        height: $post-height;
+      }
+    }
+  }
+}

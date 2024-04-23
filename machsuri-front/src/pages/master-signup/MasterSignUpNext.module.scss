@@ -1,0 +1,86 @@
+//Question
+.questionBox {
+  width: 100%;
+  min-height: 1.5rem;
+  color: rgb(77, 77, 77);
+  border: 1px solid #fafafa;
+  padding: 0.75rem 1rem;
+}
+
+.question {
+  display: none;
+}
+
+.question + label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: sub;
+  background: #e1e1e1;
+  position: relative;
+  cursor: pointer;
+}
+
+.question:checked + label {
+  background: #00c7ae;
+}
+
+.checkInner {
+  color: white;
+  position: absolute;
+  left: 0.2rem;
+  top: 0rem;
+}
+
+// MasterSignUpNext main
+.section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: #fafafa;
+  padding: 5rem 0;
+}
+
+.container {
+  max-width: 37.5rem;
+  margin: 3.125rem auto 7.6875rem;
+  padding: 2.5rem;
+  border-radius: 8px;
+  border: 0.0625rem solid rgb(242, 242, 242);
+  background: rgb(255, 255, 255);
+}
+
+.barContainer {
+  display: block;
+  width: 30rem;
+  height: 0.3rem;
+  border-radius: 15px;
+  background: #fafafa;
+}
+.barProgress {
+  height: 0.3rem;
+  border-radius: 15px;
+  width: 50%;
+  background: #03c7ae;
+  text-align: center;
+  transition: width 1s;
+}
+.bar100 {
+  width: 100%;
+  transition: width 1s;
+}
+
+.progressNumber {
+  text-align: center;
+  margin: 0.75rem;
+  color: #03c7ae;
+}
+
+.formTitle {
+  margin: 4.5rem 0;
+  font-size: 1.5rem;
+  text-align: center;
+  color: rgb(53, 27, 27);
+  line-height: normal;
+}

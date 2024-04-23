@@ -1,0 +1,103 @@
+.container {
+  width: 1000px;
+  background: #fafafa;
+}
+
+.inner {
+  position: absolute;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.75rem 2.8125rem;
+  border-radius: 0.625rem;
+  left: 0;
+  right: 0;
+  top: 21.25rem;
+  box-shadow: 0 0 1.25rem 0 rgb(0 0 0 / 10%);
+  background: #fff;
+  text-align: center;
+  font-weight: 500;
+  h3 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0 1rem 0;
+  }
+}
+.icons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  @media (max-width: 890px) {
+    display: grid;
+    grid-template-columns: repeat(4, 0fr);
+  }
+}
+
+.box {
+  text-align: center;
+  cursor: pointer;
+  img {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+.lesson:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.business {
+  width: 5rem;
+}
+.business:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.etc {
+  width: 5rem;
+}
+.etc:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.event {
+  width: 5rem;
+}
+.event:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.health {
+  width: 5rem;
+}
+.health:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.home {
+  width: 5rem;
+}
+.home:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.partTime {
+  width: 5rem;
+}
+.partTime:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.design {
+  width: 5rem;
+}
+.design:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}

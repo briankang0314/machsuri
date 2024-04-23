@@ -1,0 +1,341 @@
+{
+  "message": "SUCCESS",
+  "categories": [
+    {
+      "id": 1,
+      "name": "레슨",
+      "lessonId": 1,
+      "lessonName": "방송댄스 레슨",
+      "lessonImage": "images/thump/dance.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "lessonId": 2,
+      "lessonName": "보컬 레슨",
+      "lessonImage": "images/thump/sing.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "lessonId": 3,
+      "lessonName": "골프 레슨",
+      "lessonImage": "images/thump/golf.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "lessonId": 4,
+      "lessonName": "퍼스널트레이닝(PT)",
+      "lessonImage": "images/thump/training.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "lessonId": 5,
+      "lessonName": "기타 레슨",
+      "lessonImage": "images/thump/guitar.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "lessonId": 6,
+      "lessonName": "중국어 과외",
+      "lessonImage": "images/thump/china.jpg"
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "lessonId": 7,
+      "lessonName": "집 인테리어",
+      "lessonImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "lessonId": 8,
+      "lessonName": "상업공간 인테리어",
+      "lessonImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "lessonId": 9,
+      "lessonName": "타일 시공",
+      "lessonImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "lessonId": 10,
+      "lessonName": "욕실/화장실 리모델링",
+      "lessonImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "lessonId": 11,
+      "lessonName": "페인트 시공",
+      "lessonImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "lessonId": 12,
+      "lessonName": "싱크대 교체",
+      "lessonImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "lessonId": 13,
+      "lessonName": "웨딩 사진 촬영",
+      "lessonImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "lessonId": 14,
+      "lessonName": "결혼식 사회자",
+      "lessonImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "lessonId": 15,
+      "lessonName": "개인용 영상 촬영",
+      "lessonImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "lessonId": 16,
+      "lessonName": "영상 편집",
+      "lessonImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "lessonId": 17,
+      "lessonName": "댄스 공연",
+      "lessonImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "lessonId": 18,
+      "lessonName": "클래식 공연",
+      "lessonImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "lessonId": 19,
+      "lessonName": "회계/세무",
+      "lessonImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "lessonId": 20,
+      "lessonName": "영상 광고",
+      "lessonImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "lessonId": 21,
+      "lessonName": "블로그 마케팅",
+      "lessonImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "lessonId": 22,
+      "lessonName": "일본어 통역",
+      "lessonImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "lessonId": 23,
+      "lessonName": "중국어 통역",
+      "lessonImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "lessonId": 24,
+      "lessonName": "BGM/사운드 제작",
+      "lessonImage": null
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "lessonId": 25,
+      "lessonName": "프레젠테이션 디자인",
+      "lessonImage": "images/thump/develop1.png"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "lessonId": 26,
+      "lessonName": "인쇄물 디자인",
+      "lessonImage": "images/thump/develop2.jpg"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "lessonId": 27,
+      "lessonName": "앱 디자인",
+      "lessonImage": "images/thump/develop3.jpg"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "lessonId": 28,
+      "lessonName": "일러스트 디자인",
+      "lessonImage": "images/thump/design1.png"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "lessonId": 29,
+      "lessonName": "제품 디자인",
+      "lessonImage": "images/thump/design2.jpg"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "lessonId": 29,
+      "lessonName": "웹 디자인",
+      "lessonImage": "images/thump/design3.jpg"
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "lessonId": 30,
+      "lessonName": "가족 상담",
+      "lessonImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "lessonId": 31,
+      "lessonName": "부부/커플 상담",
+      "lessonImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "lessonId": 32,
+      "lessonName": "성인 상담",
+      "lessonImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "lessonId": 33,
+      "lessonName": "아동/청소년 상담",
+      "lessonImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "lessonId": 34,
+      "lessonName": "심리검사",
+      "lessonImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "lessonId": 35,
+      "lessonName": "언어치료",
+      "lessonImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "lessonId": 36,
+      "lessonName": "편의점 알바",
+      "lessonImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "lessonId": 37,
+      "lessonName": "일반음식점 알바",
+      "lessonImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "lessonId": 38,
+      "lessonName": "방송스템/촬영보조 알바",
+      "lessonImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "lessonId": 39,
+      "lessonName": "이벤트/행사스텝 알바",
+      "lessonImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "lessonId": 40,
+      "lessonName": "포장/조립 알바",
+      "lessonImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "lessonId": 41,
+      "lessonName": "배달/택배/퀵서비스 알바",
+      "lessonImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "lessonId": 42,
+      "lessonName": "일반 민사 소송",
+      "lessonImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "lessonId": 43,
+      "lessonName": "특허 출원",
+      "lessonImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "lessonId": 44,
+      "lessonName": "이혼 소송",
+      "lessonImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "lessonId": 45,
+      "lessonName": "음향기기 대여",
+      "lessonImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "lessonId": 46,
+      "lessonName": "신차 구매",
+      "lessonImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "lessonId": 47,
+      "lessonName": "기구/목공예 제작",
+      "lessonImage": null
+    }
+  ]
+}

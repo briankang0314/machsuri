@@ -1,0 +1,196 @@
+.headerBox {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid rgb(233, 233, 233);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1000px;
+  margin: 0px auto;
+  height: 70px;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+}
+
+.headerLogo {
+  cursor: pointer;
+}
+
+.headerSearchBox {
+  position: relative;
+}
+
+.headerSearch {
+  display: none;
+  width: 300px;
+  margin: auto;
+  margin-left: 20px;
+  padding: 14px;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  color: lightgray;
+  font-size: 90%;
+  text-indent: 30px;
+}
+
+.headerSearch:focus {
+  outline: 2px solid #03c7ae;
+  border: 1px solid white;
+}
+
+.searchIcon {
+  display: none;
+  position: absolute;
+  top: 12px;
+  left: 34px;
+  color: lightgray;
+  font-size: large;
+}
+
+.headerBtn {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+  list-style: none;
+  letter-spacing: 2px;
+}
+
+.headerBtn li {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.marketNew {
+  margin-left: 2px;
+  padding: 3px;
+  border-radius: 4px;
+  color: #ff5861;
+  background-color: #fff0f1;
+  font-size: small;
+}
+
+.masterSignup {
+  padding: 14px;
+  border: 0px solid white;
+  border-radius: 8px;
+  color: white;
+  background-color: #03c7ae;
+  font-weight: 600;
+}
+
+.menuBtn {
+  position: absolute;
+}
+
+.profileImg {
+  width: 40px;
+  height: 40px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+.searchBtn {
+  position: absolute;
+}
+
+.grayColor {
+  color: gray;
+}
+
+.redDot {
+  position: relative;
+  top: -8px;
+  width: 6px;
+  height: 6px;
+  background-color: #ff3131;
+  border-radius: 50%;
+}
+
+.chatNum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 16px;
+  color: white;
+  background-color: #fa5963;
+  border-radius: 12px;
+  font-size: x-small;
+  text-align: center;
+}
+
+.bell {
+  margin-left: 16px;
+}
+
+.flexRow {
+  display: flex;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.disabled {
+  opacity: 50%;
+}
+
+@media screen and (max-width: 761px) {
+  .header {
+    width: 100vw;
+    margin: 0;
+    justify-content: space-around;
+  }
+
+  .headerBox {
+    margin: 0;
+    padding: 10px;
+  }
+
+  .headerTitle {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .headerSearch {
+    display: none;
+    position: relative;
+    margin: 0 auto;
+    width: 90vw;
+    padding: 14px;
+    border: 0;
+    outline: 2px solid #03c7ae;
+  }
+
+  .searchIcon {
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 10px;
+  }
+
+  .menuBtn {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: large;
+    cursor: pointer;
+  }
+
+  .searchBtn {
+    display: none;
+  }
+}

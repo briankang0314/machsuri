@@ -1,0 +1,149 @@
+.section {
+  background: #fafafa;
+  padding: 140px 0 5rem 0;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-weight: bold;
+  font-size: 2.125rem;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 26.25rem;
+  border: 0.0625rem solid #f2f2f2;
+  border-radius: 0.5rem;
+  padding: 2.5rem;
+  margin: 0 auto;
+  box-shadow: none;
+  background-color: #fff;
+  // 미디어 쿼리 추가 구현
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputBox {
+  margin-bottom: 1rem;
+}
+
+.inputName {
+  font-size: 1rem;
+  padding-bottom: 0.375rem;
+}
+
+.inputValue {
+  all: unset;
+  width: 100%;
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.75rem 0 0.75rem 0.5rem;
+  box-sizing: border-box;
+  border: 0.0625rem solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.inputValue:focus {
+  box-shadow: 0 0 0.2rem 0.1rem #00c7ae;
+}
+
+.invalid {
+  border: 1px solid #ff2323;
+}
+
+.invalid:focus {
+  box-shadow: 0 0 0.2rem 0.1rem #fc5050;
+}
+
+.inputValue::placeholder {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #c6c6c6;
+}
+
+.pwBox {
+  position: relative;
+}
+
+.pwType {
+  all: unset;
+  position: absolute;
+  top: 0.2rem;
+  right: 0;
+  padding: 1rem;
+  font-size: 0.7rem;
+  color: #00c7ae;
+  cursor: pointer;
+}
+
+.invalidInput {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #ff2323;
+}
+
+.Off {
+  display: none;
+}
+
+.checkBox {
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+}
+
+.checkBox:last-of-type {
+  margin-bottom: 1.75rem;
+}
+
+.checkBox input {
+  display: none;
+}
+
+.checkboxCSS + label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: text-top;
+  background: #e1e1e1;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkBox input:checked + label {
+  background: #00c7ae;
+}
+
+.checkInner {
+  color: white;
+  position: absolute;
+  left: 0.3rem;
+  top: 0.1rem;
+}
+
+.signUpBtn {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  background: #00c7ae;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.gosuSignUp {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}

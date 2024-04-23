@@ -1,0 +1,137 @@
+.container {
+  width: 1000px;
+  margin: 0px auto;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3%;
+}
+.lesson {
+  width: 100px;
+}
+.lesson:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+.business {
+  width: 100px;
+  opacity: 0.2;
+}
+/*
+.business:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}*/
+.etc {
+  width: 100px;
+  opacity: 0.2;
+}
+/*
+.etc:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}*/
+.event {
+  width: 100px;
+  opacity: 0.2;
+}
+/*
+.event:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}*/
+.health {
+  width: 100px;
+  opacity: 0.2;
+} /*
+.health:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}*/
+.home {
+  width: 100px;
+  opacity: 0.2;
+} /*
+.home:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}*/
+.partTime {
+  width: 100px;
+  opacity: 0.2;
+}
+/*
+.partTime:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}*/
+.design {
+  width: 100px;
+}
+.design:hover {
+  background-color: #fafafa;
+  transform: translateY(-0.1in);
+  transition: all 0.4s;
+}
+
+@media (max-width: 760px) {
+  .container {
+    width: 100%;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 990px) {
+  .container {
+    width: 100%;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3%;
+    flex-wrap: wrap;
+  }
+
+  .lesson {
+    width: 80px;
+  }
+  .business {
+    width: 80px;
+    opacity: 0.2;
+  }
+  .etc {
+    width: 80px;
+    opacity: 0.2;
+  }
+  .event {
+    width: 80px;
+    opacity: 0.2;
+  }
+  .health {
+    width: 80px;
+    opacity: 0.2;
+  }
+  .home {
+    width: 80px;
+    opacity: 0.2;
+  }
+  .partTime {
+    width: 80px;
+    opacity: 0.2;
+  }
+  .design {
+    width: 80px;
+  }
+}
+
+@media (min-width: 991px) {
+}

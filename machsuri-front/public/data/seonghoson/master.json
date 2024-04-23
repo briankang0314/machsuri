@@ -1,0 +1,78 @@
+{
+  "id": 1,
+  "name": "손성호",
+  "userImage": "/images/profile/profile_sample.jpeg",
+  "intro": "손성호 고수의 한문 번역 서비스",
+  "startTime": "2022-01-01 09:00",
+  "endTime": "2022-01-01 18:00",
+  "workExperience": null,
+  "employeeNumber": null,
+  "masterAddress": {
+    "id": 1,
+    "name": "인천시",
+    "details": {
+      "id": 1,
+      "name": "부평구"
+    }
+  },
+  "masterCategories": [
+    {
+      "id": 1,
+      "isMain": true,
+      "lesson": {
+        "id": 1,
+        "name": "한문 번역"
+      }
+    },
+    {
+      "id": 2,
+      "isMain": false,
+      "lesson": {
+        "id": 2,
+        "name": "영문 번역"
+      }
+    }
+  ],
+  "masterPosts": [
+    {
+      "id": 1,
+      "postImage": "/images/thump/develop1.png"
+    },
+    {
+      "id": 1,
+      "postImage": "/images/thump/develop1.png"
+    },
+    {
+      "id": 1,
+      "postImage": "/images/thump/develop1.png"
+    },
+    {
+      "id": 1,
+      "postImage": "/images/thump/develop1.png"
+    },
+    {
+      "id": 1,
+      "postImage": "/images/thump/develop1.png"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "user": {
+        "id": 5,
+        "name": "김코드"
+      },
+      "grade": 5,
+      "comment": "너무 잘하세요! 강추"
+    },
+    {
+      "id": 2,
+      "user": {
+        "id": 2,
+        "name": "이택우"
+      },
+      "grade": 3,
+      "comment": "적당합니다"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+$sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -20%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+@media (max-width: 890px) {
+  .modalMain {
+    padding-top: 0px !important;
+    .modalWrapper {
+      width: 100% !important;
+      height: 100%;
+      border: 0px !important;
+    }
+  }
+}
+
+.modalMain {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 200px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  line-height: 1.7;
+  font-size: 15px;
+
+  .modalWrapper {
+    position: relative;
+    animation: fadeInDown 0.6s;
+    display: flex;
+    flex-direction: column;
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 360px;
+    .modalCloseBtn {
+      padding: 20px;
+      text-align: end;
+    }
+    .modalHeader {
+      display: flex;
+      align-items: center;
+      padding: 0px 20px 10px;
+      h4 {
+        padding-left: 4px;
+      }
+    }
+    .modalContent {
+      height: 100%;
+      padding: 0px 20px;
+      overflow: scroll;
+      background-color: #ffff;
+      .modalSearch {
+        display: flex;
+        padding: 10px;
+        margin-bottom: 1rem;
+        align-items: center;
+        border-radius: 6px;
+        background-color: #eeeeee;
+        input {
+          padding-left: 6px;
+          flex: 1;
+          border: 0px;
+          background-color: #eeeeee;
+          &::placeholder {
+            font-size: 12px;
+          }
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+      .modalList {
+        details {
+          div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #eeeeee;
+            cursor: pointer;
+            &:hover {
+              background-color: #eeeeee;
+            }
+            span {
+              span {
+                padding-left: 4px;
+              }
+            }
+          }
+        }
+        ul li details summary {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 6px;
+          border-bottom: 1px solid #eeeeee;
+          cursor: pointer;
+          list-style: none;
+          &:hover {
+            background-color: #eeeeee;
+          }
+          &::-webkit-details-marker {
+            display: none;
+          }
+        }
+        .checkedIcon {
+          color: $sign-color !important;
+        }
+      }
+    }
+    .ModalFooterBtn {
+      padding: 15px;
+      background-color: $sign-color;
+      color: #ffff;
+      text-align: center;
+      cursor: pointer;
+      &:hover {
+        background-color: #03c7ad94;
+      }
+    }
+  }
+}
+.modalVisible {
+  display: block;
+}

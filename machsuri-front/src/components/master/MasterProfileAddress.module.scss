@@ -1,0 +1,17 @@
+$sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+
+.myInfoAddressSelector {
+  button {
+    padding: 10px 15px;
+    border: 0.5px solid #cecece9c;
+    border-radius: 15px;
+    font-size: 15px;
+    background-color: $sign-color;
+    font-weight: 500;
+    cursor: pointer;
+    color: #ffff;
+    &:hover {
+      background-color: #03c7ad94;
+    }
+  }
+}

@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "category": "소프트웨어 개발",
+    "isRequest": true,
+    "created_at": "2022.04.05",
+    "image": "images/thump/develop1.png",
+    "choice_question": {
+      "1": 1,
+      "2": 5,
+      "3": 10,
+      "4": 14,
+      "5": 23,
+      "6": 27,
+      "7": 29,
+      "8": 33
+    },
+    "goso_images": [
+      {
+        "goso_id": 1,
+        "goso_image": "/images/thump/human1.jpg"
+      },
+      {
+        "goso_id": 2,
+        "goso_image": "/images/thump/human2.jpg"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "category": "앱 디자인",
+    "isRequest": false,
+    "created_at": "2022.04.05",
+    "image": "images/thump/develop2.jpg",
+    "choice_question": {
+      "1": 1,
+      "2": 5,
+      "3": 10,
+      "4": 14,
+      "5": 23,
+      "6": 27,
+      "7": 29,
+      "8": 33
+    },
+    "goso_images": [
+      {
+        "goso_id": 1,
+        "goso_image": "/images/thump/human1.jpg"
+      },
+      {
+        "goso_id": 2,
+        "goso_image": "/images/thump/human2.jpg"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "category": "중국어 과외",
+    "isRequest": false,
+    "created_at": "2022.04.02",
+    "image": "images/thump/develop3.jpg",
+    "choice_question": {
+      "1": 1,
+      "2": 5,
+      "3": 10,
+      "4": 14,
+      "5": 23,
+      "6": 27,
+      "7": 29,
+      "8": 33
+    },
+    "goso_images": [
+      {
+        "goso_id": 1,
+        "goso_image": "/images/thump/human1.jpg"
+      },
+      {
+        "goso_id": 2,
+        "goso_image": "/images/thump/human2.jpg"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "category": "프레젠테이션 디자인",
+    "isRequest": true,
+    "created_at": "2022.04.01",
+    "image": "images/thump/develop1.png",
+    "choice_question": {
+      "1": 1,
+      "2": 5,
+      "3": 10,
+      "4": 14,
+      "5": 23,
+      "6": 27,
+      "7": 29,
+      "8": 33
+    },
+    "goso_images": [
+      {
+        "goso_id": 1,
+        "goso_image": "/images/thump/human1.jpg"
+      },
+      {
+        "goso_id": 2,
+        "goso_image": "/images/thump/human2.jpg"
+      },
+      {
+        "goso_id": 3,
+        "goso_image": "/images/thump/human2.jpg"
+      },
+      {
+        "goso_id": 4,
+        "goso_image": "/images/thump/human2.jpg"
+      },
+      {
+        "goso_id": 5,
+        "goso_image": "/images/thump/human2.jpg"
+      },
+      {
+        "goso_id": 6,
+        "goso_image": "/images/thump/human2.jpg"
+      },
+      {
+        "goso_id": 7,
+        "goso_image": "/images/thump/human2.jpg"
+      }
+    ]
+  }
+]

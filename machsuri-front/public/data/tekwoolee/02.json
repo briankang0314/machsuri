@@ -1,0 +1,27 @@
+{
+  "id": "0002",
+  "name": "집을빨래하다(숨고 1위)",
+  "intro": "숨고 압도적 1위 SBS 성공의 정석 꾼 207회 출연",
+  "userImage": "https://static.cdn.soomgo.com/upload/profile/e5a12f14-03d9-467a-bccf-264432a1fc27.jpg?h=320&w=320",
+  "lesson_categories": ["실내 청소", "실외 청소"],
+  "start_time": "오전 9시",
+  "end_time": "오후 7시",
+  "review": {
+    "totalGrade": 4,
+    "number": 232,
+    "entireReview": [
+      {
+        "username": "손성호",
+        "comment": "청소 상태 아주 만족합니다! 다음번에 이사할때도 따로 안알아보고 여기에 의뢰하려구요!지금까지 입주청소 진행한 곳 중에 제일 마음에 들고 청소 진행해주신 팀장님 책임감은 말할것도 없고 엄청친절하세요~",
+        "grade": "1",
+        "created_At": "2022-03-19 17:17:45.682"
+      },
+      {
+        "username": "김철수",
+        "comment": "고수 회원가입, 고수 상세 정보 api 모달 제작",
+        "grade": "3",
+        "created_At": "2022-03-19 17:17:45.682"
+      }
+    ]
+  }
+}

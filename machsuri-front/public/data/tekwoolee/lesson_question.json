@@ -1,0 +1,109 @@
+{
+  "message": "SUCCESS",
+  "questions": [
+    {
+      "id": 1,
+      "description": "레슨을 받는 목적이 무엇인가요?",
+      "question_number": 1,
+      "choices": [
+        {
+          "id": 1,
+          "description": "취미/다이어트"
+        },
+        {
+          "id": 2,
+          "description": "오디션 준비"
+        },
+        {
+          "id": 3,
+          "description": "공연/장기자랑 준비"
+        },
+        {
+          "id": 4,
+          "description": "입시 준비"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "description": "어떤 레슨 형태를 원하시나요?",
+      "question_number": 2,
+      "choices": [
+        {
+          "id": 5,
+          "description": "개인 레슨"
+        },
+        {
+          "id": 6,
+          "description": "그룹 레슨"
+        },
+        {
+          "id": 7,
+          "description": "학원"
+        },
+        {
+          "id": 8,
+          "description": "온라인/화상 레슨"
+        },
+        {
+          "id": 9,
+          "description": "무관"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "description": "어떻게 진행하기 원하시나요?",
+      "question_number": 3,
+      "choices": [
+        {
+          "id": 10,
+          "description": "고수가 있는 곳으로 갈게요."
+        },
+        {
+          "id": 11,
+          "description": "제가 있는 곳으로 와주세요"
+        },
+        {
+          "id": 12,
+          "description": "온라인/화상 수업 원해요"
+        },
+        {
+          "id": 13,
+          "description": "어떤 방식이든 상관없어요"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "description": "레슨생의 연령대는 어떻게 되나요?",
+      "question_number": 4,
+      "choices": [
+        {
+          "id": 14,
+          "description": "10대 미만"
+        },
+        {
+          "id": 15,
+          "description": "10대"
+        },
+        {
+          "id": 16,
+          "description": "20대"
+        },
+        {
+          "id": 17,
+          "description": "30대"
+        },
+        {
+          "id": 18,
+          "description": "40대"
+        },
+        {
+          "id": 19,
+          "description": "50대 이상"
+        }
+      ]
+    }
+  ]
+}

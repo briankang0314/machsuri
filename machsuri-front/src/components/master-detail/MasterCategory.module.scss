@@ -1,0 +1,16 @@
+.wrapper {
+  display: inline-block;
+  margin-bottom: 0.625rem;
+  margin-right: 0.5rem;
+  border-radius: 21px;
+  border: 0.0625rem solid #e1e1e1;
+  padding: 0.5625rem 1.125rem;
+  line-height: 1.5;
+  letter-spacing: -0.01875rem;
+  color: #737373;
+  cursor: pointer;
+}
+
+.wrapper:hover {
+  color: #e1e1e1e1;
+}

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  width: 100%;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.masterImage {
+  border: 1px solid #e1e1e1;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-right: 1.5625rem;
+  height: 118px;
+  img {
+    width: 118px;
+  }
+}
+
+.masterInfo {
+  padding-top: 0.625rem;
+  flex: 1;
+  overflow: hidden;
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 2.5625rem;
+    letter-spacing: -0.0375rem;
+    margin-bottom: 0.125rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    white-space: nowrap;
+  }
+}
+
+.masterCategory {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01875rem;
+  color: #737373;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.masterReview {
+  display: flex;
+  height: 1.375rem;
+  align-items: center;
+  span {
+    display: block;
+    margin: 0.125rem 0.125rem 0.125rem 0;
+  }
+}

@@ -1,0 +1,60 @@
+.masterItem {
+  display: flex;
+  flex-direction: row;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #dddddd57;
+  cursor: pointer;
+  line-height: 1.7;
+
+  .imageWrapper {
+    height: 110px;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 0.5px solid #dddddda8;
+    img {
+      width: 110px;
+    }
+  }
+  .masterInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.5rem;
+    flex: 1;
+    font-size: 13px;
+
+    .masterInfoName {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .masterInfoIntro {
+      color: #747474;
+    }
+    .masterInfoReview {
+      span:nth-child(1) {
+        font-weight: 600;
+      }
+      span:nth-child(2) {
+        padding-left: 2px;
+        font-weight: 400;
+      }
+    }
+    .masterInfoRecentReview {
+      display: flex;
+      align-items: center;
+      span:nth-child(2) {
+        padding-left: 2px;
+        font-weight: 500;
+      }
+      span:nth-child(3) {
+        padding-left: 6px;
+        color: #666;
+      }
+    }
+  }
+  .textTruncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
