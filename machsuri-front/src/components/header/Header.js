@@ -51,9 +51,9 @@ function Header() {
           <span className={styles.headerLogo}>
             <img
               onClick={() => handleNavigate('/')}
-              src={FRONT_PORT + '/images/logo/Soongo-logo.png'}
+              src={FRONT_PORT + '/images/logo/Original.png'}
               width="100px"
-              alt="soongo-logo"
+              alt="Original"
             />
           </span>
           <div className={`${styles.headerSearchBox} ${styles.hidden}`}>
