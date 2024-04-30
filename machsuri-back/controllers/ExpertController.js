@@ -1,12 +1,11 @@
-const MasterService = require("../services/MasterService");
+const MasterService = require("../services/ExpertService");
 const errorGenerator = require("../utils/errorGenerator");
-
 
 const sendMasters = async (req, res) => {
   try {
     const search = req.query;
-    const masters = await MasterService.sendMasters(search);
-    return res.status(200).json(masters);
+    const experts = await ExpertService.sendExperts(search);
+    return res.status(200).json(experts);
   } catch (err) {
     return res.status(500).json({ message: "SERVER_ERROR" });
   }
@@ -19,8 +18,7 @@ const signUpDirect = async (req, res, next) => {
       email,
       password,
       phoneNumber,
-      lessonCatID,
-      address,
+      minorCategoryId,
       detailAddress,
     } = req.body;
 
@@ -32,22 +30,20 @@ const signUpDirect = async (req, res, next) => {
       !password ||
       typeof password !== "string" ||
       !phoneNumber ||
-      !lessonCatID ||
-      typeof lessonCatID !== "object" ||
-      !address ||
+      !minorCategoryId ||
+      typeof minorCategoryId !== "object" ||
       !detailAddress ||
-      typeof address !== typeof detailAddress
+      typeof detailAddress !== "string"
     ) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
-    
-    await MasterService.signUpDirect(
+
+    await ExpertService.signUpDirect(
       name,
       email,
       password,
       phoneNumber,
-      lessonCatID,
-      address,
+      minorCategoryId,
       detailAddress
     );
 
@@ -61,12 +57,7 @@ const signUp = async (req, res, next) => {
   try {
     const { token } = req.headers;
 
-    const {
-      phoneNumber,
-      lessonCatID,
-      address,
-      detailAddress
-    } = req.body;
+    const { phoneNumber, minorCategoryId, detailAddress } = req.body;
 
     if (!token) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
@@ -74,19 +65,17 @@ const signUp = async (req, res, next) => {
 
     if (
       !phoneNumber ||
-      !lessonCatID ||
-      typeof lessonCatID !== "object" ||
-      !address ||
+      !minorCategoryId ||
+      typeof minorCategoryId !== "object" ||
       !detailAddress
     ) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
 
-    await MasterService.signUp(
+    await ExpertService.signUp(
       token,
       phoneNumber,
-      lessonCatID,
-      address,
+      minorCategoryId,
       detailAddress
     );
 
@@ -96,20 +85,20 @@ const signUp = async (req, res, next) => {
   }
 };
 
-const getMasterProfile = async (req, res, next) => {
+const getExpertProfile = async (req, res, next) => {
   try {
-    const { id } = req.master;
-    const master = await MasterService.getMasterProfile(Number(id));
+    const { id } = req.expert;
+    const expert = await ExpertService.getExpertProfile(Number(id));
     return res.status(201).json({
       message: "SUCCESS",
-      master,
+      expert,
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
 
-const setMasterProfile = async (req, res, next) => {
+const setExpertProfile = async (req, res, next) => {
   try {
     const { type, value, user } = req.body;
     // const { user } = req;
@@ -119,17 +108,17 @@ const setMasterProfile = async (req, res, next) => {
         message: "KEY_ERROR",
       });
     }
-    await MasterService.setMasterProfile({ type, value, user });
+    await ExpertService.setExpertProfile({ type, value, user });
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
 
-const getMastersByCategory = async (req, res, next) => {
+const getExpertsByCategory = async (req, res, next) => {
   try {
     const { category } = req.params;
 
-    const getMasters = await MasterService.getMastersByCategory(category);
+    const getExperts = await ExpertService.getExpertsByCategory(category);
 
     return res.status(200).json({ message: "SUCCESS", getMasters });
   } catch (error) {
@@ -137,22 +126,22 @@ const getMastersByCategory = async (req, res, next) => {
   }
 };
 
-const sendMasterDetail = async (req, res) => {
+const sendExpertDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    const masterDetail = await MasterService.sendMasterDetail(id);
-    return res.status(200).json(masterDetail);
+    const expertDetail = await ExpertService.sendExpertDetail(id);
+    return res.status(200).json(expertDetail);
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
 
 module.exports = {
-  sendMasters,
+  sendExperts,
   signUp,
   signUpDirect,
-  getMasterProfile,
-  setMasterProfile,
-  getMastersByCategory,
-  sendMasterDetail,
+  getExpertProfile,
+  setExpertProfile,
+  getExpertsByCategory,
+  sendExpertDetail,
 };

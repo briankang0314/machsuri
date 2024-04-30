@@ -12,211 +12,202 @@ model Users {
   name         String
   email        String    @unique
   password     String
-  user_image   String?
-  phone_number String?
-  is_deleted   Boolean   @default(false)
-  created_at   DateTime? @default(now())
-  updated_at   DateTime? @default(now())
-  deleted_at   DateTime? @default(now())
+  userImage    String?
+  phoneNumber  String?
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  deletedAt    DateTime? @default(null)
 
-  masters     Masters?
-  requestForm RequestForm[]
-  reviews     Reviews[]
+  experts      Experts?
+  requestForm  RequestForm[]
+  reviews      Reviews[]
   @@map("users")
 }
 
-model Masters {
+model Experts {
   id                Int       @id @default(autoincrement())
-  user_id           Int       @unique
-  address_id        Int
-  detail_address_id Int
+  userId            Int       @unique
+  detailAddressId   Int
   name              String
-  master_image      String?
+  expertImage       String?
   intro             String?
-  start_time        String?
-  end_time          String?
-  work_experience   Int?
-  employee_number   Int?
-  is_deleted        Boolean   @default(false)
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @default(now())
-  deleted_at        DateTime? @default(now())
+  startTime         String? // Expected format "HH:MM"
+  endTime           String? // Expected format "HH:MM"
+  workExperience    Int?
+  employeeNumber    Int?
+  isDeleted         Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now())
+  deletedAt         DateTime? @default(null)
 
-  users         Users         @relation(fields: [user_id], references: [id])
-  address       Address       @relation(fields: [address_id], references: [id])
-  detailAddress DetailAddress @relation(fields: [detail_address_id], references: [id])
+  users         Users         @relation(fields: [userId], references: [id])
+  detailAddress DetailAddress @relation(fields: [detailAddressId], references: [id])
 
   reviews           Reviews[]
-  mastersCategories MastersCategories[]
-  master_posts      MasterPosts[]
+  expertsCategories ExpertsCategories[]
+  expert_posts      ExpertPosts[]
 
-  @@index([user_id], name: "user_id")
-  @@map("masters")
+  @@index([userId], name: "userId")
+  @@map("experts")
 }
 
-model ThemaCategories {
+model MajorCategories {
   id         Int       @id @default(autoincrement())
   name       String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
 
-  lessonCategories LessonCategories[]
-  @@map("thema_categories")
+  minorCategories MinorCategories[]
+  @@map("majorCategories")
 }
 
-model LessonCategories {
+model MinorCategories {
   id                Int       @id @default(autoincrement())
-  thema_category_id Int
+  majorCategoryId Int
   name              String
   image             String?
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @default(now())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now())
 
-  thema_categories ThemaCategories @relation(fields: [thema_category_id], references: [id])
+  majorCategories MajorCategories @relation(fields: [majorCategoryId], references: [id])
 
-  questions         Questions[]
-  requestForm       RequestForm[]
-  mastersCategories MastersCategories[]
-  @@index([thema_category_id], name: "thema_category_id")
-  @@map("lesson_categories")
+  applyForm         ApplyForm[]
+  expertsCategories ExpertsCategories[]
+  @@index([majorCategoryId], name: "majorCategoryId")
+  @@map("minorCategories")
 }
 
 model Questions {
-  id                 Int       @id @default(autoincrement())
-  lesson_category_id Int
-  question_number    Int
-  description        String
-  created_at         DateTime? @default(now())
-  updated_at         DateTime? @default(now())
+  id                  Int       @id @default(autoincrement())
+  minorCategoryId     Int
+  questionNumber      Int
+  questionText String
+  createdAt           DateTime? @default(now())
+  updatedAt           DateTime? @default(now())
 
-  lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
+  minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
 
-  choiceQuestions ChoiceQuestions[]
-  requestForm     RequestForm[]
+  answers Answers[]
+  applyForm     ApplyForm[]
 
-  @@index([lesson_category_id], name: "lesson_category_id")
+  @@index([minorCategoryId], name: "minorCategoryId")
   @@map("questions")
 }
 
-model ChoiceQuestions {
+model Answers {
   id          Int       @id @default(autoincrement())
-  question_id Int
-  description String
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @default(now())
+  questionId  Int
+  answerText  String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
 
-  questions Questions @relation(fields: [question_id], references: [id])
+  questions Questions @relation(fields: [questionId], references: [id])
 
-  requestForm RequestForm[]
+  applyForm ApplyForm[]
 
-  @@index([question_id], name: "question_id")
-  @@map("choice_questions")
+  @@index([questionId], name: "questionId")
+  @@map("answers")
 }
 
-model RequestForm {
+model ApplyForm {
   id                 Int       @id @default(autoincrement())
-  user_id            Int
-  question_id        Int
-  choice_question_id Int
-  lesson_category_id Int
-  ended_at           DateTime?
-  created_at         DateTime? @default(now())
-  updated_at         DateTime? @default(now())
+  userId             Int
+  minorCategoryId    Int
+  endedAt            DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
 
-  users             Users            @relation(fields: [user_id], references: [id])
-  questions         Questions        @relation(fields: [question_id], references: [id])
-  choice_questions  ChoiceQuestions  @relation(fields: [choice_question_id], references: [id])
-  lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
+  users              Users        @relation(fields: [userId], references: [id])
+  minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
 
-  @@index([user_id], name: "user_id")
-  @@index([question_id], name: "question_id")
-  @@index([choice_question_id], name: "choice_question_id")
-  @@index([lesson_category_id], name: "lesson_category_id")
-  @@map("request_form")
+  @@index([userId], name: "userId")
+  @@index([minorCategoryId], name: "minorCategoryId")
+  @@map("applyForm")
 }
 
 model Reviews {
   id         Int       @id @default(autoincrement())
-  master_id  Int
-  user_id    Int
+  expertId   Int
+  userId     Int
   grade      Int
   comment    String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
 
-  masters Masters @relation(fields: [master_id], references: [id])
-  users   Users   @relation(fields: [user_id], references: [id])
+  experts Experts @relation(fields: [expertId], references: [id])
+  users   Users   @relation(fields: [userId], references: [id])
 
-  review_images ReviewImages[]
+  reviewImages ReviewImages[]
 
-  @@index([master_id], name: "master_id")
-  @@index([user_id], name: "user_id")
+  @@index([expertId], name: "expertId")
+  @@index([userId], name: "userId")
   @@map("reviews")
 }
 
 model ReviewImages {
-  id         Int       @id @default(autoincrement())
-  review_id  Int
-  review_image         String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  id           Int       @id @default(autoincrement())
+  reviewId     Int
+  reviewImage  String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
 
-  reviews Reviews @relation(fields: [review_id], references: [id])
+  reviews      Reviews   @relation(fields: [reviewId], references: [id])
 
-  @@index([review_id], name: "review_id")
-  @@map("review_images")
+  @@index([reviewId], name: "reviewId")
+  @@map("reviewImages")
 }
 
-model MastersCategories {
+model ExpertsCategories {
   id                 Int       @id @default(autoincrement())
-  lesson_category_id Int
-  master_id          Int
-  is_main            Boolean   @default(false)
-  created_at         DateTime? @default(now())
-  updated_at         DateTime? @default(now())
+  minorCategoryId    Int
+  expertId           Int
+  isMain             Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
 
-  masters          Masters          @relation(fields: [master_id], references: [id])
-  lessonCategories LessonCategories @relation(fields: [lesson_category_id], references: [id])
+  experts            Experts      @relation(fields: [expertId], references: [id])
+  minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
 
-  @@index([master_id], name: "master_id")
-  @@index([lesson_category_id], name: "lesson_category_id")
-  @@map("masters_categories")
+  @@index([expertId], name: "expertId")
+  @@index([minorCategoryId], name: "minorCategoryId")
+  @@map("expertsCategories")
 }
 
-model MasterPosts {
-  id                        Int       @id @default(autoincrement())
-  master_id                 Int
-  posted_image              String
-  created_at DateTime?      @default(now())
-  updated_at DateTime?      @default(now())
+model ExpertPosts {
+  id            Int           @id @default(autoincrement())
+  expertId      Int
+  postedImage   String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
 
-  masters Masters @relation(fields: [master_id], references: [id])
+  experts Experts @relation(fields: [expertId], references: [id])
 
-  @@index([master_id], name: "master_id")
-  @@map("master_posts")
+  @@index([expertId], name: "expertId")
+  @@map("expertPosts")
 }
 
 model Address {
   id         Int       @id @default(autoincrement())
   name       String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
 
   detailAddress DetailAddress[]
-  masters      Masters[]
+  experts       Experts[]
   @@map("address")
 }
 
 model DetailAddress {
   id         Int       @id @default(autoincrement())
-  address_id Int
+  addressId  Int
   name       String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
 
-  address Address @relation(fields: [address_id], references: [id])
+  address Address @relation(fields: [addressId], references: [id])
 
-  masters Masters[]
-  @@index([address_id], name: "address_id")
-  @@map("detail_address")
+  experts Experts[]
+  @@index([addressId], name: "addressId")
+  @@map("detailAddress")
 }

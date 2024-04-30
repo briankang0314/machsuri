@@ -2,38 +2,38 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const getQuestions = async (lessonId) => {
+const getQuestions = async (minorId) => {
   return await prisma.questions.findMany({
     where: {
-      lesson_category_id: Number(lessonId),
+      minorCategoryId: Number(minorId),
     },
     select: {
       id: true,
       description: true,
-      question_number: true,
-      choiceQuestions: {
+      questionNumber: true,
+      answers: {
         select: {
           id: true,
-          description: true,
+          answerText: true,
         },
       },
     },
   });
 };
 
-const getLessonCategoryId = async (lessonId, user_id) => {
+const getMinorCategoryId = async (minorId, user_id) => {
   return await prisma.$queryRaw`
-  SELECT id FROM request_form WHERE lesson_category_id = ${lessonId} and user_id=${user_id}
-  and UNIX_TIMESTAMP(ended_at) > UNIX_TIMESTAMP(now());
+  SELECT id FROM applyForm WHERE minorCategoryId = ${minorId} and userId=${user_id}
+  and UNIX_TIMESTAMP(endedAt) > UNIX_TIMESTAMP(now());
   `;
 };
 
-const postQuestion = async (question) => {
-  console.log(question.ended_at);
+const postApplication = async (question) => {
+  console.log(question.endedAt);
   return await prisma.$queryRaw`
-  INSERT INTO request_form (user_id, lesson_category_id, question_id, choice_question_id, ended_at)
+  INSERT INTO applyForm (userId, minorCategoryId, endedAt)
   VALUES
-  (${question.user_id}, ${question.lesson_category_id}, ${question.question_id},${question.choice_question_id},
+  (${question.userId}, ${question.lesson_category_id}, ${question.question_id},${question.choice_question_id},
     DATE_ADD(NOW(), INTERVAL 7 DAY));
 `;
 };

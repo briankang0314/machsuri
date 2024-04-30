@@ -3,11 +3,10 @@ const prisma = new PrismaClient();
 
 const errorGenerator = require("../utils/errorGenerator");
 
-
 const uploadReviewImage = async (reviewId, reviewImageAddr) => {
   try {
     return await prisma.$queryRaw`
-      INSERT INTO review_images (review_id, review_image)
+      INSERT INTO reviewImages (reviewId, reviewImage)
       VALUES
       (${reviewId}, ${reviewImageAddr});
     `;

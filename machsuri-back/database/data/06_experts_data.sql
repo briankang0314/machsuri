@@ -1,20 +1,19 @@
 insert into
-  experts (user_id, name, address_id, detail_address_id)
+  experts (userId, name, detailAddressId)
 values
   (1, '이온온', 1, 2);
 
 insert into
   experts (
-    user_id,
-    address_id,
-    detail_address_id,
+    userId,
+    detailAddressId,
     name,
-    master_image,
+    expertImage,
     intro,
-    start_time,
-    end_time,
-    work_experience,
-    employee_number
+    startTime,
+    endTime,
+    workTxperience,
+    employeeNumber
   )
 values
   (
@@ -24,8 +23,8 @@ values
     '최온온',
     "/images/profile/profile_sample.jpeg",
     "안녕하세요",
-    '2024-01-01 09:00',
-    '2024-01-01 18:00',
+    '09:00',
+    '18:00',
     5,
     10
   );

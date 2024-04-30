@@ -1,5 +1,5 @@
 insert into
-  major_categories (name)
+  majorCategories (name)
 values
   ("누수"),
   ("방수"),

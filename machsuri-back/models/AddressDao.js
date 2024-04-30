@@ -18,17 +18,17 @@ const getAddress = async () => {
   });
 };
 
-const sendMasterAddress = async (id) => {
+const sendExpertAddress = async (id) => {
   return await prisma.$queryRaw`
-  select a.name as address, d.name as detail_address
-  from address a, detail_address d, masters m 
-  where m.id = ${id}
-  and m.address_id = a.id
-  and m.detail_address_id = d.id;
+  select a.name as addressName, d.name as detailAddressName
+  from address a, detailAddress d, experts e 
+  where e.id = ${id}
+  and e.addressId = a.id
+  and e.detailAddressId = d.id;
   `;
 };
 
 module.exports = {
   getAddress,
-  sendMasterAddress,
+  sendExpertAddress,
 };

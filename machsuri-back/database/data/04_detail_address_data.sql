@@ -1,5 +1,5 @@
 insert into
-  detail_address (address_id, name)
+  detailAddress (addressId, name)
 values
   (1, "강남구"),
   (1, "강동구"),

@@ -3,11 +3,11 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getCategory = async () => {
-  return await prisma.themaCategories.findMany({
+  return await prisma.majorCategories.findMany({
     select: {
       id: true,
       name: true,
-      lessonCategories: {
+      minorCategories: {
         select: {
           id: true,
           name: true,
@@ -18,28 +18,28 @@ const getCategory = async () => {
   });
 };
 
-const sendLessonCat = async (id) => {
+const sendMinorCat = async (id) => {
   try {
     return await prisma.$queryRaw`
-        SELECT lc.id, lc.name 
-        FROM lesson_categories lc
-        JOIN thema_categories tc
-        ON lc.thema_category_id = tc.id
-        WHERE tc.id = ${id};
+        SELECT mic.id, mic.name 
+        FROM minorCategories mic
+        JOIN majorCategories mac
+        ON mic.majorCategoryId = mac.id
+        WHERE mac.id = ${id};
         `;
   } catch (error) {
     throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
   }
 };
 
-const sendMasterCategory = async (id) => {
+const sendExpertCategory = async (id) => {
   return await prisma.$queryRaw`
-  select JSON_ARRAYAGG(lc.name) as lesson_categories
-  from lesson_categories lc, masters_categories mc
-  where mc.master_id = ${id}
-  and mc.lesson_category_id = lc.id
-  group by mc.master_id
+  select JSON_ARRAYAGG(mic.name) as minorCategories
+  from minorCategories mic, expertsCategories ec
+  where ec.expertId = ${id}
+  and ec.minorCategoryId = mic.id
+  group by ec.expertId
   `;
 };
 
-module.exports = { getCategory, sendLessonCat, sendMasterCategory };
+module.exports = { getCategory, sendMinorCat, sendExpertCategory };

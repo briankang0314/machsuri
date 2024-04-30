@@ -1,5 +1,5 @@
 insert into 
-  apply_form (user_id, contract_id)
+  applyForm (userId, jobId, detailAddressId)
 values
   (1, 1),
   (1, 2),

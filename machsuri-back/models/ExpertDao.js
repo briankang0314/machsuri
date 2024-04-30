@@ -1,9 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
-const { use } = require("../routes/MasterRoute");
+const { use } = require("../routes/ExpertRoute");
 
 const prisma = new PrismaClient();
 
-const getMasters = async (search) => {
+const getExperts = async (search) => {
   const { addressId, lessonId, take } = search;
   let data = {};
   data = {
@@ -12,7 +12,7 @@ const getMasters = async (search) => {
       id: true,
       name: true,
       intro: true,
-      master_image: true,
+      expertImage: true,
       reviews: {
         select: {
           id: true,
@@ -29,7 +29,7 @@ const getMasters = async (search) => {
     },
   };
   if (addressId === "null" && lessonId === "null") {
-    return await prisma.masters.findMany(data);
+    return await prisma.experts.findMany(data);
   } else if (addressId !== "null" && lessonId === "null") {
     data.where = {
       detailAddress: {
@@ -98,17 +98,12 @@ const makeMasterMainCategories = async (masterID, lessonCatID) => {
 };
 
 const findMasterAddress = async (address, detailAddress) => {
-  const addressID = await prisma.$queryRaw`
-      SELECT id FROM address
-      WHERE name = ${address};
-  `;
-
   const detailAddressID = await prisma.$queryRaw`
-      SELECT id FROM detail_address
+      SELECT id FROM detailAddress
       WHERE name = ${detailAddress};
   `;
 
-  return { addressID, detailAddressID };
+  return detailAddressId;
 };
 
 const getMasterProfile = async (masterId) => {

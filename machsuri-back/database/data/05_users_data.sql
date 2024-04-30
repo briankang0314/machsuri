@@ -4,7 +4,7 @@ values
   ("강온온", "ononkang@gmail.com", "votmdnjem123");
 
 insert into
-  users (name, email, password, user_image, phone_number)
+  users (name, email, password, userImage, phoneNumber)
 values
   (
     "김온온",
