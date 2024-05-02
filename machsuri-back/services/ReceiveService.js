@@ -4,7 +4,7 @@ const errorGenerator = require("../utils/errorGenerator");
 const getReceive = async (userId) => {
   let objArrays = await ReceiveDao.getReceive(userId);
   for (let i = 0; i < objArrays.length; i++) {
-    objArrays[i].goso_images = await ReceiveDao.getGosoList(
+    objArrays[i].expert_images = await ReceiveDao.getExpertList(
       objArrays[i].minor_category_id
     );
   }

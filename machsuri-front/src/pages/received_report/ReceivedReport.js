@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { SERVER_PORT, FRONT_PORT } from '../../config';
 
 function ReceviedBox({ _data, index }) {
-  let img_datas = _data.goso_images.slice(0, 6);
+  let img_datas = _data.expert_images.slice(0, 6);
   let time = new Date();
   time.setDate(time.getDate());
   time = Date.parse(time) / 1000; //timestamp
@@ -34,7 +34,7 @@ function ReceviedBox({ _data, index }) {
                 ? FRONT_PORT + imgData.image
                 : FRONT_PORT + '/images/profile/profileNotFound.svg'
             }
-            alt="goso_img"
+            alt="expert_img"
             className={styles.img}
             key={index}
           />

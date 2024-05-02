@@ -188,7 +188,7 @@ const getExpertByUserId = async (userId) => {
 
 const getExpertsByCategory = async (category) => {
   return await prisma.$queryRaw`
-  SELECT m.id as goso_id, m.name as goso_name, m.expert_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
+  SELECT m.id as expert_id, m.name as expert_name, m.expert_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
   FROM experts_categories
   LEFT JOIN experts m ON m.id = experts_categories.expert_id
   LEFT JOIN reviews r ON r.expert_id = experts_categories.expert_id

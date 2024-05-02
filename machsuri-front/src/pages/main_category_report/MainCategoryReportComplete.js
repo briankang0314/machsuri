@@ -10,7 +10,7 @@ function MainCategoryReportComplete() {
   const navigate = useNavigate();
   const location = useLocation();
   const { quest, category, image, flag, ended_at } = location.state;
-  const [gosoList, setGosoList] = useState([]);
+  const [expertList, setExpertList] = useState([]);
   const [endTime, setEndTime] = useState(true);
   let _result = {};
   let result = [];
@@ -81,7 +81,7 @@ function MainCategoryReportComplete() {
     })
       .then(res => res.json())
       .then(data => {
-        setGosoList(data.getExperts);
+        setExpertList(data.getExperts);
       });
   }, [category_num]);
 
@@ -91,8 +91,8 @@ function MainCategoryReportComplete() {
     PostRequestForm(result);
   }
 
-  function handleNavigate(gosoId) {
-    navigate(`../profile/users/${gosoId}`);
+  function handleNavigate(expertId) {
+    navigate(`../profile/users/${expertId}`);
   }
 
   const DeleteRequestForm = () => {
@@ -118,7 +118,7 @@ function MainCategoryReportComplete() {
     <>
       <Header />
       <img src={bannerUrl} alt="banner" className={styles.img_banner} />
-      <div className={styles.goso_container}>
+      <div className={styles.expert_container}>
         <div className={styles.headline}>
           {category}
           <div className={styles.button_list}>
@@ -134,15 +134,15 @@ function MainCategoryReportComplete() {
           조건에 맞는 전문가님들이 요청을 검토하고 있어요. 먼저 도착한 견적을
           확인해보세요.
         </div>
-        {gosoList.map((goso, index) => {
-          let expertImage = goso.image
-            ? FRONT_PORT + goso.image
+        {expertList.map((expert, index) => {
+          let expertImage = expert.image
+            ? FRONT_PORT + expert.image
             : FRONT_PORT + '/images/profile/profileNotFound.svg';
           return (
             <div
-              className={styles.goso_wrap}
+              className={styles.expert_wrap}
               key={index}
-              onClick={() => handleNavigate(goso.goso_id)}
+              onClick={() => handleNavigate(expert.expert_id)}
             >
               <img
                 className={styles.img_box}
@@ -150,16 +150,16 @@ function MainCategoryReportComplete() {
                 alt="profile_photo"
               />
               <div className={styles.text_box}>
-                <h4>{goso.goso_name}</h4>
-                <div className={styles.goso_line}>
+                <h4>{expert.expert_name}</h4>
+                <div className={styles.expert_line}>
                   <AiFillStar color="#FFCE21" size="1.1em" />
-                  <p>{goso.star}</p>({goso.review_sum})&nbsp;&nbsp;
+                  <p>{expert.star}</p>({expert.review_sum})&nbsp;&nbsp;
                   <div className={styles.recruit_box}>
-                    {goso.recurit}회 고용
+                    {expert.recurit}회 고용
                   </div>
                 </div>
                 {/* <p className={styles.price}>
-                총 {goso.price.toLocaleString('ko-KR')}원 부터 ~
+                총 {expert.price.toLocaleString('ko-KR')}원 부터 ~
               </p> */}
               </div>
             </div>

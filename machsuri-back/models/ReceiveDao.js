@@ -1,9 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const getGosoList = async (minor_category_id) => {
+const getExpertList = async (minor_category_id) => {
   return await prisma.$queryRaw`
-  select JSON_OBJECT('goso',experts_categories.id), minor_category_id
+  select JSON_OBJECT('expert',experts_categories.id), minor_category_id
   from experts_categories
   where minor_category_id = ${minor_category_id}
   `;
@@ -29,4 +29,4 @@ const setReceive = async (ended_at) => {
   `;
 };
 
-module.exports = { getReceive, getGosoList, setReceive };
+module.exports = { getReceive, getExpertList, setReceive };
