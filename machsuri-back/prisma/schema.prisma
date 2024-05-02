@@ -17,11 +17,12 @@ model Users {
   isDeleted    Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now())
-  deletedAt    DateTime? @default(null)
+  deletedAt    DateTime?
 
   experts      Experts?
-  requestForm  RequestForm[]
+  applyForm    ApplyForm[]
   reviews      Reviews[]
+
   @@map("users")
 }
 
@@ -39,14 +40,14 @@ model Experts {
   isDeleted         Boolean   @default(false)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now())
-  deletedAt         DateTime? @default(null)
+  deletedAt         DateTime? 
 
-  users         Users         @relation(fields: [userId], references: [id])
-  detailAddress DetailAddress @relation(fields: [detailAddressId], references: [id])
+  users             Users         @relation(fields: [userId], references: [id])
+  detailAddress     DetailAddress @relation(fields: [detailAddressId], references: [id])
 
   reviews           Reviews[]
   expertsCategories ExpertsCategories[]
-  expert_posts      ExpertPosts[]
+  expertPosts       ExpertPosts[]
 
   @@index([userId], name: "userId")
   @@map("experts")
@@ -59,6 +60,7 @@ model MajorCategories {
   updatedAt  DateTime  @default(now())
 
   minorCategories MinorCategories[]
+
   @@map("majorCategories")
 }
 
@@ -74,6 +76,8 @@ model MinorCategories {
 
   applyForm         ApplyForm[]
   expertsCategories ExpertsCategories[]
+  questions         Questions[]
+
   @@index([majorCategoryId], name: "majorCategoryId")
   @@map("minorCategories")
 }
@@ -88,8 +92,8 @@ model Questions {
 
   minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
 
-  answers Answers[]
-  applyForm     ApplyForm[]
+  answers             Answers[]
+  applyForm           ApplyForm[] @relation("QuestionsApplyForms")
 
   @@index([minorCategoryId], name: "minorCategoryId")
   @@map("questions")
@@ -102,9 +106,8 @@ model Answers {
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @default(now())
 
-  questions Questions @relation(fields: [questionId], references: [id])
-
-  applyForm ApplyForm[]
+  questions   Questions @relation(fields: [questionId], references: [id])
+  applyForm   ApplyForm[] @relation("AnswersApplyForms")
 
   @@index([questionId], name: "questionId")
   @@map("answers")
@@ -119,7 +122,9 @@ model ApplyForm {
   updatedAt          DateTime  @default(now())
 
   users              Users        @relation(fields: [userId], references: [id])
-  minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
+  minorCategories    MinorCategories @relation(fields: [minorCategoryId], references: [id])
+  questions          Questions[] @relation("QuestionsApplyForms")
+  answers            Answers[] @relation("AnswersApplyForms")
 
   @@index([userId], name: "userId")
   @@index([minorCategoryId], name: "minorCategoryId")
@@ -127,16 +132,16 @@ model ApplyForm {
 }
 
 model Reviews {
-  id         Int       @id @default(autoincrement())
-  expertId   Int
-  userId     Int
-  grade      Int
-  comment    String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
+  id           Int       @id @default(autoincrement())
+  expertId     Int
+  userId       Int
+  grade        Int
+  comment      String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
 
-  experts Experts @relation(fields: [expertId], references: [id])
-  users   Users   @relation(fields: [userId], references: [id])
+  experts      Experts @relation(fields: [expertId], references: [id])
+  users        Users   @relation(fields: [userId], references: [id])
 
   reviewImages ReviewImages[]
 
@@ -167,7 +172,7 @@ model ExpertsCategories {
   updatedAt          DateTime  @default(now())
 
   experts            Experts      @relation(fields: [expertId], references: [id])
-  minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
+  minorCategories    MinorCategories @relation(fields: [minorCategoryId], references: [id])
 
   @@index([expertId], name: "expertId")
   @@index([minorCategoryId], name: "minorCategoryId")
@@ -181,20 +186,20 @@ model ExpertPosts {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 
-  experts Experts @relation(fields: [expertId], references: [id])
+  experts       Experts @relation(fields: [expertId], references: [id])
 
   @@index([expertId], name: "expertId")
   @@map("expertPosts")
 }
 
 model Address {
-  id         Int       @id @default(autoincrement())
-  name       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
+  id            Int       @id @default(autoincrement())
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
 
   detailAddress DetailAddress[]
-  experts       Experts[]
+
   @@map("address")
 }
 
@@ -205,9 +210,10 @@ model DetailAddress {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
 
-  address Address @relation(fields: [addressId], references: [id])
+  address    Address @relation(fields: [addressId], references: [id])
 
-  experts Experts[]
+  experts    Experts[]
+
   @@index([addressId], name: "addressId")
   @@map("detailAddress")
 }
