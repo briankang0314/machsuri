@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styles from './MasterProfileContentTitle.module.scss';
+import styles from './ExpertProfileContentTitle.module.scss';
 
-const MasterProfileContentTitle = props => {
+const ExpertProfileContentTitle = props => {
   const { children, title, value, useValue, handleClickUpdate } = props;
   const [isUpdating, setIsUpdating] = useState(false);
   return (
@@ -28,4 +28,4 @@ const MasterProfileContentTitle = props => {
     </div>
   );
 };
-export default MasterProfileContentTitle;
+export default ExpertProfileContentTitle;

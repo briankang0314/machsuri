@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
 
-import styles from './MasterProfileName.module.scss';
+import styles from './ExpertProfileName.module.scss';
 
-const MasterProfileName = props => {
+const ExpertProfileName = props => {
   const { title, value, handleClickUpdate } = props;
   const [useName, setUseName] = useState(value);
 
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
       value={value}
       useValue={useName}
@@ -29,8 +29,8 @@ const MasterProfileName = props => {
           <span>/30자</span>
         </span>
       </div>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileName;
+export default ExpertProfileName;

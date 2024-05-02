@@ -3,14 +3,14 @@ const errorGenerator = require("../utils/errorGenerator");
 
 const getQuestions = async (req, res, next) => {
   try {
-    const { lessonId, userId } = req.params;
-    if (!lessonId) {
+    const { minorId, userId } = req.params;
+    if (!minorId) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
 
-    const questions = await FormService.getQuestions(lessonId);
+    const questions = await FormService.getQuestions(minorId);
 
-    const checkId = await FormService.getLessonCategoryId(lessonId, userId);
+    const checkId = await FormService.getMinorCategoryId(minorId, userId);
     if (checkId.length !== 0) {
       return res
         .status(200)

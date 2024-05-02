@@ -1,7 +1,7 @@
-const MasterService = require("../services/ExpertService");
+const ExpertService = require("../services/ExpertService");
 const errorGenerator = require("../utils/errorGenerator");
 
-const sendMasters = async (req, res) => {
+const sendExperts = async (req, res) => {
   try {
     const search = req.query;
     const experts = await ExpertService.sendExperts(search);
@@ -120,7 +120,7 @@ const getExpertsByCategory = async (req, res, next) => {
 
     const getExperts = await ExpertService.getExpertsByCategory(category);
 
-    return res.status(200).json({ message: "SUCCESS", getMasters });
+    return res.status(200).json({ message: "SUCCESS", getExperts });
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }

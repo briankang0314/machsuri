@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
 
-import { BasicDropDown } from '../../components/drop_down/MasterProfileDropDowns';
+import { BasicDropDown } from '../../components/drop_down/ExpertProfileDropDowns';
 
-// import styles from './MasterProfileWorkEx.module.scss';
+// import styles from './ExpertProfileWorkEx.module.scss';
 
-const MasterProfileWorkEx = props => {
+const ExpertProfileWorkEx = props => {
   const { title, value, handleClickUpdate } = props;
   const [useWorkEx, setUseWorkEx] = useState(value ? value : 1);
 
   const options = [1, 2, 3, 4, 5, 10, 15, 20, 30]; // 선택할 년수
 
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
       value={value ? `${value}년 이상` : ''}
       useValue={useWorkEx}
@@ -26,8 +26,8 @@ const MasterProfileWorkEx = props => {
         <span style={{ marginRight: '3px' }}>경력</span>
         <span>년</span>
       </BasicDropDown>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileWorkEx;
+export default ExpertProfileWorkEx;

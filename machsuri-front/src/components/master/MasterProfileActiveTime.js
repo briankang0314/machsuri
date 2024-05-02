@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
-import { TimeDropDown } from '../../components/drop_down/MasterProfileDropDowns';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
+import { TimeDropDown } from '../../components/drop_down/ExpertProfileDropDowns';
 import timeFormatter from '../../utils/timeFormatter';
 
-import styles from './MasterProfileActiveTime.module.scss';
+import styles from './ExpertProfileActiveTime.module.scss';
 
-const MasterProfileActiveTime = props => {
+const ExpertProfileActiveTime = props => {
   const { title, value, handleClickUpdate } = props;
   const [useStartTime, setUseStartTime] = useState(
     value.start ? value.start : '2022-01-01 09:00'
@@ -20,7 +20,7 @@ const MasterProfileActiveTime = props => {
         )} - ${timeFormatter.getFormatedHours(value.end)}`
       : null;
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
       value={timeFullName}
       useValue={{ start: useStartTime, end: useEndTime }}
@@ -30,8 +30,8 @@ const MasterProfileActiveTime = props => {
       <span className={styles.timeSplit}>부터</span>
       <TimeDropDown time={useEndTime} setTime={setUseEndTime} />
       <span className={styles.timeSplit}>까지</span>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileActiveTime;
+export default ExpertProfileActiveTime;

@@ -4,7 +4,7 @@ const router = express.Router();
 const UserRoute = require("./UserRoute");
 const CategoryRoute = require("./CategoryRoute");
 const FormRoute = require("./FormRoute");
-const MasterRoute = require("./MasterRoute");
+const ExpertRoute = require("./ExpertRoute");
 const AddressRoute = require("./AddressRoute");
 const ReviewRoute = require("./ReviewRoute");
 const ReceiveRoute = require("./ReceiveRoute");
@@ -17,7 +17,7 @@ router.get("/", (req, res) =>
 router.use("/users", UserRoute);
 router.use("/category", CategoryRoute);
 router.use("/form", FormRoute);
-router.use("/master", MasterRoute);
+router.use("/expert", ExpertRoute);
 router.use("/address", AddressRoute);
 router.use("/review", ReviewRoute);
 router.use("/receive", ReceiveRoute);

@@ -11,17 +11,17 @@ const getCategories = async (req, res, next) => {
   }
 };
 
-const sendLessonCat = async (req, res, next) => {
+const sendMinorCat = async (req, res, next) => {
   try {
     const id = req.params.id;
 
     if (!id) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
-    const lessonCat = await CategoryService.sendLessonCat(id);
-    return res.status(200).json(lessonCat);
+    const minorCat = await CategoryService.sendMinorCat(id);
+    return res.status(200).json(minorCat);
   } catch (error) {
     return res.status(500).json({ message: "SERVER_ERROR" });
   }
 };
-module.exports = { getCategories, sendLessonCat };
+module.exports = { getCategories, sendMinorCat };

@@ -23,7 +23,7 @@ function HeaderProfileDropDownFetch(props) {
 
 function HeaderProfileDropDown(props) {
   const { user, handleNavigate, logoutBtn } = props;
-  const [isMaster, setIsMaster] = useState(false);
+  const [isExpert, setIsExpert] = useState(false);
 
   return (
     <div className={styles.dropDownMain}>
@@ -33,19 +33,19 @@ function HeaderProfileDropDown(props) {
         </div>
         <div className={styles.dropDownContent}>
           <ul>
-            {!isMaster ? (
+            {!isExpert ? (
               <>
                 <li onClick={() => handleNavigate('/received_report')}>
                   받은 견적
                 </li>
-                <li onClick={() => setIsMaster(true)}>고수로 전환</li>
+                <li onClick={() => setIsExpert(true)}>전문가로 전환</li>
               </>
             ) : (
               <>
-                <li onClick={() => handleNavigate('/master/profile')}>
+                <li onClick={() => handleNavigate('/expert/profile')}>
                   프로필 관리
                 </li>
-                <li onClick={() => setIsMaster(false)}>고객으로 전환</li>
+                <li onClick={() => setIsExpert(false)}>고객으로 전환</li>
               </>
             )}
             <li onClick={logoutBtn}>로그아웃</li>

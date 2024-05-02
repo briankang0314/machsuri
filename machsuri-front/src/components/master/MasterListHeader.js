@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import styles from './MasterListHeader.module.scss';
+import styles from './ExpertListHeader.module.scss';
 import { BsGrid } from 'react-icons/bs';
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import { GoLocation } from 'react-icons/go';
 
 import FilteringModal from '../modal/FilteringModal';
 
-const MasterListHeader = props => {
+const ExpertListHeader = props => {
   const {
-    masterNumber,
+    expertNumber,
     useSort,
     setUseSort,
     useCategory,
@@ -29,9 +29,9 @@ const MasterListHeader = props => {
   }
   return (
     <>
-      <header className={styles.masterListHeader}>
+      <header className={styles.expertListHeader}>
         <div className={styles.headerNav}>
-          <h1>고수찾기</h1>
+          <h1>전문가찾기</h1>
           <span>
             숭고 <IoIosArrowForward size="10px" />{' '}
             {!useAddress
@@ -40,7 +40,7 @@ const MasterListHeader = props => {
             {', '}
             {!useCategory
               ? '카테고리'
-              : useCategory.name + ' - ' + useCategory.lessons.name}
+              : useCategory.name + ' - ' + useCategory.minors.name}
           </span>
         </div>
         <div className={styles.headerCategory}>
@@ -60,13 +60,13 @@ const MasterListHeader = props => {
             <BsGrid className={styles.icon} size="12px" />
             {!useCategory
               ? '서비스 전체'
-              : useCategory.name + ' - ' + useCategory.lessons.name}
+              : useCategory.name + ' - ' + useCategory.minors.name}
           </button>
         </div>
         <div className={styles.headerSort}>
-          <div className={styles.masterCounterWapper}>
-            <span>{masterNumber}</span>
-            <span> 명의 고수</span>
+          <div className={styles.expertCounterWapper}>
+            <span>{expertNumber}</span>
+            <span> 명의 전문가</span>
           </div>
           <div className={styles.dropDownWrapper}>
             <button className={styles.dropDownBtn}>
@@ -96,4 +96,4 @@ const MasterListHeader = props => {
   );
 };
 
-export default MasterListHeader;
+export default ExpertListHeader;

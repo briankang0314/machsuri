@@ -3,7 +3,7 @@ import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import CarouselService from '../slide/CarouselService';
 import Carouselgoso from '../slide/CarouselGoso';
-import Category from '../../components/thema_category/ThemaCategory';
+import Category from '../../components/major_category/MajorCategory';
 import Banner from '../slide/Banner';
 function Main() {
   return (

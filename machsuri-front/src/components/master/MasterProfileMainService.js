@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
 
-import styles from './MasterProfileMainService.module.scss';
+import styles from './ExpertProfileMainService.module.scss';
 
-const MasterProfileMainService = props => {
+const ExpertProfileMainService = props => {
   const { title, data, handleClickUpdate } = props;
   const mainCategory = data.filter(category => {
     return !!category.is_main;
@@ -11,9 +11,9 @@ const MasterProfileMainService = props => {
 
   const [useMainCategory, setUseMainCategory] = useState(mainCategory);
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
-      value={data.length > 0 ? mainCategory.lessonCategories.name : null}
+      value={data.length > 0 ? mainCategory.minorCategories.name : null}
       useValue={useMainCategory}
       handleClickUpdate={handleClickUpdate}
     >
@@ -32,14 +32,14 @@ const MasterProfileMainService = props => {
                 onClick={() => setUseMainCategory(category)}
                 value={category.id}
               >
-                {category.lessonCategories.name}
+                {category.minorCategories.name}
               </button>
             </div>
           );
         })}
       </div>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileMainService;
+export default ExpertProfileMainService;

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
 
-import { BasicDropDown } from '../../components/drop_down/MasterProfileDropDowns';
+import { BasicDropDown } from '../../components/drop_down/ExpertProfileDropDowns';
 
-// import styles from './MasterProfileEmployeeNum.module.scss';
+// import styles from './ExpertProfileEmployeeNum.module.scss';
 
-const MasterProfileEmployeeNum = props => {
+const ExpertProfileEmployeeNum = props => {
   const { title, value, handleClickUpdate } = props;
   const [useEmployeeNum, setUseEmployeeNum] = useState(value ? value : 1);
 
   const options = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50]; // 선택할 직원수
 
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
       value={value ? `${value}명 이상` : ''}
       useValue={useEmployeeNum}
@@ -26,8 +26,8 @@ const MasterProfileEmployeeNum = props => {
         <span style={{ marginRight: '3px' }}>직원</span>
         <span>명</span>
       </BasicDropDown>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileEmployeeNum;
+export default ExpertProfileEmployeeNum;

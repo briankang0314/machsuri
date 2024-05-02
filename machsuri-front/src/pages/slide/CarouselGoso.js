@@ -113,7 +113,7 @@ function CarouselGoso() {
   return (
     <div className={styles.carouselComponent}>
       <h3 className={styles.slideTitle}>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;인기 숨은 고수
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;인기 숨은 전문가
       </h3>
       <div className={styles.carouselWrap}>
         <div className={styles.carouselInner}>

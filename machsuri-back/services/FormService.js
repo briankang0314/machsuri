@@ -1,13 +1,13 @@
 const FormDao = require("../models/FormDao");
 // const errorGenerator = require("../utils/errorGenerator");
 
-const getQuestions = async (lessonId) => {
-  return await FormDao.getQuestions(lessonId);
+const getQuestions = async (minorId) => {
+  return await FormDao.getQuestions(minorId);
 };
 
-const getLessonCategoryId = async (lessonId, user_id) =>{
-  return await FormDao.getLessonCategoryId(lessonId, user_id);
-}
+const getMinorCategoryId = async (minorId, user_id) => {
+  return await FormDao.getMinorCategoryId(minorId, user_id);
+};
 
 const postQuestions = async (questionForm) => {
   for (let i = 0; i < questionForm.length; i++) {
@@ -15,4 +15,4 @@ const postQuestions = async (questionForm) => {
   }
 };
 
-module.exports = { getQuestions, postQuestions, getLessonCategoryId };
+module.exports = { getQuestions, postQuestions, getMinorCategoryId };

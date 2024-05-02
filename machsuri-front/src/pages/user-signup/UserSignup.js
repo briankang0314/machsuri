@@ -95,7 +95,7 @@ function UserSignUp() {
               }
               name="email"
               type="text"
-              placeholder="example@soongo.com"
+              placeholder="example@machsuri.com"
               onChange={onChange}
             />
             <div
@@ -230,7 +230,7 @@ function UserSignUp() {
         </form>
 
         <p className={styles.gosuSignUp} onClick={() => navigate('/pro')}>
-          고수로 가입하시나요?
+          전문가로 가입하시나요?
         </p>
       </div>
     </section>

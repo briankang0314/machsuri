@@ -6,23 +6,30 @@ const ImageService = require("../services/ImageService");
 
 const uploadReviewImage = async (req, res, next) => {
   try {
-
-    const masterId = req.params.masterId;
+    const expertId = req.params.expertId;
     const reviewId = req.params.reviewId;
-    
+
     // upload 폴더 지정 (없으면 생성)
     try {
-      fs.readdirSync(`./data/uploads/master${masterId}/review${reviewId}`)
+      fs.readdirSync(`./data/uploads/expert${expertId}/review${reviewId}`);
     } catch (error) {
-      console.log(`./data/uploads/master${masterId}/review${reviewId} 폴더를 생성합니다.`)
-      fs.mkdirSync(`./data/uploads/master${masterId}/review${reviewId}`, {recursive: true}, err => {console.log(err)})
+      console.log(
+        `./data/uploads/expert${expertId}/review${reviewId} 폴더를 생성합니다.`
+      );
+      fs.mkdirSync(
+        `./data/uploads/expert${expertId}/review${reviewId}`,
+        { recursive: true },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
 
     const upload = multer({
       storage: multer.diskStorage({
         // 업로드된 이미지 저장 경로 지정
         destination(req, file, cb) {
-          cb(null, `./data/uploads/master${masterId}/review${reviewId}`);
+          cb(null, `./data/uploads/expert${expertId}/review${reviewId}`);
         },
         // 업로드된 이미지 파일 이름 지정
         filename(req, file, cb) {
@@ -36,12 +43,12 @@ const uploadReviewImage = async (req, res, next) => {
     }).array("reviewImg");
 
     upload(req, res, function (err) {
-      if (err) {        
-        return res.status(400).json({ message:"INVALID_FILE" }) 
+      if (err) {
+        return res.status(400).json({ message: "INVALID_FILE" });
       }
-    })
+    });
 
-    const reviewImageAddr = `data/uploads/${masterId}/${reviewId}`;
+    const reviewImageAddr = `data/uploads/${expertId}/${reviewId}`;
 
     await ImageService.uploadReviewImage(reviewId, reviewImageAddr);
     return res.status(200).json({ message: "SUCCESS" });
@@ -50,4 +57,4 @@ const uploadReviewImage = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadReviewImage }
+module.exports = { uploadReviewImage };

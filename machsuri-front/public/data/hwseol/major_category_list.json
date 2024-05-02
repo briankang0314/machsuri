@@ -1,0 +1,341 @@
+{
+  "message": "SUCCESS",
+  "categories": [
+    {
+      "id": 1,
+      "name": "레슨",
+      "minorId": 1,
+      "minorName": "방송댄스 레슨",
+      "minorImage": "images/thump/dance.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "minorId": 2,
+      "minorName": "보컬 레슨",
+      "minorImage": "images/thump/sing.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "minorId": 3,
+      "minorName": "골프 레슨",
+      "minorImage": "images/thump/golf.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "minorId": 4,
+      "minorName": "퍼스널트레이닝(PT)",
+      "minorImage": "images/thump/training.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "minorId": 5,
+      "minorName": "기타 레슨",
+      "minorImage": "images/thump/guitar.jpg"
+    },
+    {
+      "id": 1,
+      "name": "레슨",
+      "minorId": 6,
+      "minorName": "중국어 과외",
+      "minorImage": "images/thump/china.jpg"
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "minorId": 7,
+      "minorName": "집 인테리어",
+      "minorImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "minorId": 8,
+      "minorName": "상업공간 인테리어",
+      "minorImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "minorId": 9,
+      "minorName": "타일 시공",
+      "minorImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "minorId": 10,
+      "minorName": "욕실/화장실 리모델링",
+      "minorImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "minorId": 11,
+      "minorName": "페인트 시공",
+      "minorImage": null
+    },
+    {
+      "id": 2,
+      "name": "홈/리빙",
+      "minorId": 12,
+      "minorName": "싱크대 교체",
+      "minorImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "minorId": 13,
+      "minorName": "웨딩 사진 촬영",
+      "minorImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "minorId": 14,
+      "minorName": "결혼식 사회자",
+      "minorImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "minorId": 15,
+      "minorName": "개인용 영상 촬영",
+      "minorImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "minorId": 16,
+      "minorName": "영상 편집",
+      "minorImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "minorId": 17,
+      "minorName": "댄스 공연",
+      "minorImage": null
+    },
+    {
+      "id": 3,
+      "name": "이벤트",
+      "minorId": 18,
+      "minorName": "클래식 공연",
+      "minorImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "minorId": 19,
+      "minorName": "회계/세무",
+      "minorImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "minorId": 20,
+      "minorName": "영상 광고",
+      "minorImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "minorId": 21,
+      "minorName": "블로그 마케팅",
+      "minorImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "minorId": 22,
+      "minorName": "일본어 통역",
+      "minorImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "minorId": 23,
+      "minorName": "중국어 통역",
+      "minorImage": null
+    },
+    {
+      "id": 4,
+      "name": "비지니스",
+      "minorId": 24,
+      "minorName": "BGM/사운드 제작",
+      "minorImage": null
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "minorId": 25,
+      "minorName": "프레젠테이션 디자인",
+      "minorImage": "images/thump/develop1.png"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "minorId": 26,
+      "minorName": "인쇄물 디자인",
+      "minorImage": "images/thump/develop2.jpg"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "minorId": 27,
+      "minorName": "앱 디자인",
+      "minorImage": "images/thump/develop3.jpg"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "minorId": 28,
+      "minorName": "일러스트 디자인",
+      "minorImage": "images/thump/design1.png"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "minorId": 29,
+      "minorName": "제품 디자인",
+      "minorImage": "images/thump/design2.jpg"
+    },
+    {
+      "id": 5,
+      "name": "디자인/개발",
+      "minorId": 29,
+      "minorName": "웹 디자인",
+      "minorImage": "images/thump/design3.jpg"
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "minorId": 30,
+      "minorName": "가족 상담",
+      "minorImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "minorId": 31,
+      "minorName": "부부/커플 상담",
+      "minorImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "minorId": 32,
+      "minorName": "성인 상담",
+      "minorImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "minorId": 33,
+      "minorName": "아동/청소년 상담",
+      "minorImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "minorId": 34,
+      "minorName": "심리검사",
+      "minorImage": null
+    },
+    {
+      "id": 6,
+      "name": "건강/미용",
+      "minorId": 35,
+      "minorName": "언어치료",
+      "minorImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "minorId": 36,
+      "minorName": "편의점 알바",
+      "minorImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "minorId": 37,
+      "minorName": "일반음식점 알바",
+      "minorImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "minorId": 38,
+      "minorName": "방송스템/촬영보조 알바",
+      "minorImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "minorId": 39,
+      "minorName": "이벤트/행사스텝 알바",
+      "minorImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "minorId": 40,
+      "minorName": "포장/조립 알바",
+      "minorImage": null
+    },
+    {
+      "id": 7,
+      "name": "알바",
+      "minorId": 41,
+      "minorName": "배달/택배/퀵서비스 알바",
+      "minorImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "minorId": 42,
+      "minorName": "일반 민사 소송",
+      "minorImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "minorId": 43,
+      "minorName": "특허 출원",
+      "minorImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "minorId": 44,
+      "minorName": "이혼 소송",
+      "minorImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "minorId": 45,
+      "minorName": "음향기기 대여",
+      "minorImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "minorId": 46,
+      "minorName": "신차 구매",
+      "minorImage": null
+    },
+    {
+      "id": 8,
+      "name": "기타",
+      "minorId": 47,
+      "minorName": "기구/목공예 제작",
+      "minorImage": null
+    }
+  ]
+}

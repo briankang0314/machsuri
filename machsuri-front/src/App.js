@@ -1,20 +1,20 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './pages/main/Main';
 import Login from './pages/login/Login';
-import MasterList from './pages/master/MasterList';
-import ThemaCategoryList from './pages/category/ThemaCategoryList';
+import ExpertList from './pages/expert/ExpertList';
+import MajorCategoryList from './pages/category/MajorCategoryList';
 import MainCategoryReport from './pages/main_category_report/MainCategoryReport';
 import MainCategoryReportComplete from './pages/main_category_report/MainCategoryReportComplete';
 import UserSignUp from './pages/user-signup/UserSignup';
 import ReceivedReport from './pages/received_report/ReceivedReport';
-import MasterSignup from './pages/master-signup/MasterSignup';
-import MasterProfile from './pages/master_profile/MasterProfile';
-import MasterSignUpNext from './pages/master-signup/MasterSignUpNext';
-import MasterDetail from './pages/master-detail/MasterDetail';
+import ExpertSignup from './pages/expert-signup/ExpertSignup';
+import ExpertProfile from './pages/expert_profile/ExpertProfile';
+import ExpertSignUpNext from './pages/expert-signup/ExpertSignUpNext';
+import ExpertDetail from './pages/expert-detail/ExpertDetail';
 
 import './styles/reset.scss';
 import './styles/common.scss';
-import MasterRequestForm from './components/master-detail/MasterRequestForm';
+import ExpertRequestForm from './components/expert-detail/ExpertRequestForm';
 
 function App() {
   return (
@@ -22,23 +22,23 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/:lesson_name" element={<ThemaCategoryList />} />
-        <Route path="/master/list" element={<MasterList />} />
+        <Route path="/:minor_name" element={<MajorCategoryList />} />
+        <Route path="/expert/list" element={<ExpertList />} />
         <Route
-          path="/:lesson_category/:lesson_name"
+          path="/:minor_category/:minor_name"
           element={<MainCategoryReport />}
         />
         <Route path="/complete" element={<MainCategoryReportComplete />} />
         <Route path="/sign-up" element={<UserSignUp />} />
         <Route path="/received_report" element={<ReceivedReport />} />
-        <Route path="/pro" element={<MasterSignup />} />
-        <Route path="/pro/:id" element={<MasterSignUpNext />} />
-        <Route path="/master/profile" element={<MasterProfile />} />
+        <Route path="/pro" element={<ExpertSignup />} />
+        <Route path="/pro/:id" element={<ExpertSignUpNext />} />
+        <Route path="/expert/profile" element={<ExpertProfile />} />
         <Route path="/sign-up" element={<UserSignUp />} />
-        <Route path="/profile/users/:id" element={<MasterDetail />} />
-        <Route path="/pro" element={<MasterSignup />} />
-        <Route path="/pro/:id" element={<MasterSignUpNext />} />
-        <Route path="/formtest" element={<MasterRequestForm />} />
+        <Route path="/profile/users/:id" element={<ExpertDetail />} />
+        <Route path="/pro" element={<ExpertSignup />} />
+        <Route path="/pro/:id" element={<ExpertSignUpNext />} />
+        <Route path="/formtest" element={<ExpertRequestForm />} />
       </Routes>
     </BrowserRouter>
   );

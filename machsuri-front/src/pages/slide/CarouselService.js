@@ -45,7 +45,7 @@ const CarouselSlideItem = ({ pos, idx, activeIdx, _items }) => {
           className={styles.imageDiv}
           src={item.service.image}
           alt={item.service.title}
-          // onClick={() => navigate('/lesson')}
+          // onClick={() => navigate('/minor')}
         />
       </div>
       <div className={styles.carouselSlideItemBody}>

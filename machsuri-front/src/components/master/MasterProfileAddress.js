@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
 import FilteringModal from '../../components/modal/FilteringModal';
 
-import styles from './MasterProfileAddress.module.scss';
+import styles from './ExpertProfileAddress.module.scss';
 
-const MasterProfileAddress = props => {
+const ExpertProfileAddress = props => {
   const { title, value, handleClickUpdate } = props;
   const [useAddress, setUseAddress] = useState(value);
   const [isModalVisible, setIsModalVisible] = useState({
@@ -13,7 +13,7 @@ const MasterProfileAddress = props => {
   });
   const addressFullName = value ? `${value.name} ${value.details.name}` : null;
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
       value={addressFullName}
       useValue={useAddress}
@@ -34,8 +34,8 @@ const MasterProfileAddress = props => {
           />
         )}
       </div>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileAddress;
+export default ExpertProfileAddress;

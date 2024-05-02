@@ -65,7 +65,7 @@ function MainCategoryReportComplete() {
   const keys = Object.keys(quest);
   for (let i = 0; i < keys.length; i++) {
     _result.user_id = localStorage.getItem('userId');
-    _result.lesson_category_id = category_num;
+    _result.minor_category_id = category_num;
     if (keys[i] === 'address1' || keys[i] === 'address2') {
       _result.question_id = i + 1;
     } else {
@@ -76,12 +76,12 @@ function MainCategoryReportComplete() {
     _result = {};
   }
   useEffect(() => {
-    fetch(`${SERVER_PORT}/master/main_list/${category_num}`, {
+    fetch(`${SERVER_PORT}/expert/main_list/${category_num}`, {
       method: 'GET',
     })
       .then(res => res.json())
       .then(data => {
-        setGosoList(data.getMasters);
+        setGosoList(data.getExperts);
       });
   }, [category_num]);
 
@@ -131,11 +131,11 @@ function MainCategoryReportComplete() {
           </div>
         </div>
         <div className={styles.text_line}>
-          조건에 맞는 고수님들이 요청을 검토하고 있어요. 먼저 도착한 견적을
+          조건에 맞는 전문가님들이 요청을 검토하고 있어요. 먼저 도착한 견적을
           확인해보세요.
         </div>
         {gosoList.map((goso, index) => {
-          let masterImage = goso.image
+          let expertImage = goso.image
             ? FRONT_PORT + goso.image
             : FRONT_PORT + '/images/profile/profileNotFound.svg';
           return (
@@ -146,7 +146,7 @@ function MainCategoryReportComplete() {
             >
               <img
                 className={styles.img_box}
-                src={masterImage}
+                src={expertImage}
                 alt="profile_photo"
               />
               <div className={styles.text_box}>

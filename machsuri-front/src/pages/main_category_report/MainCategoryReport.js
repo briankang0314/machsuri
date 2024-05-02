@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './MainCategoryReport.module.scss';
-import ReportForm from '../../components/step/ThemaCategoryForm';
+import ReportForm from '../../components/step/MajorCategoryForm';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import WaringModal from '../../components/modal/WaringModal';
@@ -74,7 +74,7 @@ function MainCategoryReport() {
                   <td className={styles.table_end}>12,333</td>
                 </tr>
                 <tr>
-                  <td>활동고수</td>
+                  <td>활동전문가</td>
                   <td>누적 요청서</td>
                   <td className={styles.table_end}>리뷰 수</td>
                 </tr>
@@ -89,14 +89,14 @@ function MainCategoryReport() {
               </div>
               <br />
               <p className={styles.text_wrap}>
-                서비스가 필요한 고객과 서비스를 제공하는 숨은 고수를 쉽고 빠르게
+                서비스가 필요한 고객과 서비스를 제공하는 숨은 전문가를 쉽고 빠르게
                 연결해드리는 전문가 매칭 서비스입니다. 1분 내외의 요청서를
-                작성하면, 여러 고수님들이 맞춤형 견적을 보내드려요. 맘에 쏙 드는
-                고수의 맞춤형 서비스를 받아보세요.
+                작성하면, 여러 전문가님들이 맞춤형 견적을 보내드려요. 맘에 쏙 드는
+                전문가의 맞춤형 서비스를 받아보세요.
               </p>
 
               <div className={styles.strong_div}>
-                <strong>방송댄스 레슨 고수만을 모았다!</strong>
+                <strong>방송댄스 레슨 전문가만을 모았다!</strong>
               </div>
               <p>
                 <br /> 방송 댄스에 관심이 있는데 시작이 어려웠나요? 퇴근 후 취미

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import MasterProfileContentTitle from '../../components/master/MasterProfileContentTitle';
+import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
 
-import styles from './MasterProfileIntro.module.scss';
+import styles from './ExpertProfileIntro.module.scss';
 
-const MasterProfileIntro = props => {
+const ExpertProfileIntro = props => {
   const { title, value, handleClickUpdate } = props;
   const [useIntro, setUseIntro] = useState(value);
 
   return (
-    <MasterProfileContentTitle
+    <ExpertProfileContentTitle
       title={title}
       value={value}
       useValue={useIntro}
@@ -21,7 +21,7 @@ const MasterProfileIntro = props => {
           onChange={e => {
             setUseIntro(e.target.value);
           }}
-          placeholder="고수 자신에 대한 소개"
+          placeholder="전문가 자신에 대한 소개"
           maxLength="80"
         />
         <span className={styles.textCounter}>
@@ -29,8 +29,8 @@ const MasterProfileIntro = props => {
           <span>/80자</span>
         </span>
       </div>
-    </MasterProfileContentTitle>
+    </ExpertProfileContentTitle>
   );
 };
 
-export default MasterProfileIntro;
+export default ExpertProfileIntro;

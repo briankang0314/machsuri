@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import styles from './MasterProfilePosts.module.scss';
+import styles from './ExpertProfilePosts.module.scss';
 
-const MasterProfilePosts = props => {
+const ExpertProfilePosts = props => {
   const { title, data } = props;
   const [isUpdating, setIsUpdating] = useState(false);
   return (
@@ -27,4 +27,4 @@ const MasterProfilePosts = props => {
   );
 };
 
-export default MasterProfilePosts;
+export default ExpertProfilePosts;

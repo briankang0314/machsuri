@@ -3,14 +3,14 @@
   "name": "해방플러스 (해충으로부터 해방!)",
   "intro": "압도적인 1위가 될수있었던 이유는 과정에 충실했기때문 이라고 생각됩니다. 지금도 지속적으로 방역과정을 업데이트 하고 있습니다. 최고가되겠습니다",
   "userImage": "https://dmmj3ljielax6.cloudfront.net/upload/profile/5a42edb7-3e50-4e1a-b872-80e563072c3d.jpg?h=320&w=320",
-  "lesson_categories": ["바퀴벌레 퇴치", "리액트.js", "출장식 뷔페"],
+  "minor_categories": ["바퀴벌레 퇴치", "리액트.js", "출장식 뷔페"],
   "address": "서울시",
   "address_detail": "강남구",
   "start_time": "오전 7시",
   "end_time": "오후 10시",
   "work_experience": "6년",
   "employee_number": "4명",
-  "master_image": [
+  "expert_image": [
     "../../images/thump/golf.jpg",
     "../../images/thump/develop2.jpg",
     "../../images/thump/english.jpg",
@@ -30,7 +30,7 @@
       },
       {
         "username": "김연주",
-        "comment": "로그인 API, 모달, 고수 회원가입 API, 고수 상세 프로필 불러오기.",
+        "comment": "로그인 API, 모달, 전문가 회원가입 API, 전문가 상세 프로필 불러오기.",
         "grade": "3",
         "created_At": "2022-03-26 16:33:31.268"
       }

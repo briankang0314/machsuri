@@ -55,27 +55,27 @@ function Footer() {
             <li className={styles.disabled}>예상금액</li>
             <li
               className={styles.clickable}
-              onClick={() => handleNavigate('/master/list')}
+              onClick={() => handleNavigate('/expert/list')}
             >
-              고수찾기
+              전문가찾기
             </li>
             <li className={styles.disabled}>숭고보증</li>
-            <li className={styles.disabled}>고수에게묻다</li>
+            <li className={styles.disabled}>전문가에게묻다</li>
           </ul>
           <div className={styles.hiddenLine} />
           <ul>
             <li className={`${styles.footerTitle} ${styles.disabled}`}>
-              고수안내
+              전문가안내
             </li>
             <li className={styles.disabled}>이용안내</li>
-            <li className={styles.disabled}>고수가이드</li>
+            <li className={styles.disabled}>전문가가이드</li>
             <li
               className={styles.clickable}
               onClick={() => handleNavigate('/pro/welcome')}
             >
-              고수가입
+              전문가가입
             </li>
-            <li className={styles.disabled}>고수센터</li>
+            <li className={styles.disabled}>전문가센터</li>
           </ul>
           <div className={styles.hiddenLine} />
           <ul>

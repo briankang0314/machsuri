@@ -35,11 +35,11 @@ const FilteringModal = props => {
     handleCloseDetails();
   }
 
-  function handleClickLesson(lesson) {
+  function handleClickMinor(minor) {
     if (useInputText !== '') {
       setUseInputText('');
     }
-    setUseFilter(lesson);
+    setUseFilter(minor);
     setIsModalVisible(false);
     handleCloseDetails();
   }
@@ -148,7 +148,7 @@ const FilteringModal = props => {
             <div className={styles.modalList}>
               {useInputText === '' ? (
                 <ul>
-                  <li onClick={() => handleClickLesson(null)}>
+                  <li onClick={() => handleClickMinor(null)}>
                     <details>
                       <summary>
                         <span>서비스 전체</span>
@@ -163,23 +163,23 @@ const FilteringModal = props => {
                             <span>{category.name}</span>
                             <IoIosArrowDown size="24px" color="#bfbfbf" />
                           </summary>
-                          {category.lessonCategories.map(lesson => {
+                          {category.minorCategories.map(minor => {
                             return (
                               <div
-                                key={lesson.id}
+                                key={minor.id}
                                 onClick={() =>
-                                  handleClickLesson({
+                                  handleClickMinor({
                                     id: category.id,
                                     name: category.name,
-                                    lessons: {
-                                      id: lesson.id,
-                                      name: lesson.name,
+                                    minors: {
+                                      id: minor.id,
+                                      name: minor.name,
                                     },
                                   })
                                 }
                               >
                                 <BsArrowReturnRight color="#bfbfbf" />
-                                <span>{lesson.name}</span>
+                                <span>{minor.name}</span>
                               </div>
                             );
                           })}
@@ -193,7 +193,7 @@ const FilteringModal = props => {
                   useInputText={useInputText}
                   setUseInputText={setUseInputText}
                   datas={datas}
-                  handleClickLesson={handleClickLesson}
+                  handleClickMinor={handleClickMinor}
                 />
               )}
             </div>

@@ -33,9 +33,9 @@ const postApplication = async (question) => {
   return await prisma.$queryRaw`
   INSERT INTO applyForm (userId, minorCategoryId, endedAt)
   VALUES
-  (${question.userId}, ${question.lesson_category_id}, ${question.question_id},${question.choice_question_id},
+  (${question.userId}, ${question.minor_category_id}, ${question.question_id},${question.choice_question_id},
     DATE_ADD(NOW(), INTERVAL 7 DAY));
 `;
 };
 
-module.exports = { getQuestions, postQuestion, getLessonCategoryId };
+module.exports = { getQuestions, postQuestion, getMinorCategoryId };

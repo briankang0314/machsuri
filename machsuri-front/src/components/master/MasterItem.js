@@ -5,53 +5,53 @@ import { BsStarFill } from 'react-icons/bs';
 import { FaRegCommentDots } from 'react-icons/fa';
 import { FRONT_PORT } from '../../config';
 
-import styles from './MasterItem.module.scss';
+import styles from './ExpertItem.module.scss';
 
-const MasterItem = props => {
-  const { master } = props;
+const ExpertItem = props => {
+  const { expert } = props;
   const navigate = useNavigate();
   function handleNavigate() {
-    navigate(`/profile/users/${master.id}`);
+    navigate(`/profile/users/${expert.id}`);
   }
-  const isReviewEmpty = master.reviews.length === 0;
+  const isReviewEmpty = expert.reviews.length === 0;
 
   let reviewerNameTrans =
-    !isReviewEmpty && master.reviews[0].users.name.slice(0, 1) + '**';
-  let recentReviewComment = !isReviewEmpty && master.reviews[0].comment;
+    !isReviewEmpty && expert.reviews[0].users.name.slice(0, 1) + '**';
+  let recentReviewComment = !isReviewEmpty && expert.reviews[0].comment;
 
   // 리뷰 평점 구하기
   let reviewAvg = 0;
   if (!isReviewEmpty) {
     let sum = 0;
-    master.reviews.forEach(review => {
+    expert.reviews.forEach(review => {
       sum = review.grade + sum;
     });
-    reviewAvg = Math.round(sum / master.reviews.length);
+    reviewAvg = Math.round(sum / expert.reviews.length);
   }
 
-  let masterImage = master.master_image
-    ? FRONT_PORT + master.master_image
+  let expertImage = expert.expert_image
+    ? FRONT_PORT + expert.expert_image
     : FRONT_PORT + '/images/profile/profileNotFound.svg';
 
   return (
-    <div onClick={handleNavigate} className={styles.masterItem}>
+    <div onClick={handleNavigate} className={styles.expertItem}>
       <picture className={styles.imageWrapper}>
-        <img src={masterImage} alt={master.name} />
+        <img src={expertImage} alt={expert.name} />
       </picture>
-      <div className={`${styles.masterInfoWrapper} ${styles.textTruncate}`}>
-        <span className={styles.masterInfoName}>{master.name}</span>
-        <span className={`${styles.masterInfoIntro} ${styles.textTruncate}`}>
-          {master.intro ? master.intro : '소개가 없습니다.'}
+      <div className={`${styles.expertInfoWrapper} ${styles.textTruncate}`}>
+        <span className={styles.expertInfoName}>{expert.name}</span>
+        <span className={`${styles.expertInfoIntro} ${styles.textTruncate}`}>
+          {expert.intro ? expert.intro : '소개가 없습니다.'}
         </span>
-        <span className={styles.masterInfoReview}>
+        <span className={styles.expertInfoReview}>
           <span>
             <BsStarFill color="#fadb14" size="12px" /> {reviewAvg}
           </span>
-          <span>({master.reviews.length})</span>
+          <span>({expert.reviews.length})</span>
         </span>
         {!isReviewEmpty && (
           <span
-            className={`${styles.masterInfoRecentReview} ${styles.textTruncate}`}
+            className={`${styles.expertInfoRecentReview} ${styles.textTruncate}`}
           >
             <span>
               <FaRegCommentDots size="12px" color="#666" />
@@ -65,4 +65,4 @@ const MasterItem = props => {
   );
 };
 
-export default MasterItem;
+export default ExpertItem;

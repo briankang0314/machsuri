@@ -1,4 +1,4 @@
-.masterItem {
+.expertItem {
   display: flex;
   flex-direction: row;
   padding-top: 1.5rem;
@@ -16,21 +16,21 @@
       width: 110px;
     }
   }
-  .masterInfoWrapper {
+  .expertInfoWrapper {
     display: flex;
     flex-direction: column;
     padding-left: 1.5rem;
     flex: 1;
     font-size: 13px;
 
-    .masterInfoName {
+    .expertInfoName {
       font-size: 16px;
       font-weight: 600;
     }
-    .masterInfoIntro {
+    .expertInfoIntro {
       color: #747474;
     }
-    .masterInfoReview {
+    .expertInfoReview {
       span:nth-child(1) {
         font-weight: 600;
       }
@@ -39,7 +39,7 @@
         font-weight: 400;
       }
     }
-    .masterInfoRecentReview {
+    .expertInfoRecentReview {
       display: flex;
       align-items: center;
       span:nth-child(2) {

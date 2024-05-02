@@ -3,7 +3,7 @@
   "name": "집을빨래하다(숨고 1위)",
   "intro": "숨고 압도적 1위 SBS 성공의 정석 꾼 207회 출연",
   "userImage": "https://static.cdn.soomgo.com/upload/profile/e5a12f14-03d9-467a-bccf-264432a1fc27.jpg?h=320&w=320",
-  "lesson_categories": ["실내 청소", "실외 청소"],
+  "minor_categories": ["실내 청소", "실외 청소"],
   "start_time": "오전 9시",
   "end_time": "오후 7시",
   "review": {
@@ -18,7 +18,7 @@
       },
       {
         "username": "김철수",
-        "comment": "고수 회원가입, 고수 상세 정보 api 모달 제작",
+        "comment": "전문가 회원가입, 전문가 상세 정보 api 모달 제작",
         "grade": "3",
         "created_At": "2022-03-19 17:17:45.682"
       }

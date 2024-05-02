@@ -73,7 +73,7 @@ function Header() {
           <FiSearch />
         </span>
         <ul className={styles.headerBtn}>
-          <li onClick={() => handleNavigate('/master/list')}>고수찾기</li>
+          <li onClick={() => handleNavigate('/expert/list')}>전문가찾기</li>
           <li onClick={() => handleNavigate('')} className={styles.disabled}>
             마켓
             <span className={styles.marketNew}>N</span>
@@ -127,9 +127,9 @@ function Header() {
               <li onClick={() => handleNavigate('/sign-up')}>회원가입</li>
               <li
                 onClick={() => handleNavigate('/pro')}
-                className={styles.masterSignup}
+                className={styles.expertSignup}
               >
-                고수가입
+                전문가가입
               </li>
             </>
           )}

@@ -1,15 +1,15 @@
-import styles from './MasterProfileHeader.module.scss';
+import styles from './ExpertProfileHeader.module.scss';
 import { FRONT_PORT } from '../../config';
 
-const MasterProfileHeader = props => {
+const ExpertProfileHeader = props => {
   const { myInfo } = props;
-  const masterImage = myInfo.master_image
-    ? FRONT_PORT + myInfo.master_image
+  const expertImage = myInfo.expert_image
+    ? FRONT_PORT + myInfo.expert_image
     : FRONT_PORT + '/images/profile/profileNotFound.svg';
   return (
-    <div className={styles.masterProfileHeaderWrapper}>
+    <div className={styles.expertProfileHeaderWrapper}>
       <picture className={styles.profileImageWrapper}>
-        <img alt={myInfo.name} src={masterImage} />
+        <img alt={myInfo.name} src={expertImage} />
       </picture>
       <div className={styles.profileSomeWrapper}>
         <div className={styles.profileSomeCounts}>
@@ -39,4 +39,4 @@ const MasterProfileHeader = props => {
   );
 };
 
-export default MasterProfileHeader;
+export default ExpertProfileHeader;

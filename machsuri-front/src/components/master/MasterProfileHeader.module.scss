@@ -1,7 +1,7 @@
 $sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩니다.
 
 @media (max-width: 690px) {
-  .masterProfileHeaderWrapper {
+  .expertProfileHeaderWrapper {
     flex-direction: column;
     align-items: center;
     .profileSomeWrapper {
@@ -31,7 +31,7 @@ $sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩�
 }
 
 @media (min-width: 691px) and (max-width: 890px) {
-  .masterProfileHeaderWrapper {
+  .expertProfileHeaderWrapper {
     flex-direction: column;
     align-items: center;
     .profileSomeWrapper {
@@ -61,7 +61,7 @@ $sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩�
 }
 
 @media (min-width: 891px) {
-  .masterProfileHeaderWrapper {
+  .expertProfileHeaderWrapper {
     .profileSomeWrapper {
       margin-left: 20px;
     }
@@ -92,7 +92,7 @@ $sign-color: #03c7ae; //시그니처 컬러 변수지정해서 사용하면 됩�
   }
 }
 
-.masterProfileHeaderWrapper {
+.expertProfileHeaderWrapper {
   display: flex;
   .profileImageWrapper {
     overflow: hidden;

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import MasterCategoryModal from '../modal/MasterCategoryModal';
+import ExpertCategoryModal from '../modal/ExpertCategoryModal';
 import { BsXLg } from 'react-icons/bs';
 import { FiPlus } from 'react-icons/fi';
 
-import styles from './MasterProfileService.module.scss';
+import styles from './ExpertProfileService.module.scss';
 
-const MasterProfileService = props => {
+const ExpertProfileService = props => {
   const { title, data, handleClickUpdate } = props;
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -13,14 +13,14 @@ const MasterProfileService = props => {
   const [useCategories, setUseCategories] = useState(
     data.map(category => {
       return {
-        id: category.lessonCategories.id,
-        name: category.lessonCategories.name,
+        id: category.minorCategories.id,
+        name: category.minorCategories.name,
       };
     })
   );
-  function handleCateRemove(lesson) {
+  function handleCateRemove(minor) {
     let setArr = useCategories.filter(item => {
-      return item.id !== lesson.id;
+      return item.id !== minor.id;
     });
     setUseCategories(setArr);
   }
@@ -50,14 +50,14 @@ const MasterProfileService = props => {
               <FiPlus size="18px" />
               <span>서비스 추가</span>
             </div>
-            {useCategories.map(lesson => {
+            {useCategories.map(minor => {
               return (
                 <div
                   className={styles.myUpdateServiceList}
-                  key={lesson.id}
-                  onClick={() => handleCateRemove(lesson)}
+                  key={minor.id}
+                  onClick={() => handleCateRemove(minor)}
                 >
-                  <span value={lesson.id}>{lesson.name}</span>
+                  <span value={minor.id}>{minor.name}</span>
                   <BsXLg size="12px" color="#796c6c70" />
                 </div>
               );
@@ -68,10 +68,10 @@ const MasterProfileService = props => {
             return (
               <div
                 className={styles.myServiceList}
-                key={category.lessonCategories.id}
+                key={category.minorCategories.id}
               >
-                <span value={category.lessonCategories.id}>
-                  {category.lessonCategories.name}
+                <span value={category.minorCategories.id}>
+                  {category.minorCategories.name}
                 </span>
               </div>
             );
@@ -79,7 +79,7 @@ const MasterProfileService = props => {
         )}
       </div>
       {isModalVisible && (
-        <MasterCategoryModal
+        <ExpertCategoryModal
           useCategories={useCategories}
           setUseCategories={setUseCategories}
           isModalVisible={isModalVisible}
@@ -90,4 +90,4 @@ const MasterProfileService = props => {
   );
 };
 
-export default MasterProfileService;
+export default ExpertProfileService;

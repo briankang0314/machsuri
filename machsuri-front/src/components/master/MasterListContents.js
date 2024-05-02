@@ -1,17 +1,17 @@
 import React from 'react';
-import MasterItem from './MasterItem';
-import styles from './MasterListContents.module.scss';
+import ExpertItem from './ExpertItem';
+import styles from './ExpertListContents.module.scss';
 
-const MasterListContents = props => {
-  const { masters } = props;
+const ExpertListContents = props => {
+  const { experts } = props;
 
   return (
-    <section className={styles.masterListContents}>
-      {masters.map(master => {
-        return <MasterItem key={master.id} master={master} />;
+    <section className={styles.expertListContents}>
+      {experts.map(expert => {
+        return <ExpertItem key={expert.id} expert={expert} />;
       })}
     </section>
   );
 };
 
-export default MasterListContents;
+export default ExpertListContents;

@@ -4,7 +4,7 @@ const { use } = require("../routes/ExpertRoute");
 const prisma = new PrismaClient();
 
 const getExperts = async (search) => {
-  const { addressId, lessonId, take } = search;
+  const { addressId, minorId, take } = search;
   let data = {};
   data = {
     take: Number(take),
@@ -28,20 +28,20 @@ const getExperts = async (search) => {
       },
     },
   };
-  if (addressId === "null" && lessonId === "null") {
+  if (addressId === "null" && minorId === "null") {
     return await prisma.experts.findMany(data);
-  } else if (addressId !== "null" && lessonId === "null") {
+  } else if (addressId !== "null" && minorId === "null") {
     data.where = {
       detailAddress: {
         id: Number(addressId),
       },
     };
-  } else if (addressId === "null" && lessonId !== "null") {
+  } else if (addressId === "null" && minorId !== "null") {
     data.where = {
-      mastersCategories: {
+      expertsCategories: {
         some: {
-          lessonCategories: {
-            id: Number(lessonId),
+          minorCategories: {
+            id: Number(minorId),
           },
         },
       },
@@ -51,32 +51,32 @@ const getExperts = async (search) => {
       detailAddress: {
         id: Number(addressId),
       },
-      mastersCategories: {
+      expertsCategories: {
         some: {
-          lessonCategories: {
-            id: Number(lessonId),
+          minorCategories: {
+            id: Number(minorId),
           },
         },
       },
     };
   }
-  return await prisma.masters.findMany(data);
+  return await prisma.experts.findMany(data);
 };
 
-const findMasterInfo = async (userID) => {
+const findExpertInfo = async (userID) => {
   return await prisma.$queryRaw`
     SELECT id, user_id AS userID, intro, 
     start_time AS startTime, end_time AS endTime,
     work_experience AS workExperience, employee_number AS employeeNumber, 
     is_deleted AS isDeleted,
     created_at AS createdAt, updated_at AS updatedAt
-    FROM masters
+    FROM experts
     WHERE id = ${userID};
   `;
 };
 
-const createMaster = async (userID, name, addressID, detailAddressID) => {
-  return await prisma.masters.create({
+const createExpert = async (userID, name, addressID, detailAddressID) => {
+  return await prisma.experts.create({
     data: {
       user_id: userID,
       name: name,
@@ -86,18 +86,18 @@ const createMaster = async (userID, name, addressID, detailAddressID) => {
   });
 };
 
-const makeMasterMainCategories = async (masterID, lessonCatID) => {
-  console.log(lessonCatID);
-  return lessonCatID.map(async (catID) => {
+const makeExpertMainCategories = async (expertID, minorCatID) => {
+  console.log(minorCatID);
+  return minorCatID.map(async (catID) => {
     await prisma.$queryRaw`
-        INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
+        INSERT INTO experts_categories (expert_id, minor_category_id, is_main)
         VALUES
-        (${masterID}, ${Number(catID)}, true);
+        (${expertID}, ${Number(catID)}, true);
     `;
   });
 };
 
-const findMasterAddress = async (address, detailAddress) => {
+const findExpertAddress = async (address, detailAddress) => {
   const detailAddressID = await prisma.$queryRaw`
       SELECT id FROM detailAddress
       WHERE name = ${detailAddress};
@@ -106,16 +106,16 @@ const findMasterAddress = async (address, detailAddress) => {
   return detailAddressId;
 };
 
-const getMasterProfile = async (masterId) => {
-  return await prisma.masters.findUnique({
+const getExpertProfile = async (expertId) => {
+  return await prisma.experts.findUnique({
     where: {
-      id: masterId,
+      id: expertId,
     },
     select: {
       id: true,
       name: true,
       intro: true,
-      master_image: true,
+      expert_image: true,
       start_time: true,
       end_time: true,
       work_experience: true,
@@ -132,11 +132,11 @@ const getMasterProfile = async (masterId) => {
           name: true,
         },
       },
-      mastersCategories: {
+      expertsCategories: {
         select: {
           id: true,
           is_main: true,
-          lessonCategories: {
+          minorCategories: {
             select: {
               id: true,
               name: true,
@@ -161,49 +161,49 @@ const getMasterProfile = async (masterId) => {
   });
 };
 
-const sendMasterDetail = async (id) => {
-  const masterDetail = await prisma.$queryRaw`
+const sendExpertDetail = async (id) => {
+  const expertDetail = await prisma.$queryRaw`
   select id, name, intro, start_time, end_time, work_experience, employee_number
-  from masters
+  from experts
   where id=${id};
   `;
-  return masterDetail;
+  return expertDetail;
 };
 
-const setMasterProfile = async (params) => {
+const setExpertProfile = async (params) => {
   const { type, value, user } = params;
 
   return await prisma.$queryRaw`
-  UPDATE masters t SET t.${type} = ${value} WHERE t.id = ${user.id};
+  UPDATE experts t SET t.${type} = ${value} WHERE t.id = ${user.id};
   `;
 };
 
-const getMasterByUserId = async (userId) => {
-  return await prisma.masters.findUnique({
+const getExpertByUserId = async (userId) => {
+  return await prisma.experts.findUnique({
     where: {
       user_id: userId,
     },
   });
 };
 
-const getMastersByCategory = async (category) => {
+const getExpertsByCategory = async (category) => {
   return await prisma.$queryRaw`
-  SELECT m.id as goso_id, m.name as goso_name, m.master_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
-  FROM masters_categories
-  LEFT JOIN masters m ON m.id = masters_categories.master_id
-  LEFT JOIN reviews r ON r.master_id = masters_categories.master_id
-  WHERE masters_categories.lesson_category_id=${category}
-  GROUP BY m.id,m.name,m.master_image, m.work_experience, r.grade;
+  SELECT m.id as goso_id, m.name as goso_name, m.expert_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
+  FROM experts_categories
+  LEFT JOIN experts m ON m.id = experts_categories.expert_id
+  LEFT JOIN reviews r ON r.expert_id = experts_categories.expert_id
+  WHERE experts_categories.minor_category_id=${category}
+  GROUP BY m.id,m.name,m.expert_image, m.work_experience, r.grade;
   `;
 };
 
-const isMaster = async (masterID) => {
+const isExpert = async (expertID) => {
   return await prisma.$queryRaw`
-    SELECT id, name FROM masters WHERE id = ${masterID};
+    SELECT id, name FROM experts WHERE id = ${expertID};
   `;
 };
 
-const createUserDirectMaster = async (
+const createUserDirectExpert = async (
   inputName,
   inputEmail,
   inputPW,
@@ -269,18 +269,18 @@ const rollBackUserStatus = async (userId) => {
 };
 
 module.exports = {
-  getMasters,
-  findMasterInfo,
-  createMaster,
-  makeMasterMainCategories,
-  findMasterAddress,
-  sendMasterDetail,
-  getMasterProfile,
-  setMasterProfile,
-  getMasterByUserId,
-  getMastersByCategory,
-  isMaster,
-  createUserDirectMaster,
+  getExperts,
+  findExpertInfo,
+  createExpert,
+  makeExpertMainCategories,
+  findExpertAddress,
+  sendExpertDetail,
+  getExpertProfile,
+  setExpertProfile,
+  getExpertByUserId,
+  getExpertsByCategory,
+  isExpert,
+  createUserDirectExpert,
   upgradeUserStatus,
   findUserInfo,
   findUserName,

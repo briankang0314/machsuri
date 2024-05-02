@@ -3,15 +3,15 @@ import React from 'react';
 import styles from './FilteringModalSearch.module.scss';
 
 const FilteringModalSearch = props => {
-  const { datas, useInputText, handleClickLesson } = props;
+  const { datas, useInputText, handleClickMinor } = props;
   let categories = [];
   datas.forEach(category => {
-    category.lessonCategories.forEach(lesson => {
-      if (lesson.name.includes(useInputText)) {
+    category.minorCategories.forEach(minor => {
+      if (minor.name.includes(useInputText)) {
         categories.push({
           id: category.id,
           name: category.name,
-          lessons: { id: lesson.id, name: lesson.name },
+          minors: { id: minor.id, name: minor.name },
         });
       }
     });
@@ -24,19 +24,19 @@ const FilteringModalSearch = props => {
           {categories.map(category => {
             return (
               <li
-                key={category.lessons.id}
+                key={category.minors.id}
                 onClick={() =>
-                  handleClickLesson({
+                  handleClickMinor({
                     id: category.id,
                     name: category.name,
-                    lessons: {
-                      id: category.lessons.id,
-                      name: category.lessons.name,
+                    minors: {
+                      id: category.minors.id,
+                      name: category.minors.name,
                     },
                   })
                 }
               >
-                <span>{category.lessons.name}</span>
+                <span>{category.minors.name}</span>
               </li>
             );
           })}

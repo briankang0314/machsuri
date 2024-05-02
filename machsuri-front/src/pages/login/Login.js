@@ -70,7 +70,7 @@ function Login() {
                   : `${styles.id} ${styles.invalid}`
               }
               type="email"
-              placeholder="example@soongo.com"
+              placeholder="example@machsuri.com"
             />
             <div
               className={
