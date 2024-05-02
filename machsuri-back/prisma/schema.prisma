@@ -1,219 +1,219 @@
+// Configure Prisma client for JavaScript usage.
 generator client {
   provider = "prisma-client-js"
 }
 
+// Datasource configuration for MySQL with dynamic URL from environment variable.
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id           Int       @id @default(autoincrement())
-  name         String
-  email        String    @unique
-  password     String
-  userImage    String?
-  phoneNumber  String?
-  isDeleted    Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
-  deletedAt    DateTime?
-
-  experts      Experts?
-  applyForm    ApplyForm[]
-  reviews      Reviews[]
-
-  @@map("users")
-}
-
+// Model representing expert users with their professional details.
 model Experts {
-  id                Int       @id @default(autoincrement())
-  userId            Int       @unique
-  detailAddressId   Int
-  name              String
-  expertImage       String?
-  intro             String?
-  startTime         String? // Expected format "HH:MM"
-  endTime           String? // Expected format "HH:MM"
-  workExperience    Int?
-  employeeNumber    Int?
-  isDeleted         Boolean   @default(false)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @default(now())
-  deletedAt         DateTime? 
+  // Identifiers
+  id                Int       @id @default(autoincrement())  // Unique identifier for each expert.
 
-  users             Users         @relation(fields: [userId], references: [id])
-  detailAddress     DetailAddress @relation(fields: [detailAddressId], references: [id])
+  // Foreign Keys
+  city_id           Int                                      // Foreign key to associate expert with a city.
 
-  reviews           Reviews[]
-  expertsCategories ExpertsCategories[]
-  expertPosts       ExpertPosts[]
+  // Attributes
+  email             String    @unique                        // Unique email for expert, used for login.
+  password          String                                   // Password for expert's account.
+  name              String                                   // Full name of the expert.
+  expert_image      String?                                  // Optional profile image URL.
+  intro             String?                                  // Optional short introduction or bio.
+  phone_number      String?                                  // Optional contact phone number.
+  start_time        String? // Format "HH:MM"                // Optional start time of workday.
+  end_time          String? // Format "HH:MM"                // Optional end time of workday.
+  work_experience   Int?                                     // Optional years of work experience.
 
-  @@index([userId], name: "userId")
+  // Flags
+  is_deleted        Boolean  @default(false)                 // Flag to soft delete the expert.
+
+  // Metadata
+  created_at        DateTime @default(now())                 // Timestamp when the expert record was created.
+  updated_at        DateTime @default(now())                 // Timestamp when the expert record was last updated.
+  deleted_at        DateTime?                                // Optional timestamp for when the expert was deleted.
+
+  // Relations
+  city              City @relation(fields: [city_id], references: [id])
+  job_posts         JobPosts[]                               // Job posts created by the expert.
+  reviews           Reviews[]                                // Reviews written for the expert.
+  minor_category_preferences ExpertMinorCategories[]         // Expert's preferences for minor categories.
+
   @@map("experts")
 }
 
+// Model representing job posts created by experts.
+model JobPosts {
+  // Identifiers
+  id                Int             @id @default(autoincrement())  // Unique identifier for each job post.
+
+  // Foreign Keys
+  expert_id         Int                                           // Foreign key linking to the Experts table.
+  city_id           Int                                           // Foreign key linking to the City table.
+
+  // Attributes
+  title             String                                        // Title of the job post.
+  summary           String                                        // Short summary or description of the job post.
+  remuneration      Decimal                                       // Offered remuneration for the job.
+  contact_info      String                                        // Contact information for job applications.
+  status            String          @default("open")             // Status of the job post (e.g., open, closed, under review).
+  
+  // Metadata
+  created_at        DateTime        @default(now())               // Timestamp when the job post was created.
+  updated_at        DateTime        @updatedAt                    // Timestamp when the job post was last updated.
+  deleted_at        DateTime?                                    // Optional timestamp for when the job post was deleted.
+
+  // Relations
+  expert            Experts         @relation(fields: [expert_id], references: [id])
+  city              City            @relation(fields: [city_id], references: [id])
+  minor_categories  JobPostMinorCategories[]
+  major_categories  JobPostMajorCategories[]
+
+  @@map("job_posts")
+}
+
+// Model representing applications for job posts by experts.
+model JobApplications {
+  // Identifiers
+  id             Int       @id @default(autoincrement())  // Unique identifier for each application.
+
+  // Foreign Keys
+  job_post_id    Int                                     // Foreign key linking to the JobPosts table.
+  applicant_id   Int                                     // Foreign key linking to the Experts table (as applicants).
+
+  // Attributes
+  cover_letter   String?                                 // Optional cover letter submitted by the applicant.
+  status         String    @default("pending")           // Status of the application (pending, accepted, rejected).
+
+  // Metadata
+  applied_at     DateTime  @default(now())               // Timestamp when the application was submitted.
+  updated_at     DateTime  @updatedAt                    // Timestamp when the application was last updated.
+
+  // Relations
+  job_post       JobPosts    @relation(fields: [job_post_id], references: [id])
+  applicant      Experts     @relation(fields: [applicant_id], references: [id])
+
+  @@map("job_applications")
+}
+
+// Model for major categories of jobs.
 model MajorCategories {
-  id         Int       @id @default(autoincrement())
-  name       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
+  // Identifiers
+  id           Int       @id @default(autoincrement())  // Unique identifier for each major category.
 
-  minorCategories MinorCategories[]
+  // Attributes
+  name         String                                  // Name of the major category.
+  major_image  String?                                 // Optional image URL for the major category.
 
-  @@map("majorCategories")
+  // Relations
+  minor_categories MinorCategories[]                    // Related minor categories under each major category.
+
+  @@map("major_categories")
 }
 
+// Model for minor categories that fall under major categories.
 model MinorCategories {
-  id                Int       @id @default(autoincrement())
-  majorCategoryId Int
-  name              String
-  image             String?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @default(now())
+  // Identifiers
+  id                 Int       @id @default(autoincrement())  // Unique identifier for each minor category.
+  
+  //Foreign Keys
+  major_category_id  Int                                      // Foreign key linking to the MajorCategories table.
+ 
+  // Attributes
+  name               String                                   // Name of the minor category.
+  minor_image        String?                                  // Optional image URL for the minor category.
 
-  majorCategories MajorCategories @relation(fields: [majorCategoryId], references: [id])
+  // Relations
+  major_category     MajorCategories @relation(fields: [major_category_id], references: [id])
 
-  applyForm         ApplyForm[]
-  expertsCategories ExpertsCategories[]
-  questions         Questions[]
-
-  @@index([majorCategoryId], name: "majorCategoryId")
-  @@map("minorCategories")
+  @@map("minor_categories")
 }
 
-model Questions {
-  id                  Int       @id @default(autoincrement())
-  minorCategoryId     Int
-  questionNumber      Int
-  questionText String
-  createdAt           DateTime? @default(now())
-  updatedAt           DateTime? @default(now())
+// Junction table for many-to-many relationship between experts and their preferred minor categories.
+model ExpertMinorCategories {
+  expert_id         Int
+  minor_category_id Int
+  expert            Experts          @relation(fields: [expert_id], references: [id])
+  minor_category    MinorCategories  @relation(fields: [minor_category_id], references: [id])
 
-  minorCategories MinorCategories @relation(fields: [minorCategoryId], references: [id])
-
-  answers             Answers[]
-  applyForm           ApplyForm[] @relation("QuestionsApplyForms")
-
-  @@index([minorCategoryId], name: "minorCategoryId")
-  @@map("questions")
+  @@id([expert_id, minor_category_id])
+  @@map("expert_minor_categories")
 }
 
-model Answers {
-  id          Int       @id @default(autoincrement())
-  questionId  Int
-  answerText  String
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @default(now())
+// Junction table for many-to-many relationship between job posts and major categories.
+model JobPostMajorCategories {
+  job_post_id       Int
+  major_category_id Int
+  job_post          JobPosts         @relation(fields: [job_post_id], references: [id])
+  major_category    MajorCategories  @relation(fields: [major_category_id], references: [id])
 
-  questions   Questions @relation(fields: [questionId], references: [id])
-  applyForm   ApplyForm[] @relation("AnswersApplyForms")
-
-  @@index([questionId], name: "questionId")
-  @@map("answers")
+  @@id([job_post_id, major_category_id])
+  @@map("job_post_major_categories")
 }
 
-model ApplyForm {
-  id                 Int       @id @default(autoincrement())
-  userId             Int
-  minorCategoryId    Int
-  endedAt            DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @default(now())
+// Junction table for many-to-many relationship between job posts and minor categories.
+model JobPostMinorCategories {
+  job_post_id       Int
+  minor_category_id Int
+  job_post          JobPosts          @relation(fields: [job_post_id], references: [id])
+  minor_category    Minor_categories  @relation(fields: [minor_category_id], references: [id])
 
-  users              Users        @relation(fields: [userId], references: [id])
-  minorCategories    MinorCategories @relation(fields: [minorCategoryId], references: [id])
-  questions          Questions[] @relation("QuestionsApplyForms")
-  answers            Answers[] @relation("AnswersApplyForms")
-
-  @@index([userId], name: "userId")
-  @@index([minorCategoryId], name: "minorCategoryId")
-  @@map("applyForm")
+  @@id([job_post_id, minor_category_id])
+  @@map("job_post_minor_categories")
 }
 
+// Model representing reviews given to experts by clients or peers.
 model Reviews {
-  id           Int       @id @default(autoincrement())
-  expertId     Int
-  userId       Int
-  grade        Int
-  comment      String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
+  // Identifiers
+  id            Int       @id @default(autoincrement())  // Unique identifier for each review.
+  
+  // Foreign Keys
+  expert_id     Int                                     // Foreign key linking to the Experts table.
+  
+  // Attributes
+  grade         Int                                     // Numerical grade or rating given to the expert.
+  comment       String                                  // Textual comment or feedback.
 
-  experts      Experts @relation(fields: [expertId], references: [id])
-  users        Users   @relation(fields: [userId], references: [id])
+  // Metadata
+  created_at    DateTime  @default(now())               // Timestamp when the review was created.
+  updated_at    DateTime  @default(now())               // Timestamp when the review was last updated.
 
-  reviewImages ReviewImages[]
+  // Relations
+  expert        Experts @relation(fields: [expert_id], references: [id])
 
-  @@index([expertId], name: "expertId")
-  @@index([userId], name: "userId")
   @@map("reviews")
 }
 
-model ReviewImages {
-  id           Int       @id @default(autoincrement())
-  reviewId     Int
-  reviewImage  String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
+// Model representing geographic regions.
+model Region {
+  // Identifiers
+  id             Int       @id @default(autoincrement())  // Unique identifier for each region.
+  
+  // Attributes
+  name           String                                  // Name of the region.
+  
+  // Relations
+  cities         City[]                                  // List of cities within the region.
 
-  reviews      Reviews   @relation(fields: [reviewId], references: [id])
-
-  @@index([reviewId], name: "reviewId")
-  @@map("reviewImages")
+  @@map("regions")
 }
 
-model ExpertsCategories {
-  id                 Int       @id @default(autoincrement())
-  minorCategoryId    Int
-  expertId           Int
-  isMain             Boolean   @default(false)
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @default(now())
+// Model representing cities.
+model City {
+  // Identifiers
+  id          Int       @id @default(autoincrement())  // Unique identifier for each city.
+  
+  // Foreign Keys
+  region_id   Int                                      // Foreign key linking to the Region model.
 
-  experts            Experts      @relation(fields: [expertId], references: [id])
-  minorCategories    MinorCategories @relation(fields: [minorCategoryId], references: [id])
+  //Attributes
+  name        String                                  // Name of the city.
 
-  @@index([expertId], name: "expertId")
-  @@index([minorCategoryId], name: "minorCategoryId")
-  @@map("expertsCategories")
-}
+  // Relations
+  region      Region   @relation(fields: [region_id], references: [id])  // Relationship to the Region model.
 
-model ExpertPosts {
-  id            Int           @id @default(autoincrement())
-  expertId      Int
-  postedImage   String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now())
-
-  experts       Experts @relation(fields: [expertId], references: [id])
-
-  @@index([expertId], name: "expertId")
-  @@map("expertPosts")
-}
-
-model Address {
-  id            Int       @id @default(autoincrement())
-  name          String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now())
-
-  detailAddress DetailAddress[]
-
-  @@map("address")
-}
-
-model DetailAddress {
-  id         Int       @id @default(autoincrement())
-  addressId  Int
-  name       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-
-  address    Address @relation(fields: [addressId], references: [id])
-
-  experts    Experts[]
-
-  @@index([addressId], name: "addressId")
-  @@map("detailAddress")
+  @@map("cities")
 }
