@@ -1,41 +1,47 @@
 const jwt = require("jsonwebtoken");
 const errorGenerator = require("../utils/errorGenerator");
 const UserService = require("../services/UserService");
-const { SECRET_KEY } = process.env;
 
 const userValidateToken = async (req, res, next) => {
   try {
-    const { token } = req.headers;
-
-    if (!token || token === "null" || token === undefined) {
-      
-      throw await errorGenerator({
+    // Extract the token from the Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
       });
     }
 
-    const { id } = jwt.verify(token, SECRET_KEY);
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    // Check if the user ID exists in the decoded token
+    const { id } = decoded;
     if (!id) {
-      throw await errorGenerator({
+      throw errorGenerator({
         statusCode: 400,
         message: "INCORRECT_TOKEN",
       });
     }
 
-    const findUser = await UserService.getUserByUserId(id);
-
-    if (!findUser) {
-      throw await errorGenerator({
+    // Verify if the user exists in the database
+    const user = await UserService.getUserByUserId(id);
+    if (!user) {
+      throw errorGenerator({
         statusCode: 404,
         message: "USER_NOT_FOUND",
       });
     }
-    req.user = findUser;
 
+    // Attach user to the request object
+    req.user = user;
     next();
   } catch (err) {
-    return res.status(err.statusCode || 500).json({ message: err.message });
+    console.error("Token validation error:", err);
+    res
+      .status(err.statusCode || 500)
+      .json({ message: err.message || "Internal server error" });
   }
 };
 

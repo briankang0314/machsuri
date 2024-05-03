@@ -1,64 +1,115 @@
 const UserDao = require("../models/UserDao");
-const bcrypt = require("bcrypt");
 const errorGenerator = require("../utils/errorGenerator");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const sendLogIn = async (email, password) => {
-  const userDB = await UserDao.sendLogIn(email);
-
-  if (userDB.length === 0) {
-    throw errorGenerator({
-      statusCode: 404,
-      message: "존재하지 않는 사용자입니다.",
-    });
-  }
-
-  if (!(await bcrypt.compare(password, userDB[0].password))) {
-    throw new errorGenerator({
-      statusCode: 400,
-      message: "잘못된 아이디 혹은 비밀번호입니다.",
-    });
-  }
-  const token = jwt.sign(
-    { id: userDB[0].id, expired_in: "1hr" },
-    process.env.SECRET_KEY
-  );
-
-  const userinfo = {'token':token, 'id':userDB[0].id};
-  return userinfo;
-};
-
-const signup = async (name, email, password) => {
+// Function to register a new user
+const registerUser = async (name, email, password, phoneNumber) => {
+  // Regular expressions for input validation
   const emailReg =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
   const pwReg = /(?=.*\d)(?=.*[a-zA-ZS]).{8,}/;
+  const phoneReg = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
-  if (!name || (!emailReg.test(email) && !pwReg.test(password))) {
-    const error = new Error("Signup_Fail");
-    error.statusCode = 400;
-    throw error;
+  // Validate name, email, and password
+  if (!name || !emailReg.test(email) || !pwReg.test(password)) {
+    throw errorGenerator({ statusCode: 400, message: "Invalid input format" });
   }
   if (password.length < 8) {
-    const error = new Error("PASSWORD_TOO_SHORT");
-    error.statusCode = 400;
-    throw error;
+    throw errorGenerator({ statusCode: 400, message: "Password too short" });
   }
 
-  const user = await UserDao.getUserByEmail(email);
-
-  if (user.length !== 0) {
-    const error = new Error("EXISTING_USER");
-    error.statusCode = 409;
-    throw error;
+  // Validate phone number if provided
+  if (phoneNumber && !phoneReg.test(phoneNumber)) {
+    throw errorGenerator({ statusCode: 400, message: "Invalid phone number" });
   }
 
-  const encryptedPW = bcrypt.hashSync(password, bcrypt.genSaltSync());
-  const newUser = await UserDao.createUser(name, email, encryptedPW);
+  // Check if the user already exists
+  const existingUser = await UserDao.getUserByEmail(email);
+  if (existingUser) {
+    throw errorGenerator({ statusCode: 409, message: "User already exists" });
+  }
+
+  // Hash the password
+  const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
+  const newUser = await UserDao.createUser(
+    name,
+    email,
+    hashedPassword,
+    phoneNumber
+  );
 
   return newUser;
 };
-const getUserByUserId = async (userId) => {
-  return await UserDao.getUserByUserId(userId);
+
+// Function to authenticate a user and generate a JWT
+const authenticateUser = async (email, password) => {
+  // Validate input
+  if (!email || !password) {
+    throw errorGenerator({
+      statusCode: 400,
+      message: "Missing required fields",
+    });
+  }
+
+  const user = await UserDao.getUserByEmail(email);
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    throw errorGenerator({
+      statusCode: 401,
+      message: "Invalid email or password",
+    });
+  }
+
+  // Generate a JWT token
+  const token = jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: "1h" }
+  );
+
+  return { user, token };
 };
 
-module.exports = { sendLogIn, signup, getUserByUserId };
+// Function to update a user's profile information
+const updateUserProfile = async (userId, profileData) => {
+  // Validate input
+  if (!userId || !profileData) {
+    throw errorGenerator({
+      statusCode: 400,
+      message: "Missing required fields",
+    });
+  }
+
+  const updatedUser = await UserDao.updateUserProfile(userId, profileData);
+  if (!updatedUser) {
+    throw errorGenerator({ statusCode: 404, message: "User not found" });
+  }
+
+  return updatedUser;
+};
+
+// Function to fetch a user's profile by their ID
+const getUserProfile = async (userId) => {
+  // Validate input
+  if (!userId) {
+    throw errorGenerator({
+      statusCode: 400,
+      message: "Missing required fields",
+    });
+  }
+
+  const user = await UserDao.getUserById(userId);
+  if (!user) {
+    throw errorGenerator({ statusCode: 404, message: "User not found" });
+  }
+
+  return user;
+};
+
+// Export the service functions to be used by other parts of the application
+module.exports = {
+  registerUser,
+  authenticateUser,
+  updateUserProfile,
+  getUserProfile,
+};

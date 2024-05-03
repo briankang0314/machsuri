@@ -9,19 +9,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Model representing expert users with their professional details.
-model Experts {
+// Model representing user users with their professional details.
+model Users {
   // Identifiers
-  id Int @id @default(autoincrement()) // Unique identifier for each expert.
+  id Int @id @default(autoincrement()) // Unique identifier for each user.
 
   // Foreign Keys
-  city_id Int // Foreign key to associate expert with a city.
+  city_id Int // Foreign key to associate user with a city.
 
   // Attributes
-  email           String  @unique // Unique email for expert, used for login.
-  password        String // Password for expert's account.
-  name            String // Full name of the expert.
-  expert_image    String? // Optional profile image URL.
+  email           String  @unique // Unique email for user, used for login.
+  password        String // Password for user's account.
+  name            String // Full name of the .
+  user_image    String? // Optional profile image URL.
   intro           String? // Optional short introduction or bio.
   phone_number    String? // Optional contact phone number.
   start_time      String? // Format "HH:MM"                // Optional start time of workday.
@@ -29,36 +29,36 @@ model Experts {
   work_experience Int? // Optional years of work experience.
 
   // Flags
-  is_deleted Boolean @default(false) // Flag to soft delete the expert.
+  is_deleted Boolean @default(false) // Flag to soft delete the user.
 
   // Metadata
-  created_at DateTime  @default(now()) // Timestamp when the expert record was created.
-  updated_at DateTime  @default(now()) // Timestamp when the expert record was last updated.
-  deleted_at DateTime? // Optional timestamp for when the expert was deleted.
+  created_at DateTime  @default(now()) // Timestamp when the user record was created.
+  updated_at DateTime  @default(now()) // Timestamp when the user record was last updated.
+  deleted_at DateTime? // Optional timestamp for when the user was deleted.
 
   // Relations
   city                       City                    @relation(fields: [city_id], references: [id])
-  job_posts                  JobPosts[] // Job posts created by the expert.
+  job_posts                  JobPosts[] // Job posts created by the user.
   applications               JobApplications[]
-  reviews                    Reviews[] // Reviews written for the expert.
-  minor_category_preferences ExpertMinorCategories[] // Expert's preferences for minor categories.
+  reviews                    Reviews[] // Reviews written for the user.
+  minor_category_preferences UserMinorCategories[] // User's preferences for minor categories.
 
-  @@map("experts")
+  @@map("users")
 }
 
-// Model representing job posts created by experts.
+// Model representing job posts created by users.
 model JobPosts {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each job post.
 
   // Foreign Keys
-  expert_id Int // Foreign key linking to the Experts table.
+  user_id Int // Foreign key linking to the Users table.
   city_id   Int // Foreign key linking to the City table.
 
   // Attributes
   title        String // Title of the job post.
   summary      String // Short summary or description of the job post.
-  remuneration Decimal // Offered remuneration for the job.
+  fee Decimal // Offered fee for the job.
   contact_info String // Contact information for job applications.
   status       String  @default("open") // Status of the job post (e.g., open, closed, under review).
 
@@ -68,7 +68,7 @@ model JobPosts {
   deleted_at DateTime? // Optional timestamp for when the job post was deleted.
 
   // Relations
-  expert           Experts                  @relation(fields: [expert_id], references: [id])
+  user           Users                  @relation(fields: [user_id], references: [id])
   city             City                     @relation(fields: [city_id], references: [id])
   applications     JobApplications[]
   minor_categories JobPostMinorCategories[]
@@ -77,14 +77,14 @@ model JobPosts {
   @@map("job_posts")
 }
 
-// Model representing applications for job posts by experts.
+// Model representing applications for job posts by users.
 model JobApplications {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each application.
 
   // Foreign Keys
   job_post_id  Int // Foreign key linking to the JobPosts table.
-  applicant_id Int // Foreign key linking to the Experts table (as applicants).
+  applicant_id Int // Foreign key linking to the Users table (as applicants).
 
   // Attributes
   cover_letter String? // Optional cover letter submitted by the applicant.
@@ -96,7 +96,7 @@ model JobApplications {
 
   // Relations
   job_post  JobPosts @relation(fields: [job_post_id], references: [id])
-  applicant Experts  @relation(fields: [applicant_id], references: [id])
+  applicant Users  @relation(fields: [applicant_id], references: [id])
 
   @@map("job_applications")
 }
@@ -131,23 +131,23 @@ model MinorCategories {
 
   // Relations
   major_category     MajorCategories          @relation(fields: [major_category_id], references: [id])
-  expert_preferences ExpertMinorCategories[]
+  user_preferences UserMinorCategories[]
   job_posts          JobPostMinorCategories[]
 
   @@map("minor_categories")
 }
 
-// Junction table for many-to-many relationship between experts and their preferred minor categories.
-model ExpertMinorCategories {
+// Junction table for many-to-many relationship between users and their preferred minor categories.
+model UserMinorCategories {
   // Identifiers
-  expert_id         Int
+  user_id         Int
   minor_category_id Int
 
-  expert         Experts         @relation(fields: [expert_id], references: [id])
+  user         Users         @relation(fields: [user_id], references: [id])
   minor_category MinorCategories @relation(fields: [minor_category_id], references: [id])
 
-  @@id([expert_id, minor_category_id])
-  @@map("expert_minor_categories")
+  @@id([user_id, minor_category_id])
+  @@map("user_minor_categories")
 }
 
 // Junction table for many-to-many relationship between job posts and major categories.
@@ -175,16 +175,16 @@ model JobPostMinorCategories {
   @@map("job_post_minor_categories")
 }
 
-// Model representing reviews given to experts by clients or peers.
+// Model representing reviews given to users by clients or peers.
 model Reviews {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each review.
 
   // Foreign Keys
-  expert_id Int // Foreign key linking to the Experts table.
+  user_id Int // Foreign key linking to the Users table.
 
   // Attributes
-  grade   Int // Numerical grade or rating given to the expert.
+  grade   Int // Numerical grade or rating given to the user.
   comment String // Textual comment or feedback.
 
   // Metadata
@@ -192,7 +192,7 @@ model Reviews {
   updated_at DateTime @default(now()) // Timestamp when the review was last updated.
 
   // Relations
-  expert Experts @relation(fields: [expert_id], references: [id])
+  user Users @relation(fields: [user_id], references: [id])
 
   @@map("reviews")
 }
@@ -224,7 +224,7 @@ model City {
 
   // Relations
   region   Region     @relation(fields: [region_id], references: [id]) // Relationship to the Region model.
-  experts  Experts[]
+  users  Users[]
   jobPosts JobPosts[]
 
   @@map("cities")

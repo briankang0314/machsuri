@@ -1,40 +1,91 @@
 const UserService = require("../services/UserService");
-// const errorGenerator = require("../utils/errorGenerator");
+const errorGenerator = require("../utils/errorGenerator");
 
-const sendLogIn = async (req, res) => {
+/**
+ * Handles user registration.
+ * @param {Object} req - The request object containing user data in req.body.
+ * @param {Object} res - The response object for sending responses.
+ */
+const register = async (req, res) => {
+  const { name, email, password, phoneNumber } = req.body;
+
   try {
-    const { email, password } = req.body;
-    const {token, id} = await UserService.sendLogIn(email, password);
-    return res.status(200).json({ access_token: token, userId: id });
-  } catch (err) {
-    return res.status(err.statusCode || 500).json({ message: err.message });
+    const user = await UserService.registerUser(
+      name,
+      email,
+      password,
+      phoneNumber
+    );
+    res.status(201).json(user);
+  } catch (error) {
+    console.error("Error registering user:", error);
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Internal server error" });
   }
 };
 
-const signup = async (req, res) => {
+/**
+ * Handles user login.
+ * @param {Object} req - The request object containing login data in req.body.
+ * @param {Object} res - The response object for sending responses.
+ */
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      const error = new Error("Key_Error");
-      error.statusCode = 400;
-      throw error;
-    }
-
-    const user = await UserService.signup(name, email, password);
-    return res.status(201).json({
-      message: "Created",
-      user_id: user.id,
-    });
-  } catch (err) {
-    return res.status(err.statusCode || 500).json({ message: err.message });
+    const { user, token } = await UserService.authenticateUser(email, password);
+    res.status(200).json({ user, token });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Internal server error" });
   }
 };
 
-const getUser = async (req, res) => {
-  return res.status(201).json({
-    message: "SUCCESS",
-    user: req.user,
-  });
+/**
+ * Handles updating a user's profile.
+ * @param {Object} req - The request object containing profile data in req.body.
+ * @param {Object} res - The response object for sending responses.
+ */
+const updateProfile = async (req, res) => {
+  const { userId } = req.params;
+  const profileData = req.body;
+
+  try {
+    const user = await UserService.updateUserProfile(userId, profileData);
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Internal server error" });
+  }
 };
-module.exports = { sendLogIn, signup, getUser };
+
+/**
+ * Handles fetching a user's profile by ID.
+ * @param {Object} req - The request object containing the user ID in req.params.
+ * @param {Object} res - The response object for sending responses.
+ */
+const getProfile = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await UserService.getUserProfile(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Internal server error" });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  updateProfile,
+  getProfile,
+};

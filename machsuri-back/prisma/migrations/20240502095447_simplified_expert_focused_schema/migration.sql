@@ -170,7 +170,7 @@ CREATE TABLE `job_posts` (
     `city_id` INTEGER NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `summary` VARCHAR(191) NOT NULL,
-    `remuneration` DECIMAL(65, 30) NOT NULL,
+    `fee` DECIMAL(65, 30) NOT NULL,
     `contact_info` VARCHAR(191) NOT NULL,
     `status` VARCHAR(191) NOT NULL DEFAULT 'open',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
