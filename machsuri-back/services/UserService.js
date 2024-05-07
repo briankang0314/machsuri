@@ -1,5 +1,4 @@
 const UserDao = require("../models/UserDao");
-const errorGenerator = require("../utils/errorGenerator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 

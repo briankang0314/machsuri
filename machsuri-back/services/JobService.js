@@ -1,5 +1,4 @@
 const JobDao = require("../models/JobDao");
-const errorGenerator = require("../utils/errorGenerator");
 
 // Function to post a new job. Requires various parameters describing the job.
 // Throws an error if required fields are missing.
