@@ -18,10 +18,11 @@ const register = async (req, res) => {
     );
     res.status(201).json(user);
   } catch (error) {
-    console.error("Error registering user:", error);
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: error.message || "Error registering user",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
@@ -35,12 +36,46 @@ const login = async (req, res) => {
 
   try {
     const { user, token } = await UserService.authenticateUser(email, password);
+    if (!user) {
+      const err = await errorGenerator({
+        statusCode: 401,
+        message: "Invalid credentials",
+      });
+      return res.status(err.statusCode).json({ message: err.message });
+    }
     res.status(200).json({ user, token });
   } catch (error) {
-    console.error("Error logging in:", error);
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Error logging in",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
+ * Handles fetching a user's profile by ID.
+ * @param {Object} req - The request object containing the user ID in req.params.
+ * @param {Object} res - The response object for sending responses.
+ */
+const getProfile = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    if (!user) {
+      const error = await errorGenerator({
+        statusCode: 404,
+        message: "User not found",
+      });
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Error fetching profile",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
@@ -57,35 +92,63 @@ const updateProfile = async (req, res) => {
     const user = await UserService.updateUserProfile(userId, profileData);
     res.status(200).json(user);
   } catch (error) {
-    console.error("Error updating profile:", error);
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Error updating profile",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
 /**
- * Handles fetching a user's profile by ID.
+ * Handles updating a user's preferences.
+ * @param {Object} req - The request object containing the user ID and new preferences in req.body.
+ * @param {Object} res - The response object for sending responses.
+ */
+const updatePreferences = async (req, res) => {
+  const { userId } = req.params;
+  const { minorCategoryIds } = req.body;
+
+  try {
+    const preferences = await UserService.updateUserPreferences(
+      userId,
+      minorCategoryIds
+    );
+    res.status(200).json({ success: true, preferences });
+  } catch (error) {
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Error updating preferences",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
+ * Handles soft deleting a user.
  * @param {Object} req - The request object containing the user ID in req.params.
  * @param {Object} res - The response object for sending responses.
  */
-const getProfile = async (req, res) => {
+const softDeleteUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await UserService.getUserProfile(userId);
-    res.status(200).json(user);
+    await UserService.softDeleteUser(userId);
+    res.status(204).json({ success: true });
   } catch (error) {
-    console.error("Error fetching profile:", error);
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Error soft deleting user",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
 module.exports = {
   register,
   login,
-  updateProfile,
   getProfile,
+  updateProfile,
+  updatePreferences,
+  softDeleteUser,
 };

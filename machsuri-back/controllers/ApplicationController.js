@@ -1,7 +1,12 @@
 const ApplicationService = require("../services/ApplicationService");
 const errorGenerator = require("../utils/errorGenerator");
 
-// Handles requests to submit a new application
+/**
+ * Controller to handle the submission of a new job application.
+ * Validates required inputs and uses the application service to create the application.
+ * @param {Object} req - The HTTP request object, containing application details in req.body.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
 const submitApplication = async (req, res) => {
   const { jobPostId, coverLetter } = req.body;
   const applicantId = req.user.id; // Assuming user ID is stored in req.user by auth middleware
@@ -24,7 +29,12 @@ const submitApplication = async (req, res) => {
   }
 };
 
-// Handles requests to get applications by a user
+/**
+ * Controller to retrieve job applications for the authenticated applicant.
+ * Uses the application service to fetch the applications.
+ * @param {Object} req - The HTTP request object, containing the authenticated user's ID.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
 const getApplication = async (req, res) => {
   const applicantId = req.user.id; // Assuming user ID is stored in req.user
 
@@ -42,7 +52,12 @@ const getApplication = async (req, res) => {
   }
 };
 
-// Handles requests to update an application status
+/**
+ * Controller to update the status of a job application.
+ * Validates the new status and uses the application service to update the application.
+ * @param {Object} req - The HTTP request object, containing application ID and new status in req.body.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
 const updateApplication = async (req, res) => {
   const { applicationId, newStatus } = req.body;
 
@@ -64,7 +79,12 @@ const updateApplication = async (req, res) => {
   }
 };
 
-// Handles requests to delete an application
+/**
+ * Controller to delete a job application.
+ * Uses the application service to delete the application.
+ * @param {Object} req - The HTTP request object, containing the application ID in req.params.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
 const deleteApplication = async (req, res) => {
   const { applicationId } = req.params;
 

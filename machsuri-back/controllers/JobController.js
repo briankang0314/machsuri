@@ -9,26 +9,19 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const postJob = async (req, res) => {
-  const {
-    userId,
-    title,
-    summary,
-    locationId,
-    requiredSkillsId,
-    categoryId,
-    fee,
-    contactInfo,
-  } = req.body;
+  const { userId, cityId, title, summary, fee, contactInfo, minorCategoryIds } =
+    req.body;
 
   // Validate that all necessary fields are provided
   if (
+    !userId ||
+    !cityId ||
     !title ||
     !summary ||
-    !locationId ||
-    !requiredSkillsId ||
-    !categoryId ||
     !fee ||
-    !contactInfo
+    !contactInfo ||
+    !Array.isArray(minorCategoryIds) ||
+    !minorCategoryIds.length === 0
   ) {
     const error = await errorGenerator({
       statusCode: 400,
@@ -41,20 +34,20 @@ const postJob = async (req, res) => {
     // Call service to create job and send successful response
     const newJob = await jobService.postJob(
       userId,
+      cityId,
       title,
       summary,
-      locationId,
-      requiredSkillsId,
-      categoryId,
       fee,
-      contactInfo
+      contactInfo,
+      minorCategoryIds
     );
     res.status(201).json(newJob);
   } catch (error) {
-    // Log error and send error response
+    // Handle specific and general errors with more granularity
+    console.error("Failed to create job:", error);
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Internal server error",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -67,23 +60,26 @@ const postJob = async (req, res) => {
  * @param {Object} req - The HTTP request object, containing filters in req.query.
  * @param {Object} res - The HTTP response object used to send responses.
  */
-const getJobs = async (req, res) => {
+const findJobs = async (req, res) => {
+  const { sortBy, sortOrder, ...filter } = req.query;
+
   try {
     // Retrieve jobs using filters and send them
-    const jobs = await jobService.getJobs(req.query);
+    const jobs = await jobService.getJobs(filter, sortBy, sortOrder);
     if (jobs.length === 0) {
       const error = await errorGenerator({
         statusCode: 404,
-        message: "No jobs found",
+        message: "No jobs found matching the specified criteria",
       });
       return res.status(error.statusCode).json({ message: error.message });
     }
     res.json(jobs);
   } catch (error) {
-    // Log error and send error response
+    // Log error and send error response, adjusting to handle specific messages from service
+    console.error("Error retrieving jobs:", error);
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Internal server error",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -146,9 +142,60 @@ const deleteJob = async (req, res) => {
   }
 };
 
+/**
+ * Controller to update the status of a job posting.
+ * Job ID is provided as a URL parameter and the new status in the request body.
+ *
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const updateJobStatus = async (req, res) => {
+  const { jobId } = req.params;
+  const { status } = req.body;
+
+  try {
+    // Update job status and return the updated record
+    const updatedJob = await jobService.updateJobStatus(jobId, status);
+    res.json(updatedJob);
+  } catch (error) {
+    // Log error and conditionally send response based on error type
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
+ * Controller to soft delete a job posting.
+ * Job ID is provided as a URL parameter.
+ *
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const softDeleteJob = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    // Soft delete job and return the updated record
+    const updatedJob = await jobService.softDeleteJob(jobId);
+    res.json(updatedJob);
+  } catch (error) {
+    // Log error and conditionally send response based on error type
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
 module.exports = {
   postJob,
-  getJobs,
+  findJobs,
   updateJob,
+  updateJobStatus,
+  softDeleteJob,
   deleteJob,
 };

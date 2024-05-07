@@ -9,8 +9,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Model representing user users with their professional details.
-model Users {
+// Model representing user with their professional details.
+model User {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each user.
 
@@ -18,67 +18,69 @@ model Users {
   city_id Int // Foreign key to associate user with a city.
 
   // Attributes
-  email           String  @unique // Unique email for user, used for login.
-  password        String // Password for user's account.
-  name            String // Full name of the .
-  user_image    String? // Optional profile image URL.
-  intro           String? // Optional short introduction or bio.
-  phone_number    String? // Optional contact phone number.
-  start_time      String? // Format "HH:MM"                // Optional start time of workday.
-  end_time        String? // Format "HH:MM"                // Optional end time of workday.
-  work_experience Int? // Optional years of work experience.
+  email                  String  @unique // Unique email for user, used for login.
+  password               String // Password for user's account.
+  name                   String // Full name of the .
+  profile_image_url      String? // Optional profile image URL.
+  intro                  String? // Optional short introduction or bio.
+  phone_number           String? // Optional contact phone number.
+  work_start_time        String? // Format "HH:MM"                // Optional start time of workday.
+  work_end_time          String? // Format "HH:MM"                // Optional end time of workday.
+  work_experience        Int? // Optional years of work experience.
 
   // Flags
-  is_deleted Boolean @default(false) // Flag to soft delete the user.
+  is_deleted             Boolean @default(false) // Flag to soft delete the user.
 
   // Metadata
-  created_at DateTime  @default(now()) // Timestamp when the user record was created.
-  updated_at DateTime  @default(now()) // Timestamp when the user record was last updated.
-  deleted_at DateTime? // Optional timestamp for when the user was deleted.
+  created_at             DateTime  @default(now()) // Timestamp when the user record was created.
+  updated_at             DateTime  @default(now()) // Timestamp when the user record was last updated.
+  deleted_at             DateTime? // Optional timestamp for when the user was deleted.
 
   // Relations
   city                       City                    @relation(fields: [city_id], references: [id])
-  job_posts                  JobPosts[] // Job posts created by the user.
-  applications               JobApplications[]
-  reviews                    Reviews[] // Reviews written for the user.
-  minor_category_preferences UserMinorCategories[] // User's preferences for minor categories.
+  job_posts                  JobPost[]               // Job posts created by the user.
+  applications               JobApplication[]
+  reviews                    Review[]                // Reviews written for the user.
+  preferences                UserPreference[]        // User's preferences for minor categories.
 
-  @@map("users")
+  @@map("user")
 }
 
-// Model representing job posts created by users.
-model JobPosts {
+// Model representing job post created by user.
+model JobPost {
   // Identifiers
-  id Int @id @default(autoincrement()) // Unique identifier for each job post.
+  id            Int @id @default(autoincrement()) // Unique identifier for each job post.
 
   // Foreign Keys
-  user_id Int // Foreign key linking to the Users table.
-  city_id   Int // Foreign key linking to the City table.
+  user_id       Int // Foreign key linking to the Users table.
+  city_id       Int // Foreign key linking to the City table.
 
   // Attributes
-  title        String // Title of the job post.
-  summary      String // Short summary or description of the job post.
-  fee Decimal // Offered fee for the job.
-  contact_info String // Contact information for job applications.
-  status       String  @default("open") // Status of the job post (e.g., open, closed, under review).
+  title         String // Title of the job post.
+  summary       String // Short summary or description of the job post.
+  fee           Decimal // Offered fee for the job.
+  contact_info  String // Contact information for job applications.
+  status        String  @default("open") // Status of the job post (e.g., open, closed, under review).
+
+  // Flags
+  is_deleted             Boolean @default(false) // Flag to soft delete the user.
 
   // Metadata
-  created_at DateTime  @default(now()) // Timestamp when the job post was created.
-  updated_at DateTime  @updatedAt // Timestamp when the job post was last updated.
-  deleted_at DateTime? // Optional timestamp for when the job post was deleted.
+  created_at    DateTime  @default(now()) // Timestamp when the job post was created.
+  updated_at    DateTime  @updatedAt // Timestamp when the job post was last updated.
+  deleted_at    DateTime? // Optional timestamp for when the job post was deleted.
 
   // Relations
-  user           Users                  @relation(fields: [user_id], references: [id])
+  user             User                  @relation(fields: [user_id], references: [id])
   city             City                     @relation(fields: [city_id], references: [id])
-  applications     JobApplications[]
-  minor_categories JobPostMinorCategories[]
-  major_categories JobPostMajorCategories[]
+  applications     JobApplication[]
+  job_categories   JobCategory[]
 
-  @@map("job_posts")
+  @@map("job_post")
 }
 
-// Model representing applications for job posts by users.
-model JobApplications {
+// Model representing applications for job post by user.
+model JobApplication {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each application.
 
@@ -95,14 +97,14 @@ model JobApplications {
   updated_at DateTime @updatedAt // Timestamp when the application was last updated.
 
   // Relations
-  job_post  JobPosts @relation(fields: [job_post_id], references: [id])
-  applicant Users  @relation(fields: [applicant_id], references: [id])
+  job_post  JobPost @relation(fields: [job_post_id], references: [id])
+  applicant User    @relation(fields: [applicant_id], references: [id])
 
-  @@map("job_applications")
+  @@map("job_application")
 }
 
 // Model for major categories of jobs.
-model MajorCategories {
+model MajorCategory {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each major category.
 
@@ -111,14 +113,13 @@ model MajorCategories {
   major_image String? // Optional image URL for the major category.
 
   // Relations
-  minor_categories MinorCategories[] // Related minor categories under each major category.
-  job_posts        JobPostMajorCategories[]
-
-  @@map("major_categories")
+  minor_categories MinorCategory[] // Related minor categories under each major category.
+  
+  @@map("major_category")
 }
 
 // Model for minor categories that fall under major categories.
-model MinorCategories {
+model MinorCategory {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each minor category.
 
@@ -130,53 +131,43 @@ model MinorCategories {
   minor_image String? // Optional image URL for the minor category.
 
   // Relations
-  major_category     MajorCategories          @relation(fields: [major_category_id], references: [id])
-  user_preferences UserMinorCategories[]
-  job_posts          JobPostMinorCategories[]
+  major_category     MajorCategory          @relation(fields: [major_category_id], references: [id])
+  user_preferences   UserPreference[]
+  job_posts          JobCategory[]
 
-  @@map("minor_categories")
+  @@map("minor_category")
 }
 
 // Junction table for many-to-many relationship between users and their preferred minor categories.
-model UserMinorCategories {
+model UserPreference {
   // Identifiers
-  user_id         Int
+  user_id           Int
   minor_category_id Int
 
-  user         Users         @relation(fields: [user_id], references: [id])
-  minor_category MinorCategories @relation(fields: [minor_category_id], references: [id])
+  // Relations
+  user              User          @relation(fields: [user_id], references: [id])
+  minor_category    MinorCategory @relation(fields: [minor_category_id], references: [id])
 
   @@id([user_id, minor_category_id])
-  @@map("user_minor_categories")
-}
-
-// Junction table for many-to-many relationship between job posts and major categories.
-model JobPostMajorCategories {
-  // Identifiers
-  job_post_id       Int
-  major_category_id Int
-
-  // Relations
-  job_post       JobPosts        @relation(fields: [job_post_id], references: [id])
-  major_category MajorCategories @relation(fields: [major_category_id], references: [id])
-
-  @@id([job_post_id, major_category_id])
-  @@map("job_post_major_categories")
+  @@map("user_preference")
 }
 
 // Junction table for many-to-many relationship between job posts and minor categories.
-model JobPostMinorCategories {
+model JobCategory {
+  // Identifiers
   job_post_id       Int
   minor_category_id Int
-  job_post          JobPosts        @relation(fields: [job_post_id], references: [id])
-  minor_category    MinorCategories @relation(fields: [minor_category_id], references: [id])
+
+  // Relations
+  job_post          JobPost        @relation(fields: [job_post_id], references: [id])
+  minor_category    MinorCategory  @relation(fields: [minor_category_id], references: [id])
 
   @@id([job_post_id, minor_category_id])
-  @@map("job_post_minor_categories")
+  @@map("job_category")
 }
 
-// Model representing reviews given to users by clients or peers.
-model Reviews {
+// Model representing review given to user by peer.
+model Review {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each review.
 
@@ -192,12 +183,12 @@ model Reviews {
   updated_at DateTime @default(now()) // Timestamp when the review was last updated.
 
   // Relations
-  user Users @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 
-  @@map("reviews")
+  @@map("review")
 }
 
-// Model representing geographic regions.
+// Model representing a geographic region.
 model Region {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each region.
@@ -208,10 +199,10 @@ model Region {
   // Relations
   cities City[] // List of cities within the region.
 
-  @@map("regions")
+  @@map("region")
 }
 
-// Model representing cities.
+// Model representing a city.
 model City {
   // Identifiers
   id Int @id @default(autoincrement()) // Unique identifier for each city.
@@ -223,9 +214,9 @@ model City {
   name String // Name of the city.
 
   // Relations
-  region   Region     @relation(fields: [region_id], references: [id]) // Relationship to the Region model.
-  users  Users[]
-  jobPosts JobPosts[]
+  region    Region     @relation(fields: [region_id], references: [id]) // Relationship to the Region model.
+  users     User[]
+  job_posts JobPost[]
 
-  @@map("cities")
+  @@map("city")
 }

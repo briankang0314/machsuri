@@ -2,7 +2,15 @@ const UserDao = require("../models/UserDao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// Function to register a new user
+/**
+ * Registers a new user with the provided details.
+ * @param {string} name - The full name of the user.
+ * @param {string} email - The email address of the user.
+ * @param {string} password - The password for the user's account.
+ * @param {string} phoneNumber - The phone number of the user (optional).
+ * @returns {Object} The newly created user object.
+ * @throws Will throw an error if the registration fails.
+ */
 const registerUser = async (name, email, password, phoneNumber) => {
   // Regular expressions for input validation
   const emailReg =
@@ -41,7 +49,14 @@ const registerUser = async (name, email, password, phoneNumber) => {
   return newUser;
 };
 
-// Function to authenticate a user and generate a JWT
+/**
+ * Authenticates a user using their email and password.
+ * @param {string} email - The email of the user trying to authenticate.
+ * @param {string} password - The password of the user for authentication.
+ * @returns {Object} The authenticated user object and a JWT token.
+ * @throws Will throw an error if authentication fails.
+ * @throws Will throw an error if required fields are missing.
+ */
 const authenticateUser = async (email, password) => {
   // Validate input
   if (!email || !password) {
@@ -63,22 +78,13 @@ const authenticateUser = async (email, password) => {
   return { user, token };
 };
 
-// Function to update a user's profile information
-const updateUserProfile = async (userId, profileData) => {
-  // Validate input
-  if (!userId || !profileData) {
-    throw new Error("Missing required fields");
-  }
-
-  const updatedUser = await UserDao.updateUserProfile(userId, profileData);
-  if (!updatedUser) {
-    throw new Error("User not found");
-  }
-
-  return updatedUser;
-};
-
-// Function to fetch a user's profile by their ID
+/**
+ * Retrieves a user's profile information by their ID.
+ * @param {number} userId - The ID of the user to retrieve.
+ * @returns {Object} The user's profile information.
+ * @throws Will throw an error if the user is not found or the database operation fails.
+ * @throws Will throw an error if required fields are missing.
+ */
 const getUserProfile = async (userId) => {
   // Validate input
   if (!userId) {
@@ -93,10 +99,120 @@ const getUserProfile = async (userId) => {
   return user;
 };
 
+/**
+ * Retrieves a user's preferences by their ID.
+ * @param {number} userId - The ID of the user to retrieve preferences for.
+ * @returns {Object} The user's preferences.
+ * @throws Will throw an error if the user is not found or the database operation fails.
+ * @throws Will throw an error if required fields are missing.
+ */
+const getUserPreferences = async (userId) => {
+  try {
+    const preferences = await UserDao.getUserPreferences(userId);
+    if (!preferences) {
+      throw new Error("No preferences found for this user");
+    }
+    return preferences;
+  } catch (error) {
+    console.error("Error retrieving user preferences:", error);
+    throw new Error("Failed to get user preferences");
+  }
+};
+
+/**
+ * Updates a user's profile information.
+ * @param {number} userId - The ID of the user to update.
+ * @param {Object} profileData - The updated profile information.
+ * @returns {Object} The updated user profile.
+ * @throws Will throw an error if the user is not found or the database operation fails.
+ * @throws Will throw an error if required fields are missing.
+ */
+const updateUserProfile = async (userId, profileData) => {
+  // Validate input
+  if (!userId || !profileData) {
+    throw new Error("Missing required fields");
+  }
+
+  const updatedUser = await UserDao.updateUserProfile(userId, profileData);
+  if (!updatedUser) {
+    throw new Error("User not found");
+  }
+
+  return updatedUser;
+};
+
+// /**
+//  * Updates a user's role in the database.
+//  * @param {number} userId - The ID of the user to update.
+//  * @param {string} newRole - The new role for the user.
+//  * @returns {Object} The updated user object.
+//  * @throws Will throw an error if the user is not found or the database operation fails.
+//  * @throws Will throw an error if required fields are missing.
+//  */
+// const updateUserRole = async (userId, newRole) => {
+//   try {
+//     const updatedUser = await UserDao.updateUserRole(userId, newRole);
+//     if (!updatedUser) {
+//       throw new Error("User not found or unable to update");
+//     }
+//     return updatedUser;
+//   } catch (error) {
+//     console.error("Error updating user role:", error);
+//     throw new Error("Failed to update user role");
+//   }
+// };
+
+/**
+ * Updates a user's preferences in the database.
+ * @param {number} userId - The ID of the user to update.
+ * @param {Array} minorCategoryIds - An array of minor category IDs for the user's preferences.
+ * @returns {Array} The updated user preferences.
+ * @throws Will throw an error if the user is not found or the database operation fails.
+ * @throws Will throw an error if required fields are missing.
+ */
+const updateUserPreferences = async (userId, minorCategoryIds) => {
+  try {
+    const updatedPreferences = await UserDao.updateUserPreferences(
+      userId,
+      minorCategoryIds
+    );
+    return updatedPreferences;
+  } catch (error) {
+    console.error(
+      "Error updating user preferences in UserPreference table:",
+      error
+    );
+    throw new Error("Failed to update user preferences");
+  }
+};
+
+/**
+ * Soft deletes a user from the database.
+ * @param {number} userId - The ID of the user to soft delete.
+ * @returns {Object} The deleted user object.
+ * @throws Will throw an error if the user is not found or the database operation fails.
+ */
+const softDeleteUser = async (userId) => {
+  try {
+    const result = await UserDao.softDeleteUser(userId);
+    if (!result) {
+      throw new Error("User not found or already deleted");
+    }
+    return result;
+  } catch (error) {
+    console.error("Error soft deleting user:", error);
+    throw new Error("Failed to soft delete user");
+  }
+};
+
 // Export the service functions to be used by other parts of the application
 module.exports = {
   registerUser,
   authenticateUser,
   updateUserProfile,
+  updateUserPreferences,
+  // updateUserRole,
   getUserProfile,
+  getUserPreferences,
+  softDeleteUser,
 };
