@@ -8,7 +8,7 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} req - The HTTP request object, containing job details in req.body.
  * @param {Object} res - The HTTP response object used to send responses.
  */
-exports.postJob = async (req, res) => {
+const postJob = async (req, res) => {
   const {
     userId,
     title,
@@ -30,7 +30,11 @@ exports.postJob = async (req, res) => {
     !fee ||
     !contactInfo
   ) {
-    return res.status(400).json({ message: "All fields are required" });
+    const error = await errorGenerator({
+      statusCode: 400,
+      message: "All fields are required",
+    });
+    return res.status(error.statusCode).json({ message: error.message });
   }
 
   try {
@@ -48,8 +52,11 @@ exports.postJob = async (req, res) => {
     res.status(201).json(newJob);
   } catch (error) {
     // Log error and send error response
-    console.error("Error posting job:", error);
-    res.status(500).json({ message: "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
@@ -60,18 +67,25 @@ exports.postJob = async (req, res) => {
  * @param {Object} req - The HTTP request object, containing filters in req.query.
  * @param {Object} res - The HTTP response object used to send responses.
  */
-exports.getJobs = async (req, res) => {
+const getJobs = async (req, res) => {
   try {
     // Retrieve jobs using filters and send them
     const jobs = await jobService.getJobs(req.query);
     if (jobs.length === 0) {
-      return res.status(404).json({ message: "No jobs found" });
+      const error = await errorGenerator({
+        statusCode: 404,
+        message: "No jobs found",
+      });
+      return res.status(error.statusCode).json({ message: error.message });
     }
     res.json(jobs);
   } catch (error) {
     // Log error and send error response
-    console.error("Error retrieving jobs:", error);
-    res.status(500).json({ message: "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
@@ -82,7 +96,7 @@ exports.getJobs = async (req, res) => {
  * @param {Object} req - The HTTP request object.
  * @param {Object} res - The HTTP response object used to send responses.
  */
-exports.updateJob = async (req, res) => {
+const updateJob = async (req, res) => {
   const { jobId } = req.params;
   const jobData = req.body;
 
@@ -92,12 +106,11 @@ exports.updateJob = async (req, res) => {
     res.json(updatedJob);
   } catch (error) {
     // Log error and conditionally send response based on error type
-    console.error("Error updating job:", error);
-    if (error.statusCode === 404) {
-      res.status(404).json({ message: "Job not found" });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
@@ -108,7 +121,7 @@ exports.updateJob = async (req, res) => {
  * @param {Object} req - The HTTP request object.
  * @param {Object} res - The HTTP response object used to send responses.
  */
-exports.deleteJob = async (req, res) => {
+const deleteJob = async (req, res) => {
   const { jobId } = req.params;
 
   try {
@@ -117,11 +130,25 @@ exports.deleteJob = async (req, res) => {
     if (result) {
       res.status(200).json({ message: "Job successfully deleted" });
     } else {
-      res.status(404).json({ message: "Job not found" });
+      const error = await errorGenerator({
+        statusCode: 404,
+        message: "Job not found",
+      });
+      res.status(error.statusCode).json({ message: error.message });
     }
   } catch (error) {
     // Log error and send error response
-    console.error("Error deleting job:", error);
-    res.status(500).json({ message: "Internal server error" });
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
+};
+
+module.exports = {
+  postJob,
+  getJobs,
+  updateJob,
+  deleteJob,
 };

@@ -13,21 +13,21 @@ const registerUser = async (name, email, password, phoneNumber) => {
 
   // Validate name, email, and password
   if (!name || !emailReg.test(email) || !pwReg.test(password)) {
-    throw errorGenerator({ statusCode: 400, message: "Invalid input format" });
+    throw new Error("Invalid input format");
   }
   if (password.length < 8) {
-    throw errorGenerator({ statusCode: 400, message: "Password too short" });
+    throw new Error("Password too short");
   }
 
   // Validate phone number if provided
   if (phoneNumber && !phoneReg.test(phoneNumber)) {
-    throw errorGenerator({ statusCode: 400, message: "Invalid phone number" });
+    throw new Error("Invalid phone number");
   }
 
   // Check if the user already exists
   const existingUser = await UserDao.getUserByEmail(email);
   if (existingUser) {
-    throw errorGenerator({ statusCode: 409, message: "User already exists" });
+    throw new Error("User already exists");
   }
 
   // Hash the password
@@ -46,18 +46,12 @@ const registerUser = async (name, email, password, phoneNumber) => {
 const authenticateUser = async (email, password) => {
   // Validate input
   if (!email || !password) {
-    throw errorGenerator({
-      statusCode: 400,
-      message: "Missing required fields",
-    });
+    throw new Error("Missing required fields");
   }
 
   const user = await UserDao.getUserByEmail(email);
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    throw errorGenerator({
-      statusCode: 401,
-      message: "Invalid email or password",
-    });
+    throw new Error("Invalid email or password");
   }
 
   // Generate a JWT token
@@ -74,15 +68,12 @@ const authenticateUser = async (email, password) => {
 const updateUserProfile = async (userId, profileData) => {
   // Validate input
   if (!userId || !profileData) {
-    throw errorGenerator({
-      statusCode: 400,
-      message: "Missing required fields",
-    });
+    throw new Error("Missing required fields");
   }
 
   const updatedUser = await UserDao.updateUserProfile(userId, profileData);
   if (!updatedUser) {
-    throw errorGenerator({ statusCode: 404, message: "User not found" });
+    throw new Error("User not found");
   }
 
   return updatedUser;
@@ -92,15 +83,12 @@ const updateUserProfile = async (userId, profileData) => {
 const getUserProfile = async (userId) => {
   // Validate input
   if (!userId) {
-    throw errorGenerator({
-      statusCode: 400,
-      message: "Missing required fields",
-    });
+    throw new Error("Missing required fields");
   }
 
   const user = await UserDao.getUserById(userId);
   if (!user) {
-    throw errorGenerator({ statusCode: 404, message: "User not found" });
+    throw new Error("User not found");
   }
 
   return user;
