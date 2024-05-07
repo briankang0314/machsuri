@@ -141,6 +141,26 @@ const JobDao = {
   },
 
   /**
+   * Updates the location of a job post identified by jobId.
+   * @param {number} jobId - The ID of the job post to update.
+   * @param {number} cityId - The ID of the city to update the job post's location to.
+   * @returns {Object} The updated job post.
+   * @throws Will throw an error if the job is not found or the database operation fails.
+   */
+  updateJobLocation: async (jobId, cityId) => {
+    try {
+      const updatedJob = await prisma.jobPost.update({
+        where: { id: jobId },
+        data: { city_id: cityId },
+      });
+      return updatedJob;
+    } catch (error) {
+      console.error("Error updating job location:", error);
+      throw error;
+    }
+  },
+
+  /**
    * Deletes a job post from the database identified by jobId.
    * @param {number} jobId - The ID of the job post to delete.
    * @returns {Boolean} True if the deletion was successful.

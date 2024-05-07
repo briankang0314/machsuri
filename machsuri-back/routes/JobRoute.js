@@ -19,9 +19,17 @@ router.put("/:jobId", userValidateToken, JobController.updateJob);
 // Uses the userValidateToken middleware to ensure only the job poster can update the job status.
 router.put("/:jobId/status", userValidateToken, JobController.updateJobStatus);
 
+// Route to update the location of a job posting.
+// Uses the userValidateToken middleware to ensure only the job poster can update the job location.
+router.put(
+  "/:jobId/location",
+  userValidateToken,
+  JobController.updateJobLocation
+);
+
 // Route to soft delete a job posting.
 // Uses the userValidateToken middleware to ensure only the job poster can soft delete the job.
-router.put(":jobId/delete", userValidateToken, JobController.softDeleteJob);
+router.put("/:jobId/delete", userValidateToken, JobController.softDeleteJob);
 
 // Route to delete a job posting.
 // Uses the userValidateToken middleware to ensure only the job poster can delete the job.

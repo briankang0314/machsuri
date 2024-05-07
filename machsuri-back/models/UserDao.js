@@ -121,6 +121,28 @@ const UserDao = {
   },
 
   /**
+   * Updates a user's location based on their userId and cityId.
+   * @param {number} userId - The ID of the user whose location is to be updated.
+   * @param {number} cityId - The ID of the city to update the user's location to.
+   * @returns {Object} The updated user object.
+   * @throws Will throw an error if the update operation fails or user is not found.
+   * @throws Will throw an error if the city is not found.
+   */
+  updateUserLocation: async (userId, cityId) => {
+    try {
+      return await prisma.user.update({
+        where: { id: userId },
+        data: {
+          city_id: cityId,
+        },
+      });
+    } catch (error) {
+      console.error("Failed to update user location:", error);
+      throw new Error("Error updating user location");
+    }
+  },
+
+  /**
    * Updates user preferences based on their userId.
    * @param {number} userId - The ID of the user whose preferences are to be updated.
    * @param {Array} minorCategoryIds - An array of minor category IDs to update the user's preferences to.

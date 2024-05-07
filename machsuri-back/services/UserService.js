@@ -141,6 +141,28 @@ const updateUserProfile = async (userId, profileData) => {
   return updatedUser;
 };
 
+/**
+ * Updates a user's location in the database.
+ * @param {number} userId - The ID of the user to update.
+ * @param {number} cityId - The ID of the city to update the user's location to.
+ * @returns {Object} The updated user object.
+ * @throws Will throw an error if the user is not found or the database operation fails.
+ * @throws Will throw an error if the city is not found.
+ */
+const updateUserLocation = async (userId, cityId) => {
+  // Validate input
+  if (!userId || !cityId) {
+    throw new Error("Missing required fields");
+  }
+
+  const updatedUser = await UserDao.updateUserLocation(userId, cityId);
+  if (!updatedUser) {
+    throw new Error("User not found or city not found");
+  }
+
+  return updatedUser;
+};
+
 // /**
 //  * Updates a user's role in the database.
 //  * @param {number} userId - The ID of the user to update.
@@ -210,6 +232,7 @@ module.exports = {
   registerUser,
   authenticateUser,
   updateUserProfile,
+  updateUserLocation,
   updateUserPreferences,
   // updateUserRole,
   getUserProfile,

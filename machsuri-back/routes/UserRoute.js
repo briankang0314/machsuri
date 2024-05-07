@@ -19,16 +19,24 @@ router.get("/profile/:userId", userValidateToken, UserController.getProfile);
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
 router.put("/profile/:userId", userValidateToken, UserController.updateProfile);
 
+// Route to update a user's location
+// Uses the userValidateToken middleware to ensure the user is authenticated as an user.
+router.put(
+  "/:userId/location",
+  userValidateToken,
+  UserController.updateLocation
+);
+
 // Route to update a user's preferences
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
 router.put(
-  "/preferences/:userId",
+  "/:userId/preferences",
   userValidateToken,
   UserController.updatePreferences
 );
 
 // Route to soft delete a user
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
-router.put("/delete/:userId", userValidateToken, UserController.softDeleteUser);
+router.delete("/:userId", userValidateToken, UserController.softDeleteUser);
 
 module.exports = router;

@@ -168,6 +168,31 @@ const updateJobStatus = async (req, res) => {
 };
 
 /**
+ * Controller to update the location of a job posting.
+ * Job ID is provided as a URL parameter and the new city ID in the request body.
+ *
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const updateJobLocation = async (req, res) => {
+  const { jobId } = req.params;
+  const { cityId } = req.body;
+
+  try {
+    // Update job location and return the updated record
+    const updatedJob = await jobService.updateJobLocation(jobId, cityId);
+    res.json(updatedJob);
+  } catch (error) {
+    // Log error and conditionally send response based on error type
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
  * Controller to soft delete a job posting.
  * Job ID is provided as a URL parameter.
  *
@@ -196,6 +221,7 @@ module.exports = {
   findJobs,
   updateJob,
   updateJobStatus,
+  updateJobLocation,
   softDeleteJob,
   deleteJob,
 };

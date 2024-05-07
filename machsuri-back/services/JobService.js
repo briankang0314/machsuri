@@ -114,6 +114,24 @@ const updateJobStatus = async (jobId, status) => {
 };
 
 /**
+ * Updates the location of a job post in the database.
+ * Throws an error if the job is not found or if there's a database error.
+ * @param {number} jobId - The ID of the job post to update.
+ * @param {number} cityId - The new city ID to update the job with.
+ * @returns {Object} The updated job post object.
+ */
+const updateJobLocation = async (jobId, cityId) => {
+  try {
+    // Optionally add logic here to check job existence or permissions
+    const updatedJob = await JobDao.updateJobLocation(jobId, cityId);
+    return updatedJob;
+  } catch (error) {
+    console.error("Service Error: Failed to update job location:", error);
+    throw new Error("Could not update job location. Please try again later.");
+  }
+};
+
+/**
  * Deletes a job post from the database.
  * Throws an error if the job is not found or if there's a database error.
  * @param {number} jobId - The ID of the job post to delete.
@@ -154,4 +172,5 @@ module.exports = {
   deleteJob,
   softDeleteJob,
   updateJobStatus,
+  updateJobLocation,
 };

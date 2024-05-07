@@ -101,6 +101,27 @@ const updateProfile = async (req, res) => {
 };
 
 /**
+ * Handles updating a user's location.
+ * @param {Object} req - The request object containing the user ID and city ID in req.body.
+ * @param {Object} res - The response object for sending responses.
+ */
+const updateLocation = async (req, res) => {
+  const { userId } = req.params;
+  const { cityId } = req.body;
+
+  try {
+    const user = await UserService.updateUserLocation(userId, cityId);
+    res.status(200).json(user);
+  } catch (error) {
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Error updating location",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
  * Handles updating a user's preferences.
  * @param {Object} req - The request object containing the user ID and new preferences in req.body.
  * @param {Object} res - The response object for sending responses.
@@ -149,6 +170,7 @@ module.exports = {
   login,
   getProfile,
   updateProfile,
+  updateLocation,
   updatePreferences,
   softDeleteUser,
 };
