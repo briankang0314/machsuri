@@ -5,24 +5,16 @@ const userValidateToken = require("../middleware/userValidateToken");
 
 // Route to submit a new application
 // Requires user authentication
-router.post(
-  "/applications",
-  userValidateToken,
-  ApplicationController.submitApplication
-);
+router.post("/", userValidateToken, ApplicationController.submitApplication);
 
 // Route to get all applications for a user
 // Requires user authentication
-router.get(
-  "/applications",
-  userValidateToken,
-  ApplicationController.getApplications
-);
+router.get("/", userValidateToken, ApplicationController.findApplications);
 
 // Route to update an existing application
 // Requires user authentication and should likely ensure that only the applicant or a privileged user can update the application
 router.put(
-  "/applications/:applicationId",
+  "/:applicationId",
   userValidateToken,
   ApplicationController.updateApplication
 );
@@ -30,7 +22,7 @@ router.put(
 // Route to delete an application
 // Requires user authentication and should ensure that only the applicant or a privileged user can delete the application
 router.delete(
-  "/applications/:applicationId",
+  "/:applicationId",
   userValidateToken,
   ApplicationController.deleteApplication
 );

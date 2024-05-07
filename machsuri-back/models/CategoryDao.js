@@ -21,13 +21,17 @@ const CategoryDao = {
   },
 
   /**
-   * Retrieves all major categories from the database.
+   * Retrieves all major categories from the database, including the minor categories in each major category.
    * @returns {Array} An array of all major categories.
    * @throws Will throw an error if the database operation fails.
    */
   getMajorCategories: async () => {
     try {
-      return await prisma.majorCategory.findMany();
+      return await prisma.majorCategory.findMany({
+        include: {
+          minorCategories: true, // Includes the list of minor categories within each major category
+        },
+      });
     } catch (error) {
       console.error("Error getting major categories:", error);
       throw new Error("Failed to get major categories.");
@@ -115,6 +119,23 @@ const CategoryDao = {
     } catch (error) {
       console.error("Error getting minor categories:", error);
       throw new Error("Failed to get minor categories.");
+    }
+  },
+
+  /**
+   * Retrieves all minor categories that belong to the specified major category.
+   * @param {number} majorCategoryId - The ID of the major category.
+   * @returns {Array} An array of minor categories belonging to the specified major category.
+   * @throws Will throw an error if the database operation fails.
+   */
+  getMinorCategoriesByMajorCategory: async (majorCategoryId) => {
+    try {
+      return await prisma.minorCategory.findMany({
+        where: { majorCategoryId },
+      });
+    } catch (error) {
+      console.error("Error getting minor categories by major category:", error);
+      throw new Error("Failed to get minor categories by major category.");
     }
   },
 

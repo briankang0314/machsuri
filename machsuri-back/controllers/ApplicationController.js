@@ -35,7 +35,7 @@ const submitApplication = async (req, res) => {
  * @param {Object} req - The HTTP request object, containing the authenticated user's ID.
  * @param {Object} res - The HTTP response object used to send responses.
  */
-const getApplication = async (req, res) => {
+const findApplications = async (req, res) => {
   const applicantId = req.user.id; // Assuming user ID is stored in req.user
 
   try {
@@ -102,7 +102,7 @@ const deleteApplication = async (req, res) => {
 
 module.exports = {
   submitApplication,
-  getApplication,
+  findApplications,
   updateApplication,
   deleteApplication,
 };

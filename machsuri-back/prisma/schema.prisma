@@ -110,7 +110,7 @@ model MajorCategory {
 
   // Attributes
   name        String // Name of the major category.
-  major_image String? // Optional image URL for the major category.
+  major_image_url String? // Optional image URL for the major category.
 
   // Relations
   minor_categories MinorCategory[] // Related minor categories under each major category.
@@ -128,7 +128,7 @@ model MinorCategory {
 
   // Attributes
   name        String // Name of the minor category.
-  minor_image String? // Optional image URL for the minor category.
+  minor_image_url String? // Optional image URL for the minor category.
 
   // Relations
   major_category     MajorCategory          @relation(fields: [major_category_id], references: [id])

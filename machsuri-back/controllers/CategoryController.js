@@ -35,7 +35,7 @@ const addMajorCategory = async (req, res) => {
 };
 
 /**
- * Controller to retrieve all major categories.
+ * Controller to retrieve all major categories, including their associated minor categories.
  * Uses the category service to get the list of major categories.
  * @param {Object} req - The HTTP request object.
  * @param {Object} res - The HTTP response object used to send responses.
@@ -198,6 +198,32 @@ const listMinorCategories = async (req, res) => {
 };
 
 /**
+ * Controller to retrieve all minor categories for a major category.
+ * Uses the category service to get the list of minor categories for a major category.
+ * @param {Object} req - The HTTP request object, containing the major category ID in req.params.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const listMinorCategoriesByMajorCategory = async (req, res) => {
+  const { majorCategoryId } = req.params;
+
+  try {
+    // Call service to get minor categories by major category and send successful response
+    const categories = await CategoryService.getMinorCategoriesByMajorCategory(
+      Number(majorCategoryId)
+    );
+    res.status(200).json(categories);
+  } catch (error) {
+    // Handle specific and general errors with more granularity
+    console.error("Failed to get minor categories by major category:", error);
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
  * Controller to retrieve a minor category by its ID.
  * Uses the category service to get the minor category by ID.
  * @param {Object} req - The HTTP request object, containing the category ID in req.params.
@@ -288,6 +314,7 @@ module.exports = {
   changeMajorCategoryName,
   addMinorCategory,
   listMinorCategories,
+  listMinorCategoriesByMajorCategory,
   findMinorCategoryById,
   findMinorCategoryByName,
   changeMinorCategoryName,

@@ -1,18 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
-const UserRoute = require("./UserRoute");
-const JobRoute = require("./JobRoute");
-const ApplicationRoute = require("./ApplicationRoute");
-const CategoryRoute = require("./CategoryRoute");
+const UserRouter = require("./UserRoute");
+const JobRouter = require("./JobRoute");
+const ApplicationRouter = require("./ApplicationRoute");
+const CategoryRouter = require("./CategoryRoute");
+const LocationRouter = require("./LocationRoute");
 
 router.get("/", (req, res) =>
   res.status(200).json({ message: "Hello! You are connected." })
 );
 
-router.use("/users", UserRoute);
-router.use("/jobs", JobRoute);
-router.use("/applications", ApplicationRoute);
-router.use("/categories", CategoryRoute);
+// Apply specific routes for different API segments
+router.use("/users", UserRouter);
+router.use("/jobs", JobRouter);
+router.use("/applications", ApplicationRouter);
+router.use("/categories", CategoryRouter);
+router.use("/locations", LocationRouter);
 
 module.exports = router;

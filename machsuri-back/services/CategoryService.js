@@ -20,7 +20,7 @@ const createMajorCategory = async (name) => {
 };
 
 /**
- * Retrieves all major categories.
+ * Retrieves all major categories, including their associated minor categories.
  * @returns {Array<Object>} An array of major category objects.
  */
 const getMajorCategories = async () => {
@@ -86,6 +86,16 @@ const getMinorCategories = async () => {
 };
 
 /**
+ * Retrieves all minor categories for a major category.
+ * @param {number} majorCategoryId - The ID of the major category.
+ * @returns {Array<Object>} An array of minor category objects.
+ * @throws {Error} If the database operation fails.
+ */
+const getMinorCategoriesByMajorCategory = async (majorCategoryId) => {
+  return CategoryDao.getMinorCategoriesByMajorCategory(majorCategoryId);
+};
+
+/**
  * Retrieves a minor category by its ID.
  * @param {number} id - The ID of the minor category.
  * @returns {Object} The minor category object.
@@ -135,6 +145,7 @@ module.exports = {
   updateMajorCategoryName,
   createMinorCategory,
   getMinorCategories,
+  getMinorCategoriesByMajorCategory,
   getMinorCategoryById,
   getMinorCategoryByName,
   updateMinorCategoryName,
