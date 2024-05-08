@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
  * @param {string} email - The email address of the user.
  * @param {string} password - The password for the user's account.
  * @param {string} phoneNumber - The phone number of the user (optional).
+ * @package {number} cityId - The ID of the city the user is located in.
  * @returns {Object} The newly created user object.
  * @throws Will throw an error if the registration fails.
  */
@@ -19,7 +20,7 @@ const registerUser = async (name, email, password, phoneNumber) => {
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
   // Validate name, email, and password
-  if (!name || !emailReg.test(email) || !pwReg.test(password)) {
+  if (!name || !emailReg.test(email) || !pwReg.test(password) || !cityId) {
     throw new Error("Invalid input format");
   }
   if (password.length < 8) {
@@ -43,7 +44,8 @@ const registerUser = async (name, email, password, phoneNumber) => {
     name,
     email,
     hashedPassword,
-    phoneNumber
+    phoneNumber,
+    cityId
   );
 
   return newUser;

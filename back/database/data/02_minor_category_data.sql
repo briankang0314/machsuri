@@ -1,5 +1,5 @@
 insert into
-  minorCategories (majoCategoryId, name)
+  minor_category (major_category_id, name)
 values
   (1, "누수 탐지"),
   (1, "수도배관 누수공사"),
@@ -7,7 +7,7 @@ values
   (1, "하수구 누수");
 
 insert into
-  minorCategories (majorCategoryId, name)
+  minor_category (major_category_id, name)
 values
   (2, "화장실 방수"),
   (2, "옥상 방수"),
@@ -15,7 +15,7 @@ values
   (2, "샷시 코킹");
 
 insert into
-  minorCategories (majorCategory_id, name)
+  minor_category (major_category_id, name)
 values
   (3, "변기 막힘"),
   (3, "싱크대 막힘"),
@@ -24,7 +24,7 @@ values
   (3, "냄새 차단");
 
 insert into
-  minorCategories (majorCategoryId, name)
+  minor_category (major_category_id, name)
 values
   (4, "수전 교체"),
   (4, "변기 교체"),
@@ -52,13 +52,13 @@ values
   (4, "욕조 배수구 교체");
 
 insert into
-  minorCategories (majorCategoryId, name)
+  minor_category (major_category_id, name)
 values
   (5, "전기 해빙"),
   (5, "스팀 해빙");
 
 insert into
-  minorCategories (majorCategoryId, name)
+  minor_category (major_category_id, name)
 values
   (6, "배관라인 교체"),
   (6, "난방배관 청소"),

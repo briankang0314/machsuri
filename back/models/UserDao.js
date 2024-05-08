@@ -7,16 +7,20 @@ const UserDao = {
    * @param {string} name - The full name of the user.
    * @param {string} email - The email address of the user, must be unique.
    * @param {string} password - The hashed password for the user's account.
+   * @param {string} phoneNumber - The phone number of the user (optional).
+   * @param {number} cityId - The ID of the city the user is located in.
    * @returns {Object} The newly created user object.
    * @throws Will throw an error if the database operation fails.
    */
-  createUser: async (name, email, password) => {
+  createUser: async (name, email, password, phoneNumber, cityId) => {
     try {
       return await prisma.user.create({
         data: {
           name,
           email,
           password,
+          phone_number: phoneNumber,
+          city_id: cityId,
         },
       });
     } catch (error) {

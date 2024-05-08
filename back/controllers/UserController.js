@@ -7,14 +7,15 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The response object for sending responses.
  */
 const register = async (req, res) => {
-  const { name, email, password, phoneNumber } = req.body;
+  const { name, email, password, phoneNumber, cityId } = req.body;
 
   try {
     const user = await UserService.registerUser(
       name,
       email,
       password,
-      phoneNumber
+      phoneNumber,
+      cityId
     );
     res.status(201).json(user);
   } catch (error) {

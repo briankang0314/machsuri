@@ -1,5 +1,5 @@
 insert into
-  reviews (expertId, userId, grade, comment)
+  review (reviewee_id, reviewer_id, rating, comment)
 values
   (
     1,
