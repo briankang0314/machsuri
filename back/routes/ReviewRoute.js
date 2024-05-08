@@ -22,7 +22,7 @@ router.get("/by/:userId", ReviewController.getReviewsByUser);
 
 // Route to retrieve a specific review.
 // Open to all users without authentication.
-router.get("/:reviewId", ReviewController.getReview);
+router.get("/:reviewId", ReviewController.getReviewById);
 
 // Route to update an existing review.
 // Uses the userValidateToken middleware to ensure only the reviewer can update the review.
