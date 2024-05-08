@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './MajorCategoryForm.module.scss';
-import Step from '../../components/step/MajorCategoryStep';
-import StepAddr from '../../components/step/MajorCategoryStepAddr';
+import Step from './MajorCategoryStep';
+import StepAddr from './MajorCategoryStepAddr';
 import { Link } from 'react-router-dom';
 
 let currentStep = 1;
