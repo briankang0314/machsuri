@@ -29,7 +29,7 @@ const CategoryDao = {
     try {
       return await prisma.majorCategory.findMany({
         include: {
-          minorCategories: true, // Includes the list of minor categories within each major category
+          minor_categories: true, // Includes the list of minor categories within each major category
         },
       });
     } catch (error) {
