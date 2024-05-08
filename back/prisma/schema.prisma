@@ -9,9 +9,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Seed script
-seed = "node prisma/seed.js"
-
 // Model representing user with their professional details.
 model User {
   // Identifiers
@@ -113,7 +110,7 @@ model MajorCategory {
   id Int @id @default(autoincrement()) // Unique identifier for each major category.
 
   // Attributes
-  name        String // Name of the major category.
+  name        String @unique // Name of the major category.
   major_image_url String? // Optional image URL for the major category.
 
   // Relations
@@ -131,7 +128,7 @@ model MinorCategory {
   major_category_id Int // Foreign key linking to the MajorCategories table.
 
   // Attributes
-  name        String // Name of the minor category.
+  name        String  @unique // Name of the minor category.
   minor_image_url String? // Optional image URL for the minor category.
 
   // Relations
@@ -200,7 +197,7 @@ model Region {
   id Int @id @default(autoincrement()) // Unique identifier for each region.
 
   // Attributes
-  name String // Name of the region.
+  name String @unique // Name of the region.
 
   // Relations
   cities City[] // List of cities within the region.

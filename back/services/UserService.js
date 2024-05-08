@@ -12,14 +12,14 @@ const jwt = require("jsonwebtoken");
  * @returns {Object} The newly created user object.
  * @throws Will throw an error if the registration fails.
  */
-const registerUser = async (name, email, password, phoneNumber) => {
+const registerUser = async (name, email, password, phoneNumber, cityId) => {
   // Regular expressions for input validation
   const emailReg =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
   const pwReg = /(?=.*\d)(?=.*[a-zA-ZS]).{8,}/;
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
-  // Validate name, email, and password
+  // Validate name, email, password, and cityId
   if (!name || !emailReg.test(email) || !pwReg.test(password) || !cityId) {
     throw new Error("Invalid input format");
   }

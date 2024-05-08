@@ -1,15 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
-
 const prisma = new PrismaClient();
 
 async function main() {
   // SQL file paths relative to the script location
   const sqlFilePaths = [
-    "../database/data/01_major_categories_data.sql",
-    "../database/data/02_minor_categories_data.sql",
+    "../database/data/02_minor_category_data.sql",
     "../database/data/03_region_data.sql",
     "../database/data/04_city_data.sql",
   ];
