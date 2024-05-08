@@ -78,7 +78,7 @@ const createMinorCategory = async (name, majorCategoryId) => {
 
 /**
  * Retrieves all minor categories.
- * @returns {Array<Object>} An array of minor category objects.
+ * @returns {Array} An array of minor category objects.
  * @throws {Error} If the database operation fails.
  */
 const getMinorCategories = async () => {
@@ -88,7 +88,7 @@ const getMinorCategories = async () => {
 /**
  * Retrieves all minor categories for a major category.
  * @param {number} majorCategoryId - The ID of the major category.
- * @returns {Array<Object>} An array of minor category objects.
+ * @returns {Array} An array of minor category objects.
  * @throws {Error} If the database operation fails.
  */
 const getMinorCategoriesByMajorCategory = async (majorCategoryId) => {

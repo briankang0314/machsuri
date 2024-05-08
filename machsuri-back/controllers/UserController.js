@@ -62,13 +62,7 @@ const getProfile = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    if (!user) {
-      const error = await errorGenerator({
-        statusCode: 404,
-        message: "User not found",
-      });
-      return res.status(error.statusCode).json({ message: error.message });
-    }
+    const user = await UserService.getUserProfile(userId);
     res.status(200).json(user);
   } catch (error) {
     const err = await errorGenerator({
