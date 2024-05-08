@@ -6,6 +6,7 @@ const JobRouter = require("./JobRoute");
 const ApplicationRouter = require("./ApplicationRoute");
 const CategoryRouter = require("./CategoryRoute");
 const LocationRouter = require("./LocationRoute");
+const ReviewRouter = require("./ReviewRoute");
 
 router.get("/", (req, res) =>
   res.status(200).json({ message: "Hello! You are connected." })
@@ -17,5 +18,6 @@ router.use("/jobs", JobRouter);
 router.use("/applications", ApplicationRouter);
 router.use("/categories", CategoryRouter);
 router.use("/locations", LocationRouter);
+router.use("/reviews", ReviewRouter);
 
 module.exports = router;
