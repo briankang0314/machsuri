@@ -9,6 +9,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Seed script
+seed = "node prisma/seed.js"
+
 // Model representing user with their professional details.
 model User {
   // Identifiers
