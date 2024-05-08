@@ -71,8 +71,8 @@ const JobDao = {
           [sortBy]: sortOrder,
         },
         include: {
-          user: true,
-          city: true,
+          user_id: true,
+          city_id: true,
         },
       });
       return jobs.map((job) => ({
