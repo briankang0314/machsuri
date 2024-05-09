@@ -21,7 +21,7 @@ const createMajorCategory = async (name) => {
 
 /**
  * Retrieves all major categories, including their associated minor categories.
- * @returns {Array<Object>} An array of major category objects.
+ * @returns {Array} An array of major category objects.
  */
 const getMajorCategories = async () => {
   return CategoryDao.getMajorCategories();

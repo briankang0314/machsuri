@@ -1,10 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const CategoryController = require("../controllers/CategoryController");
+const userValidateToken = require("../middleware/userValidateToken");
+
+const validateCategoryInput = (req, res, next) => {
+  const { name } = req.body;
+  if (!name || name.length < 3) {
+    return res
+      .status(400)
+      .json({ message: "Category name must be at least 3 characters long." });
+  }
+  next();
+};
 
 // Route to post a new major category.
 // Open to all users without authentication.
-router.post("/major-categories", CategoryController.addMajorCategory);
+router.post(
+  "/major-categories",
+  userValidateToken,
+  validateCategoryInput,
+  CategoryController.addMajorCategory
+);
 
 // Route to retrieve major categories, including their minor categories.
 // Open to all users without authentication.
@@ -28,6 +44,7 @@ router.get(
 // Open to all users without authentication.
 router.put(
   "/major-categories/:majorCategoryId",
+  userValidateToken,
   CategoryController.changeMajorCategoryName
 );
 
@@ -35,6 +52,7 @@ router.put(
 // Open to all users without authentication.
 router.post(
   "/major-categories/:majorCategoryId/minor-categories",
+  userValidateToken,
   CategoryController.addMinorCategory
 );
 
@@ -48,7 +66,7 @@ router.get(
 // Route to retrieve all minor categories under a major category.
 // Open to all users without authentication.
 router.get(
-  "/categories/:majorCategoryId/minor-categories",
+  "/major-categories/:majorCategoryId/minor-categories",
   CategoryController.listMinorCategoriesByMajorCategory
 );
 
@@ -70,6 +88,7 @@ router.get(
 // Open to all users without authentication.
 router.put(
   "/major-categories/:majorCategoryId/minor-categories/:minorCategoryId",
+  userValidateToken,
   CategoryController.changeMinorCategoryName
 );
 
