@@ -11,6 +11,15 @@ const errorGenerator = require("../utils/errorGenerator");
 const postJob = async (req, res) => {
   const { userId, cityId, title, summary, fee, contactInfo, minorCategoryIds } =
     req.body;
+  console.log("Input parameters to JobController.postJob:", {
+    userId,
+    cityId,
+    title,
+    summary,
+    fee,
+    contactInfo,
+    minorCategoryIds,
+  });
 
   // Validate that all necessary fields are provided
   if (
@@ -41,9 +50,11 @@ const postJob = async (req, res) => {
       contactInfo,
       minorCategoryIds
     );
+    console.log("Job created by JobController.postJob:", newJob);
     res.status(201).json(newJob);
   } catch (error) {
     // Handle specific and general errors with more granularity
+    console.log("Error in JobController.postJob:", error);
     console.error("Failed to create job:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
@@ -62,10 +73,16 @@ const postJob = async (req, res) => {
  */
 const findJobs = async (req, res) => {
   const { sortBy, sortOrder, ...filter } = req.query;
+  console.log("Input parameters to JobController.findJobs:", {
+    filter,
+    sortBy,
+    sortOrder,
+  });
 
   try {
     // Retrieve jobs using filters and send them
     const jobs = await jobService.getJobs(filter, sortBy, sortOrder);
+    console.log("Jobs retrieved by JobController.findJobs:", jobs);
     if (jobs.length === 0) {
       const error = await errorGenerator({
         statusCode: 404,
@@ -76,6 +93,7 @@ const findJobs = async (req, res) => {
     res.json(jobs);
   } catch (error) {
     // Log error and send error response, adjusting to handle specific messages from service
+    console.log("Error in JobController.findJobs:", error);
     console.error("Error retrieving jobs:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
@@ -95,13 +113,19 @@ const findJobs = async (req, res) => {
 const updateJob = async (req, res) => {
   const { jobId } = req.params;
   const jobData = req.body;
+  console.log("Input parameters to JobController.updateJob:", {
+    jobId,
+    jobData,
+  });
 
   try {
     // Update job and return the updated record
     const updatedJob = await jobService.updateJob(jobId, jobData);
+    console.log("Job updated by JobController.updateJob:", updatedJob);
     res.json(updatedJob);
   } catch (error) {
     // Log error and conditionally send response based on error type
+    console.log("Error in JobController.updateJob:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
       message: error.message || "Internal server error",
@@ -119,6 +143,7 @@ const updateJob = async (req, res) => {
  */
 const deleteJob = async (req, res) => {
   const { jobId } = req.params;
+  console.log("Input parameters to JobController.deleteJob:", { jobId });
 
   try {
     // Delete job and confirm deletion
@@ -134,6 +159,7 @@ const deleteJob = async (req, res) => {
     }
   } catch (error) {
     // Log error and send error response
+    console.log("Error in JobController.deleteJob:", error);
     const err = await errorGenerator({
       statusCode: 500,
       message: "Internal server error",
@@ -152,6 +178,10 @@ const deleteJob = async (req, res) => {
 const updateJobStatus = async (req, res) => {
   const { jobId } = req.params;
   const { status } = req.body;
+  console.log("Input parameters to JobController.updateJobStatus:", {
+    jobId,
+    status,
+  });
 
   try {
     // Update job status and return the updated record
@@ -159,6 +189,7 @@ const updateJobStatus = async (req, res) => {
     res.json(updatedJob);
   } catch (error) {
     // Log error and conditionally send response based on error type
+    console.log("Error in JobController.updateJobStatus:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
       message: error.message || "Internal server error",
@@ -177,13 +208,22 @@ const updateJobStatus = async (req, res) => {
 const updateJobLocation = async (req, res) => {
   const { jobId } = req.params;
   const { cityId } = req.body;
+  console.log("Input parameters to JobController.updateJobLocation:", {
+    jobId,
+    cityId,
+  });
 
   try {
     // Update job location and return the updated record
     const updatedJob = await jobService.updateJobLocation(jobId, cityId);
+    console.log(
+      "Job location updated by JobController.updateJobLocation:",
+      updatedJob
+    );
     res.json(updatedJob);
   } catch (error) {
     // Log error and conditionally send response based on error type
+    console.log("Error in JobController.updateJobLocation:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
       message: error.message || "Internal server error",
@@ -201,13 +241,16 @@ const updateJobLocation = async (req, res) => {
  */
 const softDeleteJob = async (req, res) => {
   const { jobId } = req.params;
+  console.log("Input parameters to JobController.softDeleteJob:", { jobId });
 
   try {
     // Soft delete job and return the updated record
     const updatedJob = await jobService.softDeleteJob(jobId);
+    console.log("Job soft deleted by JobController.softDeleteJob:", updatedJob);
     res.json(updatedJob);
   } catch (error) {
     // Log error and conditionally send response based on error type
+    console.log("Error in JobController.softDeleteJob:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
       message: error.message || "Internal server error",

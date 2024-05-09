@@ -9,6 +9,7 @@ const JobDao = {
    * @throws Will throw an error if the database operation fails.
    */
   createJob: async (jobDetails) => {
+    console.log("Input parameters to JobDao.createJob:", jobDetails);
     try {
       const {
         userId,
@@ -19,36 +20,40 @@ const JobDao = {
         contactInfo,
         minorCategoryIds,
       } = jobDetails;
+
       // Create the job post and link it to the selected minor categories within a transaction
       const job = await prisma.$transaction(async (prisma) => {
         const newJob = await prisma.jobPost.create({
           data: {
-            user_id: userId,
-            city_id: cityId,
+            user_id: parseInt(userId),
+            city_id: parseInt(cityId),
             title,
             summary,
-            fee,
+            fee: parseFloat(fee),
             contact_info: contactInfo,
           },
         });
+
+        // If minorCategoryIds are provided, link them to the job
+        if (minorCategoryIds && minorCategoryIds.length > 0) {
+          await Promise.all(
+            minorCategoryIds.map((categoryId) =>
+              prisma.jobCategory.create({
+                data: {
+                  job_post_id: newJob.id,
+                  minor_category_id: categoryId,
+                },
+              })
+            )
+          );
+        }
+
+        return newJob;
       });
 
-      // If minorCategoryIds are provided, link them to the job
-      if (minorCategoryIds && minorCategoryIds.length > 0) {
-        await Promise.all(
-          minorCategoryIds.map((categoryId) =>
-            prisma.jobCategory.create({
-              data: {
-                job_post_id: newJob.id,
-                minor_category_id: categoryId,
-              },
-            })
-          )
-        );
-      }
-
-      return newJob;
+      return job;
     } catch (error) {
+      console.log("Error in JobDao.createJob:", error);
       console.error("Error creating job:", error);
       throw error;
     }
@@ -64,6 +69,12 @@ const JobDao = {
    * @throws Will throw an error if the database operation fails.
    */
   getJobs: async (filter, sortBy = "createdAt", sortOrder = "desc") => {
+    console.log(
+      "Input parameters to JobDao.getJobs:",
+      filter,
+      sortBy,
+      sortOrder
+    );
     try {
       const jobs = await prisma.jobPosts.findMany({
         where: filter,
@@ -88,6 +99,7 @@ const JobDao = {
         updatedAt: job.updated_at,
       }));
     } catch (error) {
+      console.log("Error in JobDao.getJobs:", error);
       console.error("Error retrieving jobs:", error);
       throw error;
     }
@@ -101,6 +113,7 @@ const JobDao = {
    * @throws Will throw an error if the job is not found or the database operation fails.
    */
   updateJob: async (jobId, jobData) => {
+    console.log("Input parameters to JobDao.updateJob:", jobId, jobData);
     try {
       const updatedJob = await prisma.jobPosts.update({
         where: { id: jobId },
@@ -115,6 +128,7 @@ const JobDao = {
       });
       return updatedJob;
     } catch (error) {
+      console.log("Error in JobDao.updateJob:", error);
       console.error("Error updating job:", error);
       throw error;
     }
@@ -128,13 +142,15 @@ const JobDao = {
    * @throws Will throw an error if the job is not found or the database operation fails.
    */
   updateJobStatus: async (jobId, status) => {
+    console.log("Input parameters to JobDao.updateJobStatus:", jobId, status);
     try {
       const updatedJob = await prisma.jobPost.update({
-        where: { id: jobId },
+        where: { id: parseInt(jobId) },
         data: { status },
       });
       return updatedJob;
     } catch (error) {
+      console.log("Error in JobDao.updateJobStatus:", error);
       console.error("Error updating job status:", error);
       throw error;
     }
@@ -148,13 +164,15 @@ const JobDao = {
    * @throws Will throw an error if the job is not found or the database operation fails.
    */
   updateJobLocation: async (jobId, cityId) => {
+    console.log("Input parameters to JobDao.updateJobLocation:", jobId, cityId);
     try {
       const updatedJob = await prisma.jobPost.update({
-        where: { id: jobId },
-        data: { city_id: cityId },
+        where: { id: parseInt(jobId) },
+        data: { city_id: parseInt(cityId) },
       });
       return updatedJob;
     } catch (error) {
+      console.log("Error in JobDao.updateJobLocation:", error);
       console.error("Error updating job location:", error);
       throw error;
     }
@@ -167,12 +185,14 @@ const JobDao = {
    * @throws Will throw an error if the job is not found or the database operation fails.
    */
   deleteJob: async (jobId) => {
+    console.log("Input parameters to JobDao.deleteJob:", jobId);
     try {
       await prisma.jobPosts.delete({
-        where: { id: jobId },
+        where: { id: parseInt(jobId) },
       });
       return true;
     } catch (error) {
+      console.log("Error in JobDao.deleteJob:", error);
       console.error("Error deleting job:", error);
       throw error;
     }
@@ -185,13 +205,15 @@ const JobDao = {
    * @throws Will throw an error if the job is not found or the database operation fails.
    */
   softDeleteJob: async (jobId) => {
+    console.log("Input parameters to JobDao.softDeleteJob:", jobId);
     try {
       const updatedJob = await prisma.jobPost.update({
-        where: { id: jobId },
+        where: { id: parseInt(jobId) },
         data: { is_deleted: true, deleted_at: new Date() },
       });
       return updatedJob;
     } catch (error) {
+      console.log("Error in JobDao.softDeleteJob:", error);
       console.error("Error soft deleting job:", error);
       throw error;
     }

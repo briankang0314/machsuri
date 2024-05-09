@@ -21,6 +21,15 @@ const postJob = async (
   contactInfo,
   minorCategoryIds
 ) => {
+  console.log("Input parameters to JobService.postJob:", {
+    userId,
+    cityId,
+    title,
+    summary,
+    fee,
+    contactInfo,
+    minorCategoryIds,
+  });
   // Validate input to ensure no essential details are missing.
   if (
     !userId ||
@@ -46,10 +55,12 @@ const postJob = async (
       contactInfo,
       minorCategoryIds,
     });
+    console.log("Job created by JobService.postJob:", newJob);
 
     // Return the newly created job object.
     return newJob;
   } catch (error) {
+    console.log("Error in JobService.postJob:", error);
     console.error("Service Error: Failed to post job:", error);
     throw new Error("Failed to create job: " + error.message);
   }
@@ -64,15 +75,22 @@ const postJob = async (
  * @returns {Array} An array of job posts that match the filter.
  */
 const getJobs = async (filter, sortBy = "createdAt", sortOrder = "desc") => {
+  console.log("Filter parameters to JobService.getJobs:", {
+    filter,
+    sortBy,
+    sortOrder,
+  });
   try {
     // Uses the JobDao to fetch jobs that match the provided filter criteria.
     const jobs = await JobDao.getJobs(filter, sortBy, sortOrder);
     if (jobs.length === 0) {
       throw new Error("No jobs found matching the specified criteria");
     }
+    console.log("Jobs retrieved by JobService.getJobs:", jobs);
     // Returns a list of jobs that match the filter.
     return jobs;
   } catch (error) {
+    console.log("Error in JobService.getJobs:", error);
     console.error("Error retrieving jobs:", error.message);
     throw new Error("Failed to retrieve jobs: " + error.message);
   }
@@ -86,11 +104,16 @@ const getJobs = async (filter, sortBy = "createdAt", sortOrder = "desc") => {
  * @returns {Object} The updated job post object.
  */
 const updateJob = async (jobId, jobData) => {
+  console.log("Input parameters to JobService.updateJob:", {
+    jobId,
+    jobData,
+  });
   // Calls the JobDao to update the specified job with new data.
   const updatedJob = await JobDao.updateJob(jobId, jobData);
   if (!updatedJob) {
     throw new Error("Job not found");
   }
+  console.log("Job updated by JobService.updateJob:", updatedJob);
   // Returns the updated job object.
   return updatedJob;
 };
@@ -103,11 +126,20 @@ const updateJob = async (jobId, jobData) => {
  * @returns {Object} The updated job post object.
  */
 const updateJobStatus = async (jobId, status) => {
+  console.log("Input parameters to JobService.updateJobStatus:", {
+    jobId,
+    status,
+  });
   try {
     // Optionally add logic here to validate status, check job existence, etc.
     const updatedJob = await JobDao.updateJobStatus(jobId, status);
+    console.log(
+      "Job status updated by JobService.updateJobStatus:",
+      updatedJob
+    );
     return updatedJob;
   } catch (error) {
+    console.log("Error in JobService.updateJobStatus:", error);
     console.error("Service Error: Failed to update job status:", error);
     throw new Error("Could not update job status. Please try again later.");
   }
@@ -121,11 +153,20 @@ const updateJobStatus = async (jobId, status) => {
  * @returns {Object} The updated job post object.
  */
 const updateJobLocation = async (jobId, cityId) => {
+  console.log("Input parameters to JobService.updateJobLocation:", {
+    jobId,
+    cityId,
+  });
   try {
     // Optionally add logic here to check job existence or permissions
     const updatedJob = await JobDao.updateJobLocation(jobId, cityId);
+    console.log(
+      "Job location updated by JobService.updateJobLocation:",
+      updatedJob
+    );
     return updatedJob;
   } catch (error) {
+    console.log("Error in JobService.updateJobLocation:", error);
     console.error("Service Error: Failed to update job location:", error);
     throw new Error("Could not update job location. Please try again later.");
   }
@@ -138,6 +179,7 @@ const updateJobLocation = async (jobId, cityId) => {
  * @returns {Object} A confirmation message on successful deletion.
  */
 const deleteJob = async (jobId) => {
+  console.log("Input parameters to JobService.deleteJob:", jobId);
   // Calls the JobDao to delete the job identified by jobId.
   const result = await JobDao.deleteJob(jobId);
   if (!result) {
@@ -154,11 +196,14 @@ const deleteJob = async (jobId) => {
  * @returns {Object} The updated job post object with the new status.
  */
 const softDeleteJob = async (jobId) => {
+  console.log("Input parameters to JobService.softDeleteJob:", jobId);
   try {
     // Optionally add logic here to check job existence or permissions
     const deletedJob = await JobDao.softDeleteJob(jobId);
+    console.log("Job soft deleted by JobService.softDeleteJob:", deletedJob);
     return deletedJob;
   } catch (error) {
+    console.log("Error in JobService.softDeleteJob:", error);
     console.error("Service Error: Failed to soft delete job:", error);
     throw new Error("Could not soft delete the job. Please try again later.");
   }

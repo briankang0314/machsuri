@@ -14,6 +14,11 @@ enum Role {
   admin
 }
 
+enum Status {
+  open
+  closed
+}
+
 // Model representing user with their professional details.
 model User {
   // Identifiers
@@ -67,7 +72,7 @@ model JobPost {
   summary       String // Short summary or description of the job post.
   fee           Decimal // Offered fee for the job.
   contact_info  String // Contact information for job applications.
-  status        String  @default("open") // Status of the job post (e.g., open, closed, under review).
+  status        Status  @default(open) // Status of the job post (e.g., open, closed).
 
   // Flags
   is_deleted             Boolean @default(false) // Flag to soft delete the user.
