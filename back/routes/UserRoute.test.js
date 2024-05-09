@@ -11,7 +11,6 @@ describe("User Routes", () => {
     const response = await request(app)
       .post("/users/login")
       .send({ email: "test@example.com", password: "password" });
-    console.log(response.body);
     token = response.body.token;
   });
 

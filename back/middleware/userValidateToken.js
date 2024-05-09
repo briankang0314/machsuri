@@ -23,7 +23,7 @@ const userValidateToken = async (req, res, next) => {
       });
     }
 
-    const user = await UserService.getUserByUserId(id);
+    const user = await UserService.getUserProfile(id);
     if (!user) {
       throw errorGenerator({
         statusCode: 404,

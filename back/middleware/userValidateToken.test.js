@@ -8,9 +8,13 @@ describe("User Validate Token Middleware", () => {
 
   beforeAll(async () => {
     // Login a user and obtain a valid token for testing
-    const response = await request(app)
-      .post("/users/login")
-      .send({ email: "janedoe@example.com", password: "securePassword456" });
+    const response = await request(app).post("/users/register").send({
+      email: "janedoe@example.com",
+      password: "securePassword456",
+      name: "Jane Doe",
+      phoneNumber: "010123456789",
+      cityId: 1,
+    });
     console.log(response.status);
     console.log(response.body);
     token = response.body.token;

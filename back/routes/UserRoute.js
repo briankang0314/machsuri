@@ -13,7 +13,7 @@ router.post("/login", UserController.login);
 
 // Route to retrieve all users
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
-router.get("/", UserController.getAllUsers);
+router.get("/all", userValidateToken, UserController.getAllUsers);
 
 // Route to retrieve a user's profile
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
