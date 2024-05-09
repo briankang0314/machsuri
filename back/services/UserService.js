@@ -71,13 +71,30 @@ const authenticateUser = async (email, password) => {
   }
 
   // Generate a JWT token
-  const token = jwt.sign(
-    { id: user.id, role: user.role },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: "1h" }
-  );
+  try {
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+    return { user, token };
+  } catch (error) {
+    throw new Error("Failed to generate token: " + error.message);
+  }
+};
 
-  return { user, token };
+/**
+ * Retrieves all user profiles.
+ * @returns {Array} An array of user objects.
+ * @throws Will throw an error if the database operation fails.
+ * @throws Will throw an error if no users are found.
+ */
+const getAllUsers = async () => {
+  try {
+    const users = await UserDao.getAllUsers();
+    return users;
+  } catch (error) {
+    console.error("Error getting all users:", error);
+    throw new Error("Failed to get all users");
+  }
 };
 
 /**
@@ -93,12 +110,13 @@ const getUserProfile = async (userId) => {
     throw new Error("Missing required fields");
   }
 
-  const user = await UserDao.getUserById(userId);
-  if (!user) {
-    throw new Error("User not found");
+  try {
+    const user = await UserDao.getUserById(userId);
+    return user;
+  } catch (error) {
+    console.error("Error retrieving user profile:", error);
+    throw new Error("Failed to get user profile");
   }
-
-  return user;
 };
 
 /**
@@ -109,11 +127,13 @@ const getUserProfile = async (userId) => {
  * @throws Will throw an error if required fields are missing.
  */
 const getUserPreferences = async (userId) => {
+  // Validate input
+  if (!userId) {
+    throw new Error("Missing required fields");
+  }
+
   try {
     const preferences = await UserDao.getUserPreferences(userId);
-    if (!preferences) {
-      throw new Error("No preferences found for this user");
-    }
     return preferences;
   } catch (error) {
     console.error("Error retrieving user preferences:", error);
@@ -135,12 +155,13 @@ const updateUserProfile = async (userId, profileData) => {
     throw new Error("Missing required fields");
   }
 
-  const updatedUser = await UserDao.updateUserProfile(userId, profileData);
-  if (!updatedUser) {
-    throw new Error("User not found");
+  try {
+    const updatedUser = await UserDao.updateUserProfile(userId, profileData);
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw new Error("Failed to update user profile");
   }
-
-  return updatedUser;
 };
 
 /**
@@ -157,12 +178,13 @@ const updateUserLocation = async (userId, cityId) => {
     throw new Error("Missing required fields");
   }
 
-  const updatedUser = await UserDao.updateUserLocation(userId, cityId);
-  if (!updatedUser) {
-    throw new Error("User not found or city not found");
+  try {
+    const updatedUser = await UserDao.updateUserLocation(userId, cityId);
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user location:", error);
+    throw new Error("Failed to update user location");
   }
-
-  return updatedUser;
 };
 
 // /**
@@ -195,6 +217,11 @@ const updateUserLocation = async (userId, cityId) => {
  * @throws Will throw an error if required fields are missing.
  */
 const updateUserPreferences = async (userId, minorCategoryIds) => {
+  // Validate input
+  if (!userId || !minorCategoryIds) {
+    throw new Error("Missing required fields");
+  }
+
   try {
     const updatedPreferences = await UserDao.updateUserPreferences(
       userId,
@@ -202,10 +229,7 @@ const updateUserPreferences = async (userId, minorCategoryIds) => {
     );
     return updatedPreferences;
   } catch (error) {
-    console.error(
-      "Error updating user preferences in UserPreference table:",
-      error
-    );
+    console.error("Error updating user preferences:", error);
     throw new Error("Failed to update user preferences");
   }
 };
@@ -217,11 +241,13 @@ const updateUserPreferences = async (userId, minorCategoryIds) => {
  * @throws Will throw an error if the user is not found or the database operation fails.
  */
 const softDeleteUser = async (userId) => {
+  // Validate input
+  if (!userId) {
+    throw new Error("Missing required fields");
+  }
+
   try {
     const result = await UserDao.softDeleteUser(userId);
-    if (!result) {
-      throw new Error("User not found or already deleted");
-    }
     return result;
   } catch (error) {
     console.error("Error soft deleting user:", error);
@@ -236,8 +262,9 @@ module.exports = {
   updateUserProfile,
   updateUserLocation,
   updateUserPreferences,
-  // updateUserRole,
+  getAllUsers,
   getUserProfile,
   getUserPreferences,
   softDeleteUser,
+  // updateUserRole,
 };

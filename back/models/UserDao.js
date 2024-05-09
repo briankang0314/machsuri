@@ -14,6 +14,11 @@ const UserDao = {
    */
   createUser: async (name, email, password, phoneNumber, cityId) => {
     try {
+      // Validate input parameters
+      if (!name || !email || !password || !phoneNumber || !cityId) {
+        throw new Error("Missing required fields");
+      }
+
       return await prisma.user.create({
         data: {
           name,
@@ -49,7 +54,26 @@ const UserDao = {
       }
     } catch (error) {
       console.error("Authentication failed:", error);
-      throw new Error("Authentication error");
+      if (error.message === "Invalid email or password") {
+        throw error;
+      } else {
+        throw new Error("Authentication error");
+      }
+    }
+  },
+
+  /**
+   * Retrieves all users from the database.
+   * @returns {Array} An array of user objects.
+   * @throws Will throw an error if the database operation fails.
+   * @throws Will throw an error if no users are found.
+   */
+  getAllUsers: async () => {
+    try {
+      return await prisma.user.findMany();
+    } catch (error) {
+      console.error("Failed to get all users:", error);
+      throw new Error("Error getting all users");
     }
   },
 
@@ -61,12 +85,18 @@ const UserDao = {
    */
   getUserById: async (userId) => {
     try {
-      return await prisma.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
       });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      return user;
     } catch (error) {
       console.error("Failed to get user by ID:", error);
-      throw new Error("Error getting user by ID");
+      throw error;
     }
   },
 
@@ -78,12 +108,14 @@ const UserDao = {
    */
   getUserByEmail: async (email) => {
     try {
-      return await prisma.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { email },
       });
+
+      return user;
     } catch (error) {
       console.error("Failed to get user by email:", error);
-      throw new Error("Error getting user by email");
+      throw error;
     }
   },
 
@@ -95,10 +127,12 @@ const UserDao = {
    */
   getUserPreferences: async (userId) => {
     try {
-      return await prisma.userPreference.findMany({
+      const preferences = await prisma.userPreference.findMany({
         where: { user_id: userId },
         select: { minor_category_id: true },
       });
+
+      return preferences.length > 0 ? preferences : [];
     } catch (error) {
       console.error("Failed to get user preferences:", error);
       throw new Error("Error getting user preferences");
@@ -114,13 +148,18 @@ const UserDao = {
    */
   updateUserProfile: async (userId, profileData) => {
     try {
+      // Validate profileData object
+      if (!profileData || Object.keys(profileData).length === 0) {
+        throw new Error("Invalid profile data");
+      }
+
       return await prisma.user.update({
         where: { id: userId },
         data: profileData,
       });
     } catch (error) {
       console.error("Failed to update user profile:", error);
-      throw new Error("Error updating user profile");
+      throw error;
     }
   },
 
@@ -134,6 +173,15 @@ const UserDao = {
    */
   updateUserLocation: async (userId, cityId) => {
     try {
+      // Check if the city exists
+      const city = await prisma.city.findUnique({
+        where: { id: cityId },
+      });
+
+      if (!city) {
+        throw new Error("Invalid city ID");
+      }
+
       return await prisma.user.update({
         where: { id: userId },
         data: {
@@ -142,7 +190,7 @@ const UserDao = {
       });
     } catch (error) {
       console.error("Failed to update user location:", error);
-      throw new Error("Error updating user location");
+      throw error;
     }
   },
 
@@ -155,6 +203,11 @@ const UserDao = {
    */
   updateUserPreferences: async (userId, minorCategoryIds) => {
     try {
+      // Validate minorCategoryIds array
+      if (!Array.isArray(minorCategoryIds) || minorCategoryIds.length === 0) {
+        throw new Error("Invalid minor category IDs");
+      }
+
       // Start a transaction to handle multiple operations automically
       return await prisma.$transaction(async (prisma) => {
         // First, remove existing preferences for this user
@@ -176,13 +229,8 @@ const UserDao = {
         return await Promise.all(preferencePromises);
       });
     } catch (error) {
-      console.error(
-        "Failed to update user preferences in UserPreference table:",
-        error
-      );
-      throw new Error(
-        "Error updating user preferences in UserPreference table"
-      );
+      console.error("Failed to update user preferences:", error);
+      throw error;
     }
   },
 
@@ -213,13 +261,22 @@ const UserDao = {
    */
   softDeleteUser: async (userId) => {
     try {
-      return await prisma.users.update({
+      // Check if the user exists
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      return await prisma.user.update({
         where: { id: userId },
         data: { is_deleted: true, deleted_at: new Date() },
       });
     } catch (error) {
       console.error("Failed to delete user:", error);
-      throw new Error("Error deleting user");
+      throw error;
     }
   },
 };

@@ -20,7 +20,7 @@ const register = async (req, res) => {
     res.status(201).json(user);
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
+      statusCode: error.statusCode || 500,
       message: error.message || "Error registering user",
     });
     res.status(err.statusCode).json({ message: err.message });
@@ -37,18 +37,29 @@ const login = async (req, res) => {
 
   try {
     const { user, token } = await UserService.authenticateUser(email, password);
-    if (!user) {
-      const err = await errorGenerator({
-        statusCode: 401,
-        message: "Invalid credentials",
-      });
-      return res.status(err.statusCode).json({ message: err.message });
-    }
     res.status(200).json({ user, token });
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Error logging in",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error logging in",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
+ * Handles fetching all users.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object for sending responses.
+ */
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await UserService.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error fetching users",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -64,11 +75,18 @@ const getProfile = async (req, res) => {
 
   try {
     const user = await UserService.getUserProfile(userId);
+    if (!user) {
+      const err = await errorGenerator({
+        statusCode: 404,
+        message: "User not found",
+      });
+      return res.status(err.statusCode).json({ message: err.message });
+    }
     res.status(200).json(user);
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Error fetching profile",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error fetching profile",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -88,8 +106,8 @@ const updateProfile = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Error updating profile",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error updating profile",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -109,8 +127,8 @@ const updateLocation = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Error updating location",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error updating location",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -130,11 +148,11 @@ const updatePreferences = async (req, res) => {
       userId,
       minorCategoryIds
     );
-    res.status(200).json({ success: true, preferences });
+    res.status(200).json(preferences);
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Error updating preferences",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error updating preferences",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -149,12 +167,19 @@ const softDeleteUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    await UserService.softDeleteUser(userId);
-    res.status(204).json({ success: true });
+    const deletedUser = await UserService.softDeleteUser(userId);
+    if (!deletedUser) {
+      const err = await errorGenerator({
+        statusCode: 404,
+        message: "User not found",
+      });
+      return res.status(err.statusCode).json({ message: err.message });
+    }
+    res.status(204).send();
   } catch (error) {
     const err = await errorGenerator({
-      statusCode: 500,
-      message: "Error soft deleting user",
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error soft deleting user",
     });
     res.status(err.statusCode).json({ message: err.message });
   }
@@ -163,6 +188,7 @@ const softDeleteUser = async (req, res) => {
 module.exports = {
   register,
   login,
+  getAllUsers,
   getProfile,
   updateProfile,
   updateLocation,

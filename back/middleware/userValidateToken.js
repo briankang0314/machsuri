@@ -1,10 +1,9 @@
-const jwt = require("jsonwebtoken");
 const errorGenerator = require("../utils/errorGenerator");
 const UserService = require("../services/UserService");
+const { verifyToken } = require("../utils/tokenUtils");
 
 const userValidateToken = async (req, res, next) => {
   try {
-    // Extract the token from the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       throw errorGenerator({
@@ -14,9 +13,8 @@ const userValidateToken = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const decoded = verifyToken(token);
 
-    // Check if the user ID exists in the decoded token
     const { id } = decoded;
     if (!id) {
       throw errorGenerator({
@@ -25,7 +23,6 @@ const userValidateToken = async (req, res, next) => {
       });
     }
 
-    // Verify if the user exists in the database
     const user = await UserService.getUserByUserId(id);
     if (!user) {
       throw errorGenerator({
@@ -34,14 +31,10 @@ const userValidateToken = async (req, res, next) => {
       });
     }
 
-    // Attach user to the request object
     req.user = user;
     next();
   } catch (err) {
-    console.error("Token validation error:", err);
-    res
-      .status(err.statusCode || 500)
-      .json({ message: err.message || "Internal server error" });
+    next(err);
   }
 };
 
