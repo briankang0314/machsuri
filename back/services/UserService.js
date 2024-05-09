@@ -8,17 +8,26 @@ const jwt = require("jsonwebtoken");
  * @param {string} email - The email address of the user.
  * @param {string} password - The password for the user's account.
  * @param {string} phoneNumber - The phone number of the user (optional).
- * @package {number} cityId - The ID of the city the user is located in.
+ * @param {number} cityId - The ID of the city where the user is located.
+ * @param {string} role - The role of the user (e.g., "general" or "admin").
  * @returns {Object} The newly created user object.
  * @throws Will throw an error if the registration fails.
  */
-const registerUser = async (name, email, password, phoneNumber, cityId) => {
+const registerUser = async (
+  name,
+  email,
+  password,
+  phoneNumber,
+  cityId,
+  role
+) => {
   console.log("Input parameters to UserService.registerUser:", {
     name,
     email,
     password,
     phoneNumber,
     cityId,
+    role,
   });
   // Regular expressions for input validation
   const emailReg =
@@ -27,7 +36,13 @@ const registerUser = async (name, email, password, phoneNumber, cityId) => {
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
   // Validate name, email, password, and cityId
-  if (!name || !emailReg.test(email) || !pwReg.test(password) || !cityId) {
+  if (
+    !name ||
+    !emailReg.test(email) ||
+    !pwReg.test(password) ||
+    !cityId ||
+    !role
+  ) {
     throw new Error("Invalid input format");
   }
   if (password.length < 8) {
@@ -54,7 +69,8 @@ const registerUser = async (name, email, password, phoneNumber, cityId) => {
       email,
       hashedPassword,
       phoneNumber,
-      cityId
+      cityId,
+      role
     );
     console.log("New user created by UserService.registerUser:", newUser);
     return newUser;

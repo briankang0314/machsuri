@@ -9,20 +9,22 @@ const UserDao = {
    * @param {string} password - The hashed password for the user's account.
    * @param {string} phoneNumber - The phone number of the user (optional).
    * @param {number} cityId - The ID of the city the user is located in.
+   * @param {string} role - The role of the user (e.g. 'general', 'admin').
    * @returns {Object} The newly created user object.
    * @throws Will throw an error if the database operation fails.
    */
-  createUser: async (name, email, password, phoneNumber, cityId) => {
+  createUser: async (name, email, password, phoneNumber, cityId, role) => {
     console.log("Input parameters to UserDao.createUser:", {
       name,
       email,
       password,
       phoneNumber,
       cityId,
+      role,
     });
     try {
       // Validate input parameters
-      if (!name || !email || !password || !phoneNumber || !cityId) {
+      if (!name || !email || !password || !phoneNumber || !cityId || !role) {
         throw new Error("Missing required fields");
       }
 
@@ -33,6 +35,7 @@ const UserDao = {
           password,
           phone_number: phoneNumber,
           city_id: parseInt(cityId),
+          role,
         },
       });
     } catch (error) {

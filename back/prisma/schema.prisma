@@ -9,6 +9,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  general
+  admin
+}
+
 // Model representing user with their professional details.
 model User {
   // Identifiers
@@ -19,8 +24,9 @@ model User {
 
   // Attributes
   email                  String  @unique // Unique email for user, used for login.
-  password               String // Password for user's account.
-  name                   String // Full name of the .
+  password               String  // Password for user's account.
+  name                   String  // Full name of the .
+  role                   Role    @default(general) // either general or admin
   profile_image_url      String? // Optional profile image URL.
   intro                  String? // Optional short introduction or bio.
   phone_number           String? // Optional contact phone number.

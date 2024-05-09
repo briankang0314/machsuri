@@ -7,7 +7,7 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The response object for sending responses.
  */
 const register = async (req, res) => {
-  const { name, email, password, phoneNumber, cityId } = req.body;
+  const { name, email, password, phoneNumber, cityId, role } = req.body;
   console.log("Request body to UserController.register:", req.body);
 
   try {
@@ -16,7 +16,8 @@ const register = async (req, res) => {
       email,
       password,
       phoneNumber,
-      cityId
+      cityId,
+      role
     );
     console.log("New user created by UserController.register:", user);
     res.status(201).json(user);

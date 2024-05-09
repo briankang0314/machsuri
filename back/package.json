@@ -24,9 +24,6 @@
     "distribute": "npm i && prisma generate && pm2 start server.js --name omm-back -i max",
     "test": "jest"
   },
-  "prisma": {
-    "seed": "node prisma/seed.js"
-  },
   "jest": {
     "testEnvironment": "node",
     "setupFilesAfterEnv": [
