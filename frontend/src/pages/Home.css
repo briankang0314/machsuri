@@ -1,0 +1,15 @@
+.job-listing {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.job-listing h2 {
+  color: #333;
+}
+
+.job-listing div {
+  font-size: 0.9rem;
+  color: #666;
+}
