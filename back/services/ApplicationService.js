@@ -9,8 +9,18 @@ const ApplicationDao = require("../models/ApplicationDao");
  * @returns {Object} The newly created job application.
  */
 const submitApplication = async (jobPostId, applicantId, coverLetter) => {
+  console.log(
+    "Input parameters to ApplicationService.submitApplication:",
+    jobPostId,
+    applicantId,
+    coverLetter
+  );
   // Validate input or check business rules here
-  // Example: Check if the applicant has already applied to this jobPostId
+  if (!jobPostId || !applicantId || !coverLetter) {
+    throw new Error(
+      "All fields (jobPostId, applicantId, coverLetter) must be provided"
+    );
+  }
   const existingApplication = await ApplicationDao.getApplicationsByApplicant(
     applicantId
   );
@@ -34,8 +44,39 @@ const submitApplication = async (jobPostId, applicantId, coverLetter) => {
  * @returns {Array} An array of job application objects.
  */
 const getApplicationsByApplicant = async (applicantId, status) => {
+  console.log(
+    "Input parameters to ApplicationService.getApplicationsByApplicant:",
+    applicantId,
+    status
+  );
+
+  if (!applicantId) {
+    throw new Error("Applicant ID must be provided");
+  }
+
   // Additional business logic can be added here if needed
-  return await ApplicationDao.getApplicationsByApplicant(applicantId, status);
+  return ApplicationDao.getApplicationsByApplicant(applicantId, status);
+};
+
+/**
+ * Retrieves a job application by its ID.
+ * @param {number} applicationId - The ID of the application to retrieve.
+ * @returns {Object} The job application object.
+ * @throws {Error} Throws an error if the application is not found.
+ * @throws {Error} Throws an error if the database query fails.
+ */
+const getApplicationById = async (applicationId) => {
+  console.log(
+    "Input parameters to ApplicationService.getApplicationById:",
+    applicationId
+  );
+
+  if (!applicationId) {
+    throw new Error("Application ID must be provided");
+  }
+
+  // Call the DAO to fetch the application by ID
+  return await ApplicationDao.getApplicationById(applicationId);
 };
 
 /**
@@ -46,6 +87,16 @@ const getApplicationsByApplicant = async (applicantId, status) => {
  * @returns {Object} The updated job application object.
  */
 const updateApplicationStatus = async (applicationId, newStatus) => {
+  console.log(
+    "Input parameters to ApplicationService.updateApplicationStatus:",
+    applicationId,
+    newStatus
+  );
+
+  if (!applicationId || !newStatus) {
+    throw new Error("Both application ID and new status must be provided");
+  }
+
   // Example: Validate newStatus is a valid transition
   const validStatuses = ["pending", "accepted", "rejected"];
   if (!validStatuses.includes(newStatus)) {
@@ -62,6 +113,14 @@ const updateApplicationStatus = async (applicationId, newStatus) => {
  * @returns {Object} The deleted job application object.
  */
 const deleteApplication = async (applicationId) => {
+  console.log(
+    "Input parameters to ApplicationService.deleteApplication:",
+    applicationId
+  );
+  if (!applicationId) {
+    throw new Error("Application ID must be provided");
+  }
+
   // Additional checks can be added here, such as permissions checks
   return await ApplicationDao.deleteApplication(applicationId);
 };
@@ -69,6 +128,7 @@ const deleteApplication = async (applicationId) => {
 module.exports = {
   submitApplication,
   getApplicationsByApplicant,
+  getApplicationById,
   updateApplicationStatus,
   deleteApplication,
 };

@@ -19,6 +19,12 @@ enum Status {
   closed
 }
 
+enum AppStatus {
+  pending
+  accepted
+  rejected
+}
+
 // Model representing user with their professional details.
 model User {
   // Identifiers
@@ -102,7 +108,7 @@ model JobApplication {
 
   // Attributes
   cover_letter String? // Optional cover letter submitted by the applicant.
-  status       String  @default("pending") // Status of the application (pending, accepted, rejected).
+  status       AppStatus  @default(pending) // Status of the application (pending, accepted, rejected).
 
   // Metadata
   applied_at DateTime @default(now()) // Timestamp when the application was submitted.

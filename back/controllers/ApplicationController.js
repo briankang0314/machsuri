@@ -10,6 +10,12 @@ const errorGenerator = require("../utils/errorGenerator");
 const submitApplication = async (req, res) => {
   const { jobPostId, coverLetter } = req.body;
   const applicantId = req.user.id; // Assuming user ID is stored in req.user by auth middleware
+  console.log(
+    "Input parameters to ApplicationController.submitApplication:",
+    jobPostId,
+    applicantId,
+    coverLetter
+  );
 
   try {
     const application = await ApplicationService.submitApplication(
@@ -17,10 +23,12 @@ const submitApplication = async (req, res) => {
       applicantId,
       coverLetter
     );
+    console.log("New job application created successfully:", application);
     res
       .status(201)
       .json({ message: "Application submitted successfully", application });
   } catch (error) {
+    console.log("Error in ApplicationController.submitApplication:", error);
     const err = await errorGenerator({
       statusCode: 400,
       message: error.message,
@@ -37,13 +45,20 @@ const submitApplication = async (req, res) => {
  */
 const findApplications = async (req, res) => {
   const applicantId = req.user.id; // Assuming user ID is stored in req.user
+  console.log(
+    "Input parameters to ApplicationController.findApplications:",
+    applicantId
+  );
 
   try {
     const applications = await ApplicationService.getApplicationsByApplicant(
       applicantId
     );
+    console.log("Applications retrieved:", applications.length);
+    console.log("Applications retrieved:", applications);
     res.status(200).json({ applications });
   } catch (error) {
+    console.log("Error in ApplicationController.findApplications:", error);
     const err = await errorGenerator({
       statusCode: 500,
       message: "Failed to retrieve applications",
@@ -59,18 +74,26 @@ const findApplications = async (req, res) => {
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const updateApplication = async (req, res) => {
-  const { applicationId, newStatus } = req.body;
+  const { applicationId } = req.params;
+  const { newStatus } = req.body;
+  console.log(
+    "Input parameters to ApplicationController.updateApplication:",
+    applicationId,
+    newStatus
+  );
 
   try {
     const updatedApplication = await ApplicationService.updateApplicationStatus(
       applicationId,
       newStatus
     );
+    console.log("Application updated successfully:", updatedApplication);
     res.status(200).json({
       message: "Application updated successfully",
       updatedApplication,
     });
   } catch (error) {
+    console.log("Error in ApplicationController.updateApplication:", error);
     const err = await errorGenerator({
       statusCode: 400,
       message: error.message,
@@ -87,11 +110,16 @@ const updateApplication = async (req, res) => {
  */
 const deleteApplication = async (req, res) => {
   const { applicationId } = req.params;
+  console.log(
+    "Input parameters to ApplicationController.deleteApplication:",
+    applicationId
+  );
 
   try {
     await ApplicationService.deleteApplication(applicationId);
     res.status(200).json({ message: "Application deleted successfully" });
   } catch (error) {
+    console.log("Error in ApplicationController.deleteApplication:", error);
     const err = await errorGenerator({
       statusCode: 400,
       message: error.message,
