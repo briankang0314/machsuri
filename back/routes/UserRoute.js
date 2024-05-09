@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const UserController = require("../controllers/UserController");
 const userValidateToken = require("../middleware/userValidateToken");
+const roleCheck = require("../middleware/roleCheck");
+const verifyUserIdentity = require("../middleware/verifyUserIdentity");
 
 // Route to register a new user
 // Open to all users without authentication.
@@ -13,15 +15,30 @@ router.post("/login", UserController.login);
 
 // Route to retrieve all users
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
-router.get("/all", userValidateToken, UserController.getAllUsers);
+router.get(
+  "/all",
+  userValidateToken,
+  roleCheck(["admin"]),
+  UserController.getAllUsers
+);
 
 // Route to retrieve a user's profile
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
-router.get("/profile/:userId", userValidateToken, UserController.getProfile);
+router.get(
+  "/profile/:userId",
+  userValidateToken,
+  verifyUserIdentity,
+  UserController.getProfile
+);
 
 // Route to update a user's profile
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
-router.put("/profile/:userId", userValidateToken, UserController.updateProfile);
+router.put(
+  "/profile/:userId",
+  userValidateToken,
+  verifyUserIdentity,
+  UserController.updateProfile
+);
 
 // Route to update a user's location
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
@@ -41,6 +58,12 @@ router.put(
 
 // Route to soft delete a user
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
-router.delete("/:userId", userValidateToken, UserController.softDeleteUser);
+router.delete(
+  "/:userId",
+  userValidateToken,
+  verifyUserIdentity,
+  roleCheck(["admin", "user"]),
+  UserController.softDeleteUser
+);
 
 module.exports = router;
