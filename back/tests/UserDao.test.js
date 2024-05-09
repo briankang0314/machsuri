@@ -1,4 +1,4 @@
-const UserDao = require("./UserDao");
+const UserDao = require("../models/UserDao");
 const { PrismaClient } = require("@prisma/client");
 
 // Mocking PrismaClient used in UserDao
