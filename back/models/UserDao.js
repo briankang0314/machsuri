@@ -236,37 +236,99 @@ const UserDao = {
       userId,
       minorCategoryIds,
     });
-    try {
-      // Validate minorCategoryIds array
-      if (!Array.isArray(minorCategoryIds) || minorCategoryIds.length === 0) {
-        throw new Error("Invalid minor category IDs");
-      }
+    console.log("Type of minorCategoryIds:", typeof minorCategoryIds);
+    console.log("Content of minorCategoryIds:", minorCategoryIds);
 
-      // Start a transaction to handle multiple operations automatically
-      return await prisma.$transaction(async (prisma) => {
-        // First, remove existing preferences for this user
-        await prisma.userPreference.deleteMany({
-          where: { user_id: parseInt(userId) },
-        });
-
-        // Then, add new preferences based on provided minorCategoryIds
-        const preferencePromises = minorCategoryIds.map((minorCategoryId) => {
-          return prisma.userPreference.create({
-            data: {
-              user_id: parseInt(userId),
-              minor_category_id: parseInt(minorCategoryId),
-            },
-          });
-        });
-
-        // Execute all insertions in parallel
-        return await Promise.all(preferencePromises);
-      });
-    } catch (error) {
-      console.log("Error in UserDao.updateUserPreferences:", error);
-      console.error("Failed to update user preferences:", error);
-      throw error;
+    if (!Array.isArray(minorCategoryIds) || minorCategoryIds.length === 0) {
+      throw new Error("Invalid minor category IDs");
     }
+
+    try {
+      // Delete existing preferences
+      const deleteResponse = await prisma.userPreference.deleteMany({
+        where: { user_id: parseInt(userId) },
+      });
+      console.log("Deleted existing preferences:", deleteResponse);
+
+      // Add new preferences
+      const results = [];
+      for (const minorCategoryId of minorCategoryIds) {
+        const result = await prisma.userPreference.create({
+          data: {
+            user_id: parseInt(userId),
+            minor_category_id: parseInt(minorCategoryId),
+          },
+        });
+        results.push(result);
+      }
+      console.log("Added new preferences:", results);
+      return results;
+    } catch (error) {
+      console.error("Error updating user preferences:", error);
+      // Handle rollback/reverting if necessary
+      throw new Error("Failed to update user preferences");
+    }
+
+    // const deletePreferences = await prisma.userPreference.deleteMany({
+    //   where: { user_id: parseInt(userId) },
+    // });
+    // console.log("Deleted preferences:", deletePreferences);
+
+    // const preferencePromises = minorCategoryIds.map((minorCategoryId) => {
+    //   return prisma.userPreference.create({
+    //     data: {
+    //       user_id: parseInt(userId),
+    //       minor_category_id: parseInt(minorCategoryId),
+    //     },
+    //   });
+    // });
+    // console.log("Type of preferencePromises:", typeof preferencePromises);
+
+    // try {
+    //   const results = await Promise.all(preferencePromises);
+    //   console.log("Operation results:", results);
+    // } catch (error) {
+    //   console.error("Error executing promises outside transaction:", error);
+    // }
+
+    // try {
+    //   // Start a transaction to handle multiple operations automatically
+    //   return await prisma.$transaction(async (prisma) => {
+    //     // First, remove existing preferences for this user
+    //     await prisma.userPreference.deleteMany({
+    //       where: { user_id: parseInt(userId) },
+    //     });
+
+    //     console.log(
+    //       "Reconfirming type just before map:",
+    //       typeof minorCategoryIds
+    //     );
+    //     console.log("Reconfirming content just before map:", minorCategoryIds);
+    //     // Then, add new preferences based on provided minorCategoryIds
+    //     const preferencePromises = minorCategoryIds.map((minorCategoryId) => {
+    //       return prisma.userPreference.create({
+    //         data: {
+    //           user_id: parseInt(userId),
+    //           minor_category_id: parseInt(minorCategoryId),
+    //         },
+    //       });
+    //     });
+    //     console.log("Type of preferencePromises:", typeof preferencePromises);
+
+    //     // Execute all insertions in parallel
+    //     // return await Promise.all(preferencePromises);
+    //     try {
+    //       const results = await Promise.all(preferencePromises);
+    //       console.log("Operation results:", results);
+    //     } catch (error) {
+    //       console.error("Error executing promises:", error);
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.log("Error in UserDao.updateUserPreferences:", error);
+    //   console.error("Failed to update user preferences:", error);
+    //   throw error;
+    // }
   },
 
   // /**
