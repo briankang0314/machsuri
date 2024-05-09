@@ -104,6 +104,40 @@ const findJobs = async (req, res) => {
 };
 
 /**
+ * Controller to retrieve a specific job posting.
+ * Job ID is provided as a URL parameter.
+ *
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const findJobById = async (req, res) => {
+  const { jobId } = req.params;
+  console.log("Input parameters to JobController.findJobById:", { jobId });
+
+  try {
+    // Retrieve job by ID and send it
+    const job = await jobService.findJobById(jobId);
+    console.log("Job retrieved by JobController.findJobById:", job);
+    if (!job) {
+      const error = await errorGenerator({
+        statusCode: 404,
+        message: "Job not found",
+      });
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    res.json(job);
+  } catch (error) {
+    // Log error and send error response
+    console.log("Error in JobController.findJobById:", error);
+    const err = await errorGenerator({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+    res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+/**
  * Controller to update a specific job posting.
  * Job ID is provided as a URL parameter and updated data in the request body.
  *
@@ -262,6 +296,7 @@ const softDeleteJob = async (req, res) => {
 module.exports = {
   postJob,
   findJobs,
+  findJobById,
   updateJob,
   updateJobStatus,
   updateJobLocation,

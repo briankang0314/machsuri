@@ -84,8 +84,8 @@ model JobPost {
 
   // Relations
   user             User                  @relation(fields: [user_id], references: [id])
-  city             City                     @relation(fields: [city_id], references: [id])
-  applications     JobApplication[]
+  city             City                  @relation(fields: [city_id], references: [id])
+  applications     JobApplication[]      
   job_categories   JobCategory[]
 
   @@map("job_post")

@@ -74,7 +74,7 @@ const postJob = async (
  * @param {string} sortOrder - The order of the sort: "asc" for ascending, "desc" for descending (defaults to "desc").
  * @returns {Array} An array of job posts that match the filter.
  */
-const getJobs = async (filter, sortBy = "createdAt", sortOrder = "desc") => {
+const getJobs = async (filter, sortBy = "created_at", sortOrder = "desc") => {
   console.log("Filter parameters to JobService.getJobs:", {
     filter,
     sortBy,
@@ -93,6 +93,30 @@ const getJobs = async (filter, sortBy = "createdAt", sortOrder = "desc") => {
     console.log("Error in JobService.getJobs:", error);
     console.error("Error retrieving jobs:", error.message);
     throw new Error("Failed to retrieve jobs: " + error.message);
+  }
+};
+
+/**
+ * Retrieves a job post from the database based on its ID.
+ * Throws an error if the job is not found or if there's a database error.
+ * @param {number} jobId - The ID of the job post to retrieve.
+ * @returns {Object} The job post object.
+ * @throws Will throw an error if the job is not found or the database operation fails.
+ */
+const findJobById = async (jobId) => {
+  console.log("Input parameters to JobService.findJobById:", jobId);
+  try {
+    // Calls the JobDao to fetch a specific job post based on its ID.
+    const job = await JobDao.getJobById(jobId);
+    if (!job) {
+      throw new Error("Job not found");
+    }
+    console.log("Job retrieved by JobService.findJobById:", job);
+    return job;
+  } catch (error) {
+    console.log("Error in JobService.findJobById:", error);
+    console.error("Service Error: Failed to find job by ID:", error.message);
+    throw new Error("Failed to find job by ID: " + error.message);
   }
 };
 
@@ -213,6 +237,7 @@ const softDeleteJob = async (jobId) => {
 module.exports = {
   postJob,
   getJobs,
+  findJobById,
   updateJob,
   deleteJob,
   softDeleteJob,

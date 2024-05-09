@@ -21,37 +21,31 @@ const JobDao = {
         minorCategoryIds,
       } = jobDetails;
 
-      // Create the job post and link it to the selected minor categories within a transaction
-      const job = await prisma.$transaction(async (prisma) => {
-        const newJob = await prisma.jobPost.create({
-          data: {
-            user_id: parseInt(userId),
-            city_id: parseInt(cityId),
-            title,
-            summary,
-            fee: parseFloat(fee),
-            contact_info: contactInfo,
-          },
-        });
-
-        // If minorCategoryIds are provided, link them to the job
-        if (minorCategoryIds && minorCategoryIds.length > 0) {
-          await Promise.all(
-            minorCategoryIds.map((categoryId) =>
-              prisma.jobCategory.create({
-                data: {
-                  job_post_id: newJob.id,
-                  minor_category_id: categoryId,
-                },
-              })
-            )
-          );
-        }
-
-        return newJob;
+      // Create the job post
+      const newJob = await prisma.jobPost.create({
+        data: {
+          user_id: parseInt(userId),
+          city_id: parseInt(cityId),
+          title,
+          summary,
+          fee: parseFloat(fee),
+          contact_info: contactInfo,
+        },
       });
 
-      return job;
+      // Link the job to minor categories if provided
+      if (minorCategoryIds && minorCategoryIds.length > 0) {
+        for (let categoryId of minorCategoryIds) {
+          await prisma.jobCategory.create({
+            data: {
+              job_post_id: newJob.id,
+              minor_category_id: categoryId,
+            },
+          });
+        }
+      }
+
+      return newJob;
     } catch (error) {
       console.log("Error in JobDao.createJob:", error);
       console.error("Error creating job:", error);
@@ -68,7 +62,7 @@ const JobDao = {
    * @returns {Array} An array of job posts.
    * @throws Will throw an error if the database operation fails.
    */
-  getJobs: async (filter, sortBy = "createdAt", sortOrder = "desc") => {
+  getJobs: async (filter, sortBy = "created_at", sortOrder = "desc") => {
     console.log(
       "Input parameters to JobDao.getJobs:",
       filter,
@@ -76,31 +70,36 @@ const JobDao = {
       sortOrder
     );
     try {
-      const jobs = await prisma.jobPosts.findMany({
+      const jobs = await prisma.jobPost.findMany({
         where: filter,
         orderBy: {
           [sortBy]: sortOrder,
         },
-        include: {
-          user_id: true,
-          city_id: true,
-        },
       });
-      return jobs.map((job) => ({
-        id: job.id,
-        userId: job.user_id,
-        cityId: job.city_id,
-        title: job.title,
-        summary: job.summary,
-        fee: job.fee,
-        contactInfo: job.contact_info,
-        status: job.status,
-        createdAt: job.created_at,
-        updatedAt: job.updated_at,
-      }));
+      return jobs;
     } catch (error) {
       console.log("Error in JobDao.getJobs:", error);
       console.error("Error retrieving jobs:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Retrieves a specific job post from the database based on the provided jobId.
+   * @param {number} jobId - The ID of the job post to retrieve.
+   * @returns {Object} The job post object.
+   * @throws Will throw an error if the job is not found or the database operation fails.
+   */
+  getJobById: async (jobId) => {
+    console.log("Input parameters to JobDao.getJobById:", jobId);
+    try {
+      const job = await prisma.jobPost.findUnique({
+        where: { id: parseInt(jobId) },
+      });
+      return job;
+    } catch (error) {
+      console.log("Error in JobDao.getJobById:", error);
+      console.error("Error retrieving job by ID:", error);
       throw error;
     }
   },
@@ -115,17 +114,29 @@ const JobDao = {
   updateJob: async (jobId, jobData) => {
     console.log("Input parameters to JobDao.updateJob:", jobId, jobData);
     try {
-      const updatedJob = await prisma.jobPosts.update({
-        where: { id: jobId },
-        data: {
-          city_id: jobData.cityId,
-          title: jobData.title,
-          summary: jobData.summary,
-          fee: jobData.fee,
-          contact_info: jobData.contactInfo,
-          status: jobData.status,
-        },
+      // Initialize an empty object for the data to update
+      const dataToUpdate = {};
+
+      // Dynamically add properties to the dataToUpdate object if they exist in jobData
+      if (jobData.cityId !== undefined)
+        dataToUpdate.city_id = parseInt(jobData.cityId);
+      if (jobData.title !== undefined) dataToUpdate.title = jobData.title;
+      if (jobData.summary !== undefined) dataToUpdate.summary = jobData.summary;
+      if (jobData.fee !== undefined) dataToUpdate.fee = parseFloat(jobData.fee);
+      if (jobData.contactInfo !== undefined)
+        dataToUpdate.contact_info = jobData.contactInfo;
+      if (jobData.status !== undefined) dataToUpdate.status = jobData.status;
+
+      // Only perform the update if there's actually data to update
+      if (Object.keys(dataToUpdate).length === 0) {
+        throw new Error("No valid fields provided to update.");
+      }
+
+      const updatedJob = await prisma.jobPost.update({
+        where: { id: parseInt(jobId) },
+        data: dataToUpdate,
       });
+
       return updatedJob;
     } catch (error) {
       console.log("Error in JobDao.updateJob:", error);
@@ -187,7 +198,18 @@ const JobDao = {
   deleteJob: async (jobId) => {
     console.log("Input parameters to JobDao.deleteJob:", jobId);
     try {
-      await prisma.jobPosts.delete({
+      // Manually delete all related applications
+      await prisma.jobApplication.deleteMany({
+        where: { job_post_id: parseInt(jobId) },
+      });
+
+      // Manually delete all related categories
+      await prisma.jobCategory.deleteMany({
+        where: { job_post_id: parseInt(jobId) },
+      });
+
+      // Then delete the job post
+      await prisma.jobPost.delete({
         where: { id: parseInt(jobId) },
       });
       return true;
