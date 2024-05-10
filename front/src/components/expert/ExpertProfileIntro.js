@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
+import ExpertProfileContentTitle from './ExpertProfileContentTitle';
 
 import styles from './ExpertProfileIntro.module.scss';
 

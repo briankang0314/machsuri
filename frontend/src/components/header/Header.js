@@ -51,7 +51,7 @@ function Header() {
             <img
               onClick={() => handleNavigate("/")}
               // Original.png is in the public/images/logo folder
-              src={"/images/logo/Original.png"}
+              src={"/images/profile/profile_sample.jpeg"}
               width="100px"
               alt="Original"
             />

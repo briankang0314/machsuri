@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
+import ExpertProfileContentTitle from './ExpertProfileContentTitle';
 
-import { BasicDropDown } from '../../components/drop_down/ExpertProfileDropDowns';
+import { BasicDropDown } from '../drop_down/ExpertProfileDropDowns';
 
 // import styles from './ExpertProfileEmployeeNum.module.scss';
 

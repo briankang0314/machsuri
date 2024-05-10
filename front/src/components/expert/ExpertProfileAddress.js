@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
-import FilteringModal from '../../components/modal/FilteringModal';
+import FilteringModal from '../modal/FilteringModal';
 
 import styles from './ExpertProfileAddress.module.scss';
 

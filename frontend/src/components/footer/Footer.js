@@ -23,7 +23,7 @@ function Footer() {
           <div className={styles.hiddenLine} />
           <ul>
             <li className={`${styles.footerTitle} ${styles.disabled}`}>
-              고객 안내
+              고객안내
             </li>
             <li className={styles.disabled}>이용안내</li>
             <li className={styles.disabled}>안전정책</li>
@@ -34,7 +34,6 @@ function Footer() {
             >
               전문가찾기
             </li>
-            <li className={styles.disabled}>전문가에게묻다</li>
           </ul>
           <div className={styles.hiddenLine} />
           <ul>

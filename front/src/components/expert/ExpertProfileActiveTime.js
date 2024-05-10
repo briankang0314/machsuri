@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ExpertProfileContentTitle from '../../components/expert/ExpertProfileContentTitle';
-import { TimeDropDown } from '../../components/drop_down/ExpertProfileDropDowns';
+import { TimeDropDown } from '../drop_down/ExpertProfileDropDowns';
 import timeFormatter from '../../utils/timeFormatter';
 
 import styles from './ExpertProfileActiveTime.module.scss';
