@@ -1,45 +1,67 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./Home.css";
+import React, { useState, useEffect, useRef } from "react";
+import Header from "../../components/header/Header";
+import Footer from "../../components/footer/Footer";
+import JobListContents from "../../components/job/JobListContents";
+import styles from "./Home.module.scss";
+import { SERVER_PORT } from "../../config";
 
 function Home() {
   const [jobs, setJobs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const didFetch = useRef(false);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5001/jobs/all") // Adjust the URL based on your server setup
+  const fetchJobs = () => {
+    setIsLoading(true);
+    console.log("$SERVER_PORT:", SERVER_PORT);
+    fetch(`${SERVER_PORT}/jobs/all`)
       .then((response) => {
-        setJobs(response.data);
+        console.log("Fetch response:", response);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched jobs data:", data);
+        setJobs(data);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching jobs:", error);
-        setError(error);
         setIsLoading(false);
       });
-  }, []);
+  };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading the job posts!</div>;
+  useEffect(() => {
+    if (!didFetch.current) {
+      fetchJobs();
+      didFetch.current = true;
+    }
+  }, []);
 
   return (
     <div>
-      <h1>Job Posts</h1>
-      <ul>
-        {jobs.map((job) => (
-          <li key={job.id} className="job-listing">
-            <h2>{job.title}</h2>
-            <p>{job.summary}</p>
-            <div>Fee: {parseFloat(job.fee).toFixed(2)} %</div>
-            <div>Contact: {job.contact_info}</div>
-            <div>Status: {job.status}</div>
-          </li>
-        ))}
-      </ul>
+      <Header />
+      <main className={styles.jobList}>
+        {jobs.length > 0 ? (
+          <>
+            <JobListContents jobs={jobs} />
+            <Loading isLoading={isLoading} />
+          </>
+        ) : (
+          <div className={styles.notFoundJob}>
+            <span>작업이 없어요!</span>
+          </div>
+        )}
+      </main>
+      <Footer />
     </div>
   );
 }
+
+const Loading = (props) => {
+  const { isLoading } = props;
+  return <div className={isLoading ? styles.loading : styles.unloading} />;
+};
 
 export default Home;

@@ -85,7 +85,7 @@ const FilteringModal = props => {
           ) : (
             <>
               <BsList size="24px" />
-              <h4>서비스 선택</h4>
+              <h4>분류 선택</h4>
             </>
           )}
         </div>
@@ -97,7 +97,7 @@ const FilteringModal = props => {
                 type="text"
                 value={useInputText}
                 onChange={handleChangeInput}
-                placeholder="어떤 분야의 전문가를 찾으시나요?"
+                placeholder="어떤 종류의 작업을 찾으시나요?"
               />
             </div>
           )}

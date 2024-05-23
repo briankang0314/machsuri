@@ -58,10 +58,7 @@ router.post(
 
 // Route to retrieve all minor categories.
 // Open to all users without authentication.
-router.get(
-  "/major-categories/:majorCategoryId/minor-categories",
-  CategoryController.listMinorCategories
-);
+router.get("/minor-categories", CategoryController.listMinorCategories);
 
 // Route to retrieve all minor categories under a major category.
 // Open to all users without authentication.
@@ -73,21 +70,21 @@ router.get(
 // Route to retrieve a minor category by ID.
 // Open to all users without authentication.
 router.get(
-  "/major-categories/:majorCategoryId/minor-categories/:minorCategoryId",
+  "/minor-categories/:minorCategoryId",
   CategoryController.findMinorCategoryById
 );
 
 // Route to retrieve a minor category by name.
 // Open to all users without authentication.
 router.get(
-  "/major-categories/:majorCategoryId/minor-categories/name/:minorCategoryName",
+  "/minor-categories/name/:minorCategoryName",
   CategoryController.findMinorCategoryByName
 );
 
 // Route to change the name of an existing minor category.
 // Open to all users without authentication.
 router.put(
-  "/major-categories/:majorCategoryId/minor-categories/:minorCategoryId",
+  "/minor-categories/:minorCategoryId",
   userValidateToken,
   CategoryController.changeMinorCategoryName
 );

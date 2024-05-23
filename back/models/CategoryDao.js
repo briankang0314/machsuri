@@ -131,7 +131,7 @@ const CategoryDao = {
   getMinorCategoriesByMajorCategory: async (majorCategoryId) => {
     try {
       return await prisma.minorCategory.findMany({
-        where: { majorCategoryId },
+        where: { major_category_id: majorCategoryId },
       });
     } catch (error) {
       console.error("Error getting minor categories by major category:", error);

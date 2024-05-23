@@ -54,7 +54,7 @@
 }
 
 .options:hover {
-  border: 1px solid #03c7ae;
+  border: 1px solid #48bbed;
 }
 
 .genderRadio + label {
@@ -73,7 +73,7 @@
 }
 
 .genderRadio:checked + label {
-  background: #03c7ae;
+  background: #48bbed;
   color: #fff;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .inputValue:focus {
-  box-shadow: 0 0 0.2rem 0.1rem #03c7ae;
+  box-shadow: 0 0 0.2rem 0.1rem #48bbed;
 }
 
 .invalid {
@@ -117,7 +117,7 @@
   right: 0;
   padding: 1rem;
   font-size: 0.7rem;
-  color: #03c7ae;
+  color: #48bbed;
   cursor: pointer;
 }
 
@@ -156,7 +156,7 @@
 }
 
 .checkBox input:checked + label {
-  background: #03c7ae;
+  background: #48bbed;
 }
 
 .checkInner {

@@ -9,8 +9,9 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const postJob = async (req, res) => {
-  const { userId, cityId, title, summary, fee, contactInfo, minorCategoryIds } =
+  const { cityId, title, summary, fee, contactInfo, minorCategoryIds, images } =
     req.body;
+  const userId = req.user.id;
   console.log("Input parameters to JobController.postJob:", {
     userId,
     cityId,
@@ -19,9 +20,9 @@ const postJob = async (req, res) => {
     fee,
     contactInfo,
     minorCategoryIds,
+    images,
   });
 
-  // Validate that all necessary fields are provided
   if (
     !userId ||
     !cityId ||
@@ -30,7 +31,7 @@ const postJob = async (req, res) => {
     !fee ||
     !contactInfo ||
     !Array.isArray(minorCategoryIds) ||
-    !minorCategoryIds.length === 0
+    minorCategoryIds.length === 0
   ) {
     const error = await errorGenerator({
       statusCode: 400,
@@ -40,7 +41,6 @@ const postJob = async (req, res) => {
   }
 
   try {
-    // Call service to create job and send successful response
     const newJob = await jobService.postJob(
       userId,
       cityId,
@@ -48,13 +48,12 @@ const postJob = async (req, res) => {
       summary,
       fee,
       contactInfo,
-      minorCategoryIds
+      minorCategoryIds,
+      images
     );
     console.log("Job created by JobController.postJob:", newJob);
     res.status(201).json(newJob);
   } catch (error) {
-    // Handle specific and general errors with more granularity
-    console.log("Error in JobController.postJob:", error);
     console.error("Failed to create job:", error);
     const err = await errorGenerator({
       statusCode: error.statusCode || 500,
@@ -82,7 +81,7 @@ const findJobs = async (req, res) => {
   try {
     // Retrieve jobs using filters and send them
     const jobs = await jobService.getJobs(filter, sortBy, sortOrder);
-    console.log("Jobs retrieved by JobController.findJobs:", jobs);
+    // console.log("Jobs retrieved by JobController.findJobs:", jobs);
     if (jobs.length === 0) {
       const error = await errorGenerator({
         statusCode: 404,
@@ -103,21 +102,12 @@ const findJobs = async (req, res) => {
   }
 };
 
-/**
- * Controller to retrieve a specific job posting.
- * Job ID is provided as a URL parameter.
- *
- * @param {Object} req - The HTTP request object.
- * @param {Object} res - The HTTP response object used to send responses.
- */
 const findJobById = async (req, res) => {
   const { jobId } = req.params;
   console.log("Input parameters to JobController.findJobById:", { jobId });
 
   try {
-    // Retrieve job by ID and send it
     const job = await jobService.findJobById(jobId);
-    console.log("Job retrieved by JobController.findJobById:", job);
     if (!job) {
       const error = await errorGenerator({
         statusCode: 404,
@@ -127,8 +117,6 @@ const findJobById = async (req, res) => {
     }
     res.json(job);
   } catch (error) {
-    // Log error and send error response
-    console.log("Error in JobController.findJobById:", error);
     const err = await errorGenerator({
       statusCode: 500,
       message: "Internal server error",

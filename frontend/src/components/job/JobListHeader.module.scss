@@ -1,25 +1,25 @@
 $sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩니다.
 
 @media (max-width: 690px) {
-  .expertListHeader {
+  .jobListHeader {
     padding: 0px 20px;
   }
 }
 
 @media (min-width: 691px) and (max-width: 890px) {
-  .expertListHeader {
+  .jobListHeader {
     padding: 0px 20px;
   }
 }
 
 @media (max-width: 891px) {
   .categoryBtn,
-  .addressBtn {
+  .locationBtn {
     width: 100% !important;
   }
 }
 
-.expertListHeader {
+.jobListHeader {
   line-height: 1.6;
   .headerNav {
     margin: 20px 0px;
@@ -52,7 +52,7 @@ $sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩�
         margin-right: 6px;
       }
     }
-    .addressBtn {
+    .locationBtn {
       margin-right: 12px;
     }
   }
@@ -62,7 +62,7 @@ $sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩�
     justify-content: space-between;
     align-items: center;
     margin: 20px 0px;
-    .expertCounterWapper {
+    .jobCounterWapper {
       font-size: 13px;
       span:nth-child(1) {
         margin-left: 5px;

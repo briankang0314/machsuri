@@ -19,7 +19,8 @@ const postJob = async (
   summary,
   fee,
   contactInfo,
-  minorCategoryIds
+  minorCategoryIds,
+  images
 ) => {
   console.log("Input parameters to JobService.postJob:", {
     userId,
@@ -29,6 +30,7 @@ const postJob = async (
     fee,
     contactInfo,
     minorCategoryIds,
+    images,
   });
   // Validate input to ensure no essential details are missing.
   if (
@@ -55,6 +57,10 @@ const postJob = async (
       contactInfo,
       minorCategoryIds,
     });
+
+    if (images && images.length > 0) {
+      await JobDao.addJobImages(newJob.id, images);
+    }
     console.log("Job created by JobService.postJob:", newJob);
 
     // Return the newly created job object.
@@ -86,7 +92,7 @@ const getJobs = async (filter, sortBy = "created_at", sortOrder = "desc") => {
     if (jobs.length === 0) {
       throw new Error("No jobs found matching the specified criteria");
     }
-    console.log("Jobs retrieved by JobService.getJobs:", jobs);
+    // console.log("Jobs retrieved by JobService.getJobs:", jobs);
     // Returns a list of jobs that match the filter.
     return jobs;
   } catch (error) {
@@ -111,6 +117,8 @@ const findJobById = async (jobId) => {
     if (!job) {
       throw new Error("Job not found");
     }
+    const images = await JobDao.getJobImages(jobId);
+    job.images = images;
     console.log("Job retrieved by JobService.findJobById:", job);
     return job;
   } catch (error) {

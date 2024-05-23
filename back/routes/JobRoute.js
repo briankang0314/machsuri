@@ -9,13 +9,17 @@ const verifyJobPoster = require("../middleware/verifyJobPoster");
 router.post(
   "/",
   userValidateToken,
-  roleCheck(["user", "admin"]),
+  roleCheck(["general", "admin"]),
   JobController.postJob
 );
 
 // Route to retrieve job postings with optional filters.
 // Open to all users without authentication.
 router.get("/all", JobController.findJobs);
+
+// Route to retrieve a job posting by its ID.
+// Open to all users without authentication.
+router.get("/:jobId", JobController.findJobById);
 
 // Route to update an existing job posting.
 router.put(

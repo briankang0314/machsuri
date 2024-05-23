@@ -1,5 +1,5 @@
-const SERVER_PORT = process.env.REACT_APP_SERVER_PORT;
-// server port is 5000
-const FRONT_PORT = process.env.REACT_APP_FRONT_PORT;
-// front port is 3000
+// config.js
+const SERVER_PORT =
+  process.env.REACT_APP_SERVER_PORT || "http://localhost:5001";
+const FRONT_PORT = process.env.REACT_APP_FRONT_PORT || "http://localhost:3000";
 export { SERVER_PORT, FRONT_PORT };

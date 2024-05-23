@@ -1,8 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Footer.module.scss";
-import { GrApple } from "react-icons/gr";
-import { IoLogoGooglePlaystore } from "react-icons/io5";
 
 function Footer() {
   const navigate = useNavigate();
@@ -30,7 +28,7 @@ function Footer() {
             <li className={styles.disabled}>예상금액</li>
             <li
               className={styles.clickable}
-              onClick={() => handleNavigate("/expert/list")}
+              onClick={() => handleNavigate("/users/all")}
             >
               전문가찾기
             </li>
@@ -44,7 +42,7 @@ function Footer() {
             <li className={styles.disabled}>전문가가이드</li>
             <li
               className={styles.clickable}
-              onClick={() => handleNavigate("/pro/welcome")}
+              onClick={() => handleNavigate("/users/register")}
             >
               전문가가입
             </li>

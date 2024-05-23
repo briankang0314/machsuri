@@ -20,8 +20,6 @@ const JobDao = {
         contactInfo,
         minorCategoryIds,
       } = jobDetails;
-
-      // Create the job post
       const newJob = await prisma.jobPost.create({
         data: {
           user_id: parseInt(userId),
@@ -32,23 +30,21 @@ const JobDao = {
           contact_info: contactInfo,
         },
       });
-
-      // Link the job to minor categories if provided
+      console.log("New job created:", newJob);
       if (minorCategoryIds && minorCategoryIds.length > 0) {
         for (let categoryId of minorCategoryIds) {
-          await prisma.jobCategory.create({
+          const categoryLink = await prisma.jobCategory.create({
             data: {
               job_post_id: newJob.id,
-              minor_category_id: categoryId,
+              minor_category_id: parseInt(categoryId),
             },
           });
+          console.log("Linked job to category:", categoryLink);
         }
       }
-
       return newJob;
     } catch (error) {
-      console.log("Error in JobDao.createJob:", error);
-      console.error("Error creating job:", error);
+      console.error("Error in JobDao.createJob:", error);
       throw error;
     }
   },
@@ -237,6 +233,68 @@ const JobDao = {
     } catch (error) {
       console.log("Error in JobDao.softDeleteJob:", error);
       console.error("Error soft deleting job:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Adds images to a job post.
+   * @param {number} jobPostId - The ID of the job post.
+   * @param {Array} images - An array of image URLs with a flag indicating if it is a thumbnail.
+   * @returns {Object} The newly created job images.
+   */
+  addJobImages: async (jobPostId, images) => {
+    console.log("Input parameters to JobDao.addJobImages:", {
+      jobPostId,
+      images,
+    });
+    try {
+      const jobImages = await prisma.jobImage.createMany({
+        data: images.map((image) => ({
+          job_post_id: jobPostId,
+          url: image.url,
+          is_thumbnail: image.is_thumbnail || false,
+        })),
+      });
+      return jobImages;
+    } catch (error) {
+      console.error("Error in JobDao.addJobImages:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Retrieves images for a specific job post.
+   * @param {number} jobPostId - The ID of the job post.
+   * @returns {Array} An array of job images.
+   */
+  getJobImages: async (jobPostId) => {
+    console.log("Input parameters to JobDao.getJobImages:", jobPostId);
+    try {
+      const jobImages = await prisma.jobImage.findMany({
+        where: { job_post_id: jobPostId },
+      });
+      return jobImages;
+    } catch (error) {
+      console.error("Error in JobDao.getJobImages:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Deletes images for a specific job post.
+   * @param {number} jobPostId - The ID of the job post.
+   * @returns {Object} The result of the delete operation.
+   */
+  deleteJobImages: async (jobPostId) => {
+    console.log("Input parameters to JobDao.deleteJobImages:", jobPostId);
+    try {
+      const deleteResult = await prisma.jobImage.deleteMany({
+        where: { job_post_id: jobPostId },
+      });
+      return deleteResult;
+    } catch (error) {
+      console.error("Error in JobDao.deleteJobImages:", error);
       throw error;
     }
   },

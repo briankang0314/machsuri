@@ -36,7 +36,7 @@ model User {
   // Attributes
   email                  String  @unique // Unique email for user, used for login.
   password               String  // Password for user's account.
-  name                   String  // Full name of the .
+  name                   String  // Full name of the user.
   role                   Role    @default(general) // either general or admin
   profile_image_url      String? // Optional profile image URL.
   intro                  String? // Optional short introduction or bio.
@@ -76,12 +76,12 @@ model JobPost {
   // Attributes
   title         String // Title of the job post.
   summary       String // Short summary or description of the job post.
-  fee           Decimal // Offered fee for the job.
+  fee           Decimal @db.Decimal(10, 2) // Offered fee for the job.
   contact_info  String // Contact information for job applications.
   status        Status  @default(open) // Status of the job post (e.g., open, closed).
 
   // Flags
-  is_deleted             Boolean @default(false) // Flag to soft delete the user.
+  is_deleted    Boolean @default(false) // Flag to soft delete the user.
 
   // Metadata
   created_at    DateTime  @default(now()) // Timestamp when the job post was created.
@@ -93,8 +93,40 @@ model JobPost {
   city             City                  @relation(fields: [city_id], references: [id])
   applications     JobApplication[]      
   job_categories   JobCategory[]
+  images           JobImage[]            // Relation to the JobImage model
 
   @@map("job_post")
+}
+
+model JobImage {
+  // Identifiers
+  id            Int @id @default(autoincrement()) // Unique identifier for each job image.
+  
+  // Foreign Keys
+  job_post_id   Int // Foreign key linking to the JobPost table.
+
+  // Attributes
+  url           String // URL of the image.
+  is_thumbnail  Boolean @default(false) // Flag to indicate if the image is the thumbnail.
+
+  // Relations
+  job_post      JobPost @relation(fields: [job_post_id], references: [id])
+  
+  @@map("job_image")
+}
+
+// Junction table for many-to-many relationship between job posts and minor categories.
+model JobCategory {
+  // Identifiers
+  job_post_id       Int
+  minor_category_id Int
+
+  // Relations
+  job_post          JobPost        @relation(fields: [job_post_id], references: [id])
+  minor_category    MinorCategory  @relation(fields: [minor_category_id], references: [id])
+
+  @@id([job_post_id, minor_category_id])
+  @@map("job_category")
 }
 
 // Model representing applications for job post by user.
@@ -168,20 +200,6 @@ model UserPreference {
 
   @@id([user_id, minor_category_id])
   @@map("user_preference")
-}
-
-// Junction table for many-to-many relationship between job posts and minor categories.
-model JobCategory {
-  // Identifiers
-  job_post_id       Int
-  minor_category_id Int
-
-  // Relations
-  job_post          JobPost        @relation(fields: [job_post_id], references: [id])
-  minor_category    MinorCategory  @relation(fields: [minor_category_id], references: [id])
-
-  @@id([job_post_id, minor_category_id])
-  @@map("job_category")
 }
 
 // Model representing review given to user by peer.

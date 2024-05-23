@@ -53,14 +53,16 @@ function MajorCategoryList() {
             className={styles.categoryMain}
           />
           <h2 className={styles.category_title}>{category}</h2>
-          <p className={styles.description}>지금 숨고와 함께 시작해 보세요</p>
+          <p className={styles.description}>
+            지금 마하수리와 함께 시작해 보세요
+          </p>
           <div className={styles.search_wrap}>
             <input
               type="text"
-              placeholder="어떤 분야의 전문가를 찾으시나요?"
+              placeholder="어떤 종류의 작업을 찾으시나요?"
               className={styles.searchBar}
             />
-            <button className={styles.searchBtn}>전문가찾기</button>
+            <button className={styles.searchBtn}>작업찾기</button>
           </div>
         </div>
         <MajorCategory />

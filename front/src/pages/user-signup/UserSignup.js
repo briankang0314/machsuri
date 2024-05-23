@@ -8,7 +8,7 @@ function UserSignUp() {
   // api로 보내기
 
   const sendUserSignUp = () => {
-    fetch(SERVER_PORT + '/users/signup', {
+    fetch(SERVER_PORT + '/users/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function UserSignUp() {
   return (
     <section className={styles.section}>
       <Header />
-      <h3 className={styles.title}>숭고에 오신 것을 환영합니다</h3>
+      <h3 className={styles.title}>서울/경기 오더방에 오신 것을 환영합니다</h3>
       <div className={styles.card}>
         <form className={styles.form}>
           <div className={styles.inputBox}>
@@ -228,10 +228,6 @@ function UserSignUp() {
             회원가입
           </button>
         </form>
-
-        <p className={styles.gosuSignUp} onClick={() => navigate('/pro')}>
-          전문가로 가입하시나요?
-        </p>
       </div>
     </section>
   );

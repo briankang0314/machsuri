@@ -121,7 +121,7 @@ function Login() {
               영문+숫자 조합 8자리 이상 입력해주세요.
             </div>
             <Link to="./findpw" className={styles.findPw}>
-              비밀번호찾기
+              비밀번호 찾기
             </Link>
             <button
               className={styles.loginBtn}

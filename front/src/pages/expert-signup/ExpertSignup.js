@@ -34,10 +34,10 @@ function ExpertSignUp() {
         <h2 className={styles.imageHeaderH2}>
           전문가로 등록하고,
           <br />
-          숭고에서 고객을 만나보세요!
+          마하수리에서 고객을 만나보세요!
         </h2>
         <p className={styles.imageHeaderP}>
-          숭고는 국내 최대 규모의 생활서비스 플랫폼입니다. <br />
+          마하수리는 국내 최대 규모의 생활서비스 플랫폼입니다. <br />
           가장 빠르고 간편하게 고객을 찾을 수 있습니다.
         </p>
       </div>
@@ -73,7 +73,7 @@ function ExpertSignUp() {
         </div>
       </div>
       <div className={styles.Info}>
-        <h2 className={styles.infoH2}>숭고는 어떻게 운영되나요?</h2>
+        <h2 className={styles.infoH2}>마하수리는 어떻게 운영되나요?</h2>
         <ul className={styles.infoStage}>
           <li className={styles.infoCaption}>
             <img

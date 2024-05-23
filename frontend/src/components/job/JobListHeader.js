@@ -1,25 +1,26 @@
 import React, { useState } from "react";
-import styles from "./JobPostListHeader.module.scss";
+import styles from "./JobListHeader.module.scss";
 import { BsGrid } from "react-icons/bs";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { GoLocation } from "react-icons/go";
 
 import FilteringModal from "../modal/FilteringModal";
 
-const JobPostListHeader = (props) => {
+const JobListHeader = (props) => {
   const {
-    jobPostNumber,
+    jobCount,
     useSort,
     setUseSort,
     useCategory,
     setUseCategory,
-    useAddress,
-    setUseAddress,
+    useLocation,
+    setUseLocation,
   } = props;
   const [isModalVisible, setIsModalVisible] = useState({
     type: "",
     visible: false,
   });
+
   function handleChangeSort(text) {
     setUseSort(text);
   }
@@ -27,31 +28,33 @@ const JobPostListHeader = (props) => {
   function handleOpenModal(type) {
     setIsModalVisible({ type, visible: true });
   }
+
   return (
     <>
-      <header className={styles.jobPostListHeader}>
+      <header className={styles.jobListHeader}>
         <div className={styles.headerNav}>
-          <h1>전문가찾기</h1>
+          <h1>작업찾기</h1>
           <span>
-            숭고 <IoIosArrowForward size="10px" />{" "}
-            {!useAddress
+            서울/경기 오더방
+            <IoIosArrowForward size="10px" />{" "}
+            {!useLocation
               ? "지역"
-              : useAddress.name + " " + useAddress.details.name}
+              : useLocation.regionName + " " + useLocation.cityName}
             {", "}
             {!useCategory
               ? "카테고리"
-              : useCategory.name + " - " + useCategory.minors.name}
+              : useCategory.name + " - " + useCategory.minor.name}
           </span>
         </div>
         <div className={styles.headerCategory}>
           <button
-            className={styles.addressBtn}
-            onClick={() => handleOpenModal("address")}
+            className={styles.locationBtn}
+            onClick={() => handleOpenModal("location")}
           >
             <GoLocation className={styles.icon} size="12px" />
-            {!useAddress
+            {!useLocation
               ? "전국"
-              : useAddress.name + " " + useAddress.details.name}
+              : useLocation.regionName + " " + useLocation.cityName}
           </button>
           <button
             className={styles.categoryBtn}
@@ -59,14 +62,14 @@ const JobPostListHeader = (props) => {
           >
             <BsGrid className={styles.icon} size="12px" />
             {!useCategory
-              ? "서비스 전체"
-              : useCategory.name + " - " + useCategory.minors.name}
+              ? "분류 전체"
+              : useCategory.name + " - " + useCategory.minor.name}
           </button>
         </div>
         <div className={styles.headerSort}>
-          <div className={styles.jobPostCounterWapper}>
-            <span>{jobPostNumber}</span>
-            <span> 전문가 </span>
+          <div className={styles.jobCounterWapper}>
+            <span>{jobCount}</span>
+            <span> 개의 작업</span>
           </div>
           <div className={styles.dropDownWrapper}>
             <button className={styles.dropDownBtn}>
@@ -88,7 +91,7 @@ const JobPostListHeader = (props) => {
           isModalVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}
           setUseFilter={
-            isModalVisible.type === "address" ? setUseAddress : setUseCategory
+            isModalVisible.type === "location" ? setUseLocation : setUseCategory
           }
         />
       )}
@@ -96,4 +99,4 @@ const JobPostListHeader = (props) => {
   );
 };
 
-export default JobPostListHeader;
+export default JobListHeader;

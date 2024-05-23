@@ -2,7 +2,7 @@ const LocationDao = require("../models/LocationDao");
 
 /**
  * Retrieves all regions from the database, including the cities in each region.
- * @returns {Array<Object>} An array of all regions.
+ * @returns {Array} An array of all regions.
  */
 const getRegions = async () => {
   return LocationDao.getRegions();
@@ -38,7 +38,7 @@ const getRegionByName = async (name) => {
 
 /**
  * Retrieves all cities from the database.
- * @returns {Array<Object>} An array of city objects.
+ * @returns {Array} An array of city objects.
  * @throws {Error} If the database operation fails.
  */
 const getCities = async () => {
@@ -48,7 +48,7 @@ const getCities = async () => {
 /**
  * Retrieves all cities in a region.
  * @param {number} regionId - The ID of the region.
- * @returns {Array<Object>} An array of city objects.
+ * @returns {Array} An array of city objects.
  * @throws {Error} If the database operation fails.
  */
 const getCitiesByRegion = async (regionId) => {

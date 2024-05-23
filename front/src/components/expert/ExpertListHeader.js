@@ -31,9 +31,10 @@ const ExpertListHeader = props => {
     <>
       <header className={styles.expertListHeader}>
         <div className={styles.headerNav}>
-          <h1>전문가찾기</h1>
+          <h1>작업찾기</h1>
           <span>
-            숭고 <IoIosArrowForward size="10px" />{' '}
+            서울/경기 오더방
+            <IoIosArrowForward size="10px" />{' '}
             {!useAddress
               ? '지역'
               : useAddress.name + ' ' + useAddress.details.name}
@@ -59,14 +60,14 @@ const ExpertListHeader = props => {
           >
             <BsGrid className={styles.icon} size="12px" />
             {!useCategory
-              ? '서비스 전체'
+              ? '분류 전체'
               : useCategory.name + ' - ' + useCategory.minors.name}
           </button>
         </div>
         <div className={styles.headerSort}>
           <div className={styles.expertCounterWapper}>
             <span>{expertNumber}</span>
-            <span> 명의 전문가</span>
+            <span> 개의 작업</span>
           </div>
           <div className={styles.dropDownWrapper}>
             <button className={styles.dropDownBtn}>

@@ -1,18 +1,13 @@
-import { React, useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./Header.module.scss";
 import { FaRegBell, FaBars } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-import { FRONT_PORT } from "../../config";
-
 function Header() {
   const navigate = useNavigate();
-  const [profileClick, setProfileClick] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [isNewQuotation, setIsNewQuotation] = useState(true);
-  const [chatNumber, setChatNumber] = useState(26);
 
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
@@ -24,22 +19,22 @@ function Header() {
 
   const logoutBtn = () => {
     localStorage.removeItem("access_token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("user_id");
     setIsLogin(false);
   };
 
   const profile = useRef();
+
   const profileOutline = () => {
-    if (!profileClick) {
-      profile.current.style.outline = "2px solid #48bbed";
-      setProfileClick(true);
-    } else {
-      profile.current.style.outline = "none";
-      setProfileClick(false);
+    if (isLogin) {
+      navigate("/profile");
     }
   };
 
   function handleNavigate(path) {
+    if (!path.startsWith("/")) {
+      path = "/" + path;
+    }
     navigate(path);
   }
 
@@ -50,10 +45,9 @@ function Header() {
           <span className={styles.headerLogo}>
             <img
               onClick={() => handleNavigate("/")}
-              // Original.png is in the public/images/logo folder
-              src={"/images/profile/profile_sample.jpeg"}
+              src="/images/logo/fix.png"
               width="100px"
-              alt="Original"
+              alt="Logo"
             />
           </span>
           <div className={`${styles.headerSearchBox} ${styles.hidden}`}>
@@ -75,20 +69,6 @@ function Header() {
         <ul className={styles.headerBtn}>
           {isLogin ? (
             <>
-              <li onClick={() => handleNavigate("/received_report")}>
-                <div className={styles.flexRow}>
-                  받은 견적
-                  {isNewQuotation ? (
-                    <div className={`${styles.redDot}`} />
-                  ) : null}
-                </div>
-              </li>
-              <li onClick={() => handleNavigate("")}>
-                <div className={`${styles.flexRow} ${styles.disabled}`}>
-                  채팅
-                  <div className={`${styles.chatNum}`}>{chatNumber}</div>
-                </div>
-              </li>
               <li onClick={logoutBtn}>
                 <div className={styles.flexRow}>로그아웃</div>
               </li>
@@ -98,24 +78,29 @@ function Header() {
               <li>
                 <div className={styles.flexRow}>
                   <img
-                    src={FRONT_PORT + "/images/profile/profileNotFound.svg"}
+                    src={"/images/profile/profileNotFound.svg"}
                     className={styles.profileImg}
                     alt="profile_image"
                     ref={profile}
                     onClick={profileOutline}
                   />
-                  <div className={`${styles.grayColor} ${styles.disabled}`}>
-                    {profileClick ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                  </div>
                 </div>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigate("/jobs/register")}
+                  className={styles.jobRegisterBtn}
+                >
+                  작업등록
+                </button>
               </li>
             </>
           ) : (
             <>
-              <li onClick={() => handleNavigate("/login")}>로그인</li>
+              <li onClick={() => handleNavigate("users/login")}>로그인</li>
               <li
                 onClick={() => handleNavigate("users/register")}
-                className={styles.expertSignup}
+                className={styles.userSignup}
               >
                 회원가입
               </li>

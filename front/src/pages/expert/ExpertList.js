@@ -65,7 +65,7 @@ const ExpertList = () => {
           </>
         ) : (
           <div className={styles.notFoundExpert}>
-            <span>전문가가 없어요!</span>
+            <span>작업이 없어요!</span>
           </div>
         )}
       </main>

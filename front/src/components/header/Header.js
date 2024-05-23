@@ -32,7 +32,7 @@ function Header() {
   const profile = useRef();
   const profileOutline = () => {
     if (!profileClick) {
-      profile.current.style.outline = '2px solid #03c7ae';
+      profile.current.style.outline = '2px solid #48bbed';
       setProfileClick(true);
     } else {
       profile.current.style.outline = 'none';
@@ -51,9 +51,9 @@ function Header() {
           <span className={styles.headerLogo}>
             <img
               onClick={() => handleNavigate('/')}
-              src={FRONT_PORT + '/images/logo/Original.png'}
+              src="/images/logo/fix.png"
               width="100px"
-              alt="Original"
+              alt="Logo"
             />
           </span>
           <div className={`${styles.headerSearchBox} ${styles.hidden}`}>
@@ -73,11 +73,10 @@ function Header() {
           <FiSearch />
         </span>
         <ul className={styles.headerBtn}>
-          <li onClick={() => handleNavigate('/expert/list')}>전문가찾기</li>
-          <li onClick={() => handleNavigate('')} className={styles.disabled}>
+          {/* <li onClick={() => handleNavigate('')} className={styles.disabled}>
             마켓
             <span className={styles.marketNew}>N</span>
-          </li>
+          </li> */}
           {isLogin ? (
             <>
               <li onClick={() => handleNavigate('/received_report')}>
@@ -97,6 +96,7 @@ function Header() {
               <li onClick={logoutBtn}>
                 <div className={styles.flexRow}>로그아웃</div>
               </li>
+              <li onClick={() => handleNavigate('/expert/signup')}>작업등록</li>
               <li>
                 <FaRegBell size="1.3em" className={styles.bell} />
               </li>
@@ -124,12 +124,12 @@ function Header() {
           ) : (
             <>
               <li onClick={() => handleNavigate('/login')}>로그인</li>
-              <li onClick={() => handleNavigate('/sign-up')}>회원가입</li>
+              {/* <li onClick={() => handleNavigate('/sign-up')}>회원가입</li> */}
               <li
-                onClick={() => handleNavigate('/pro')}
+                onClick={() => handleNavigate('/sign-up')}
                 className={styles.expertSignup}
               >
-                전문가가입
+                회원가입
               </li>
             </>
           )}

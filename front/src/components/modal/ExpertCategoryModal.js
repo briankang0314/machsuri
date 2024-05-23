@@ -68,7 +68,7 @@ const ExpertCategoryModal = props => {
         </div>
         <div className={styles.modalHeader}>
           <BsList size="24px" />
-          <h4>서비스 선택</h4>
+          <h4>분류 선택</h4>
         </div>
         <div className={styles.modalContent}>
           <div className={styles.modalList}>

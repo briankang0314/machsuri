@@ -23,7 +23,7 @@
 }
 
 .question:checked + label {
-  background: #00c7ae;
+  background: #48bbed;
 }
 
 .checkInner {
@@ -62,7 +62,7 @@
   height: 0.3rem;
   border-radius: 15px;
   width: 50%;
-  background: #03c7ae;
+  background: #48bbed;
   text-align: center;
   transition: width 1s;
 }
@@ -74,7 +74,7 @@
 .progressNumber {
   text-align: center;
   margin: 0.75rem;
-  color: #03c7ae;
+  color: #48bbed;
 }
 
 .formTitle {

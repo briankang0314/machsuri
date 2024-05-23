@@ -1,26 +1,42 @@
+.job-listing {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.job-listing h2 {
+  color: #333;
+}
+
+.job-listing div {
+  font-size: 0.9rem;
+  color: #666;
+}
+
 @media (max-width: 690px) {
-  .expertListFooter {
+  .jobListFooter {
     display: none;
   }
 }
 
 @media (min-width: 691px) and (max-width: 890px) {
-  .expertListFooter {
+  .jobListFooter {
     display: none;
   }
 }
 
 @media (min-width: 891px) {
-  .expertList {
+  .jobList {
     width: 840px;
   }
 }
 
-.expertList {
+.jobList {
   min-height: 650px;
   padding-top: 90px;
   margin: 0 auto;
-  .notFoundExpert {
+  .notFoundJob {
     display: flex;
     height: 300px;
     align-items: center;
