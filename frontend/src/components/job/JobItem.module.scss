@@ -1,60 +1,82 @@
 .jobItem {
   display: flex;
-  flex-direction: row;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #dddddd57;
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 16px;
   cursor: pointer;
-  line-height: 1.7;
+  border-radius: 8px;
+  background-color: #fff;
+}
 
-  .imageWrapper {
-    height: 110px;
-    overflow: hidden;
-    border-radius: 20px;
-    border: 0.5px solid #dddddda8;
-    img {
-      width: 110px;
-    }
-  }
-  .jobInfoWrapper {
+.imageWrapper {
+  flex: 0 0 150px;
+  margin-right: 16px;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.jobDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.categories {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+
+  .minorCategories {
     display: flex;
-    flex-direction: column;
-    padding-left: 1.5rem;
-    flex: 1;
-    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
-    .jobInfoName {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .jobInfoIntro {
-      color: #747474;
-    }
-    .jobInfoReview {
-      span:nth-child(1) {
-        font-weight: 600;
-      }
-      span:nth-child(2) {
-        padding-left: 2px;
-        font-weight: 400;
-      }
-    }
-    .jobInfoRecentReview {
-      display: flex;
-      align-items: center;
-      span:nth-child(2) {
-        padding-left: 2px;
-        font-weight: 500;
-      }
-      span:nth-child(3) {
-        padding-left: 6px;
-        color: #666;
-      }
-    }
+  .category {
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
   }
-  .textTruncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+}
+
+.description {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.fee {
+  font-size: 1rem;
+  color: #e60023; /* red color for fee */
+  margin-bottom: 16px;
+}
+
+.applyButton {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #00aaff; /* blue color for the button */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.applyButton:hover {
+  background-color: #008ecc;
 }

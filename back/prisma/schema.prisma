@@ -106,7 +106,7 @@ model JobImage {
   job_post_id   Int // Foreign key linking to the JobPost table.
 
   // Attributes
-  url           String // URL of the image.
+  url           String  @db.Text // URL of the image.
   is_thumbnail  Boolean @default(false) // Flag to indicate if the image is the thumbnail.
 
   // Relations

@@ -12,17 +12,14 @@ function Home() {
 
   const fetchJobs = () => {
     setIsLoading(true);
-    console.log("$SERVER_PORT:", SERVER_PORT);
     fetch(`${SERVER_PORT}/jobs/all`)
       .then((response) => {
-        console.log("Fetch response:", response);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Fetched jobs data:", data);
         setJobs(data);
         setIsLoading(false);
       })
@@ -43,15 +40,18 @@ function Home() {
     <div>
       <Header />
       <main className={styles.jobList}>
-        {jobs.length > 0 ? (
-          <>
-            <JobListContents jobs={jobs} />
-            <Loading isLoading={isLoading} />
-          </>
+        {isLoading ? (
+          <Loading isLoading={isLoading} />
         ) : (
-          <div className={styles.notFoundJob}>
-            <span>작업이 없어요!</span>
-          </div>
+          <>
+            {jobs.length > 0 ? (
+              <JobListContents jobs={jobs} />
+            ) : (
+              <div className={styles.notFoundJob}>
+                <span>작업이 없어요!</span>
+              </div>
+            )}
+          </>
         )}
       </main>
       <Footer />

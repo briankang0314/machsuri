@@ -50,6 +50,14 @@
   padding-bottom: 0.375rem;
 }
 
+.inputNameWithCheckboxes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  padding-bottom: 0.375rem;
+}
+
 .inputValue {
   all: unset;
   width: 100%;
@@ -63,6 +71,18 @@
 
 .inputValue:focus {
   box-shadow: 0 0 0.2rem 0.1rem #48bbed;
+}
+
+.selectValue {
+  width: 100%;
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.textarea {
+  height: 150px; /* Adjust height as needed */
 }
 
 .invalid {
@@ -127,4 +147,26 @@
 
 .selectedThumbnail {
   border-color: #007bff;
+}
+
+.successMessage {
+  color: green;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.checkboxContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.checkboxContainer label {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxContainer input[type="checkbox"] {
+  margin-right: 5px;
 }

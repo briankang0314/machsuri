@@ -31,6 +31,7 @@ const JobDao = {
         },
       });
       console.log("New job created:", newJob);
+
       if (minorCategoryIds && minorCategoryIds.length > 0) {
         for (let categoryId of minorCategoryIds) {
           const categoryLink = await prisma.jobCategory.create({
@@ -42,6 +43,7 @@ const JobDao = {
           console.log("Linked job to category:", categoryLink);
         }
       }
+
       return newJob;
     } catch (error) {
       console.error("Error in JobDao.createJob:", error);
@@ -71,6 +73,23 @@ const JobDao = {
         orderBy: {
           [sortBy]: sortOrder,
         },
+        include: {
+          city: {
+            include: {
+              region: true,
+            },
+          },
+          job_categories: {
+            include: {
+              minor_category: {
+                include: {
+                  major_category: true,
+                },
+              },
+            },
+          },
+          images: true,
+        },
       });
       return jobs;
     } catch (error) {
@@ -91,6 +110,23 @@ const JobDao = {
     try {
       const job = await prisma.jobPost.findUnique({
         where: { id: parseInt(jobId) },
+        include: {
+          city: {
+            include: {
+              region: true,
+            },
+          },
+          job_categories: {
+            include: {
+              minor_category: {
+                include: {
+                  major_category: true,
+                },
+              },
+            },
+          },
+          images: true,
+        },
       });
       return job;
     } catch (error) {
