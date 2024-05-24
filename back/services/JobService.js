@@ -10,7 +10,6 @@ const JobDao = require("../models/JobDao");
  * @param {number} fee - The fee or payment amount for the job.
  * @param {string} contactInfo - Contact information for the job post.
  * @param {Array} minorCategoryIds - An array of minor category IDs linked to the job.
- * @param {Array} images - An array of images uploaded with the job post.
  * @returns {Object} The newly created job post with category links.
  */
 const postJob = async (
@@ -20,8 +19,7 @@ const postJob = async (
   summary,
   fee,
   contactInfo,
-  minorCategoryIds,
-  images
+  minorCategoryIds
 ) => {
   console.log("Input parameters to JobService.postJob:", {
     userId,
@@ -31,7 +29,6 @@ const postJob = async (
     fee,
     contactInfo,
     minorCategoryIds,
-    images,
   });
 
   // Validate input to ensure no essential details are missing.
@@ -43,8 +40,7 @@ const postJob = async (
     fee === undefined ||
     !contactInfo ||
     !Array.isArray(minorCategoryIds) ||
-    minorCategoryIds.length === 0 ||
-    !Array.isArray(images)
+    minorCategoryIds.length === 0
   ) {
     throw new Error("Required fields missing or invalid minor category IDs");
   }
@@ -61,9 +57,6 @@ const postJob = async (
       minorCategoryIds,
     });
 
-    if (images && images.length > 0) {
-      await JobDao.addJobImages(newJob.id, images);
-    }
     console.log("Job created by JobService.postJob:", newJob);
 
     // Return the newly created job object.

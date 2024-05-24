@@ -22,7 +22,6 @@ const postJob = async (req, res) => {
 
   console.log("Request body:", req.body);
   console.log("Raw minorCategoryIds:", minorCategoryIds);
-  console.log("Request files:", req.files);
 
   // Parse minorCategoryIds if it is a JSON string
   let parsedMinorCategoryIds;
@@ -45,14 +44,6 @@ const postJob = async (req, res) => {
 
   // Ensure fee and thumbnailIndex are integers
   const parsedFee = parseInt(fee, 10);
-  const parsedThumbnailIndex = parseInt(thumbnailIndex, 10);
-
-  const images = req.files["images"]
-    ? req.files["images"].map((file, index) => ({
-        url: file.buffer.toString("base64"), // Convert buffer to base64 or handle accordingly
-        is_thumbnail: index === parsedThumbnailIndex,
-      }))
-    : [];
 
   console.log("Input parameters to JobController.postJob:", {
     userId,
@@ -62,7 +53,6 @@ const postJob = async (req, res) => {
     fee: parsedFee,
     contactInfo,
     minorCategoryIds: parsedMinorCategoryIds,
-    images,
   });
 
   const errorMessages = [];
@@ -100,8 +90,7 @@ const postJob = async (req, res) => {
       summary,
       parsedFee,
       contactInfo,
-      parsedMinorCategoryIds,
-      images
+      parsedMinorCategoryIds
     );
     console.log("Job created by JobController.postJob:", newJob);
     res.status(201).json(newJob);
