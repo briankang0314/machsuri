@@ -56,9 +56,9 @@ const JobItem = ({ job, onClick }) => {
         </div>
         <div className={styles.fee}>
           {job.amount === 0 ? (
-            <span>협의 필요</span>
+            <span>견적: 협의 필요</span>
           ) : (
-            <span>{job.amount.toLocaleString() + " ~"}</span>
+            <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
           )}
         </div>
         <div className={styles.fee}>

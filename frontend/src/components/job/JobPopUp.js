@@ -47,7 +47,16 @@ const JobPopup = ({ job, onClose }) => {
               </span>
             </div>
             <div className={styles.date}>
-              <span>{new Date(job.created_at).toLocaleString()}</span>
+              <span>
+                {new Date(job.created_at).toLocaleString("ko-KR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -71,9 +80,9 @@ const JobPopup = ({ job, onClose }) => {
         </div>
         <div className={styles.fee}>
           {job.amount === 0 ? (
-            <span>협의 필요</span>
+            <span>견적: 협의 필요</span>
           ) : (
-            <span>{job.amount.toLocaleString() + " ~"}</span>
+            <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
           )}
         </div>
         <div className={styles.fee}>
