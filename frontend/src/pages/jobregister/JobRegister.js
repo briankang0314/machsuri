@@ -4,6 +4,7 @@ import Select from "react-select";
 import styles from "./JobRegister.module.scss";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
+import { SERVER_PORT, FRONT_PORT } from "../../config";
 
 function JobRegister() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function JobRegister() {
 
   useEffect(() => {
     console.log("Fetching regions data...");
-    fetch("http://localhost:5001/locations/regions")
+    fetch(SERVER_PORT + "/locations/regions")
       .then((response) => response.json())
       .then((data) => {
         console.log("Regions data received:", data);
@@ -40,7 +41,7 @@ function JobRegister() {
       .catch((error) => console.error("Error fetching regions:", error));
 
     console.log("Fetching major categories data...");
-    fetch("http://localhost:5001/categories/major-categories")
+    fetch(SERVER_PORT + "/categories/major-categories")
       .then((response) => response.json())
       .then((data) => {
         console.log("Major categories data received:", data);
@@ -57,7 +58,7 @@ function JobRegister() {
     console.log("Selected region ID:", regionId);
 
     console.log(`Fetching cities data for region ID ${regionId}...`);
-    fetch(`http://localhost:5001/locations/regions/${regionId}/cities`)
+    fetch(SERVER_PORT + `/locations/regions/${regionId}/cities`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Cities data received for region ID", regionId, ":", data);
@@ -75,7 +76,8 @@ function JobRegister() {
       `Fetching minor categories data for major category ID ${majorCategoryId}...`
     );
     fetch(
-      `http://localhost:5001/categories/major-categories/${majorCategoryId}/minor-categories`
+      SERVER_PORT +
+        `/categories/major-categories/${majorCategoryId}/minor-categories`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -215,7 +217,7 @@ function JobRegister() {
     }
 
     try {
-      const response = await fetch("http://localhost:5001/jobs", {
+      const response = await fetch(SERVER_PORT + "/jobs", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,

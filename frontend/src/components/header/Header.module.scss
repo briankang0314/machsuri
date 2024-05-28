@@ -26,37 +26,6 @@
   cursor: pointer;
 }
 
-.headerSearchBox {
-  position: relative;
-}
-
-.headerSearch {
-  display: none;
-  width: 300px;
-  margin: auto;
-  margin-left: 20px;
-  padding: 14px;
-  border: 1px solid lightgray;
-  border-radius: 6px;
-  color: lightgray;
-  font-size: 90%;
-  text-indent: 30px;
-}
-
-.headerSearch:focus {
-  outline: 2px solid #48bbed;
-  border: 1px solid white;
-}
-
-.searchIcon {
-  display: none;
-  position: absolute;
-  top: 12px;
-  left: 34px;
-  color: lightgray;
-  font-size: large;
-}
-
 .headerBtn {
   display: flex;
   align-items: center;
@@ -70,15 +39,6 @@
   cursor: pointer;
 }
 
-.marketNew {
-  margin-left: 2px;
-  padding: 3px;
-  border-radius: 4px;
-  color: #ff5861;
-  background-color: #fff0f1;
-  font-size: small;
-}
-
 .userSignup {
   padding: 14px;
   border: 0px solid white;
@@ -86,10 +46,13 @@
   color: white;
   background-color: #48bbed;
   font-weight: 600;
-}
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
-.menuBtn {
-  position: absolute;
+  &:hover {
+    background-color: #3399cc;
+    transform: translateY(-2px);
+  }
 }
 
 .profileImg {
@@ -97,40 +60,35 @@
   height: 40px;
   margin-right: 6px;
   border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: #48bbed;
+  }
 }
 
-.searchBtn {
-  position: absolute;
-}
-
-.grayColor {
-  color: gray;
-}
-
-.redDot {
-  position: relative;
-  top: -8px;
-  width: 6px;
-  height: 6px;
-  background-color: #ff3131;
-  border-radius: 50%;
-}
-
-.chatNum {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 22px;
-  height: 16px;
+.jobRegisterBtn {
+  padding: 14px;
+  border: 0px solid white;
+  border-radius: 8px;
   color: white;
-  background-color: #fa5963;
-  border-radius: 12px;
-  font-size: x-small;
-  text-align: center;
+  background-color: #48bbed;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #3399cc;
+    transform: translateY(-2px);
+  }
 }
 
 .bell {
   margin-left: 16px;
+  cursor: pointer;
 }
 
 .flexRow {
@@ -140,10 +98,6 @@
 
 .hidden {
   display: none;
-}
-
-.disabled {
-  opacity: 50%;
 }
 
 @media screen and (max-width: 761px) {
@@ -162,35 +116,5 @@
     display: none;
     flex-direction: column;
     align-items: center;
-  }
-
-  .headerSearch {
-    display: none;
-    position: relative;
-    margin: 0 auto;
-    width: 90vw;
-    padding: 14px;
-    border: 0;
-    outline: 2px solid #48bbed;
-  }
-
-  .searchIcon {
-    display: none;
-    position: absolute;
-    top: 12px;
-    left: 10px;
-  }
-
-  .menuBtn {
-    display: none;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: large;
-    cursor: pointer;
-  }
-
-  .searchBtn {
-    display: none;
   }
 }

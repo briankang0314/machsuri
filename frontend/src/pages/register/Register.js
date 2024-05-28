@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Register.module.scss";
 import Header from "../../components/header/Header";
 import imageCompression from "browser-image-compression";
+import { SERVER_PORT } from "../../config";
 
 function Register() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ function Register() {
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
   useEffect(() => {
-    fetch("http://localhost:5001/locations/regions")
+    fetch(SERVER_PORT + "/locations/regions")
       .then((response) => response.json())
       .then((data) => setRegions(data))
       .catch((error) => console.error("Error fetching regions:", error));
@@ -62,7 +63,7 @@ function Register() {
     const regionId = e.target.value;
     setSelectedRegion(regionId);
 
-    fetch(`http://localhost:5001/locations/regions/${regionId}/cities`)
+    fetch(`${SERVER_PORT}/locations/regions/${regionId}/cities`)
       .then((response) => response.json())
       .then((data) => setCities(data))
       .catch((error) => console.error("Error fetching cities:", error));
@@ -120,7 +121,7 @@ function Register() {
       console.log(pair[0], pair[1]);
     }
 
-    fetch("http://localhost:5001/users/register", {
+    fetch(SERVER_PORT + "/users/register", {
       method: "POST",
       body: formData,
     })

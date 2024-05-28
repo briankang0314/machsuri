@@ -1,19 +1,46 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Header.module.scss";
-import { FaRegBell, FaBars } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { FaRegBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { FRONT_PORT, SERVER_PORT } from "../../config";
 
 function Header() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+  const [profileImage, setProfileImage] = useState(
+    "/images/profile/profileNotFound.svg"
+  );
+  const profile = useRef();
 
   useEffect(() => {
-    if (!localStorage.getItem("access_token")) {
-      setIsLogin(false);
-    } else {
+    const accessToken = localStorage.getItem("access_token");
+    const userId = localStorage.getItem("user_id");
+
+    console.log("accessToken:", accessToken);
+    console.log("userId:", userId);
+
+    if (accessToken) {
       setIsLogin(true);
+      // Fetch user profile data
+      fetch(`${SERVER_PORT}/users/profile/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.profile_image_url) {
+            console.log("Profile data:", data);
+            const profileImageUrl = `${SERVER_PORT}${data.profile_image_url}`;
+            console.log("Profile image URL:", profileImageUrl);
+            setProfileImage(profileImageUrl);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching profile data:", error);
+        });
+    } else {
+      setIsLogin(false);
     }
   }, []);
 
@@ -23,11 +50,9 @@ function Header() {
     setIsLogin(false);
   };
 
-  const profile = useRef();
-
   const profileOutline = () => {
     if (isLogin) {
-      navigate("/profile");
+      navigate("/profile/" + localStorage.getItem("user_id"));
     }
   };
 
@@ -50,21 +75,6 @@ function Header() {
               alt="Logo"
             />
           </span>
-          <div className={`${styles.headerSearchBox} ${styles.hidden}`}>
-            <input
-              className={styles.headerSearch}
-              placeholder="어떤 서비스가 필요하세요?"
-            />
-            <FiSearch className={styles.searchIcon} />
-          </div>
-        </span>
-
-        <span className={`${styles.menuBtn} ${styles.hidden}`}>
-          <FaBars />
-        </span>
-
-        <span className={`${styles.searchBtn} ${styles.hidden}`}>
-          <FiSearch />
         </span>
         <ul className={styles.headerBtn}>
           {isLogin ? (
@@ -78,7 +88,7 @@ function Header() {
               <li>
                 <div className={styles.flexRow}>
                   <img
-                    src={"/images/profile/profileNotFound.svg"}
+                    src={profileImage}
                     className={styles.profileImg}
                     alt="profile_image"
                     ref={profile}

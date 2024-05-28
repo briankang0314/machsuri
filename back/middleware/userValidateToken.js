@@ -1,6 +1,5 @@
 const errorGenerator = require("../utils/errorGenerator");
 const UserService = require("../services/UserService");
-const { verifyToken } = require("../utils/tokenUtils");
 const jwt = require("jsonwebtoken");
 
 const userValidateToken = async (req, res, next) => {

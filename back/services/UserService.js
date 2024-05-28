@@ -201,6 +201,7 @@ const getUserProfile = async (userId) => {
 
   try {
     const user = await UserDao.getUserById(userId);
+    // console.log("User profile fetched by UserService.getUserProfile:", user);
     return user;
   } catch (error) {
     console.log("Error retrieving user profile:", error);

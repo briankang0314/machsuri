@@ -129,6 +129,7 @@ const UserDao = {
         throw new Error("User not found");
       }
 
+      // console.log("User found by ID:", user);
       return user;
     } catch (error) {
       console.log("Error in UserDao.getUserById:", error);

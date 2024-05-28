@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
+import { SERVER_PORT } from "../../config";
 
 const AUTO_LOGOUT_TIME = 30 * 60 * 1000; // 30 minutes in milliseconds
 
@@ -28,16 +29,13 @@ function Login() {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:5001/users/refresh-token",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token }),
-        }
-      );
+      const response = await fetch(SERVER_PORT + "/users/refresh-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
 
       if (!response.ok) {
         handleLogout();
@@ -77,7 +75,7 @@ function Login() {
     console.log("Login attempt with email:", email);
 
     try {
-      const response = await fetch("http://localhost:5001/users/login", {
+      const response = await fetch(SERVER_PORT + "/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
