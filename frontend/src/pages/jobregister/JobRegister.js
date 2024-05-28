@@ -115,12 +115,20 @@ function JobRegister() {
     setThumbnailIndex(index);
   };
 
+  const handleFeeChange = (e) => {
+    const value = e.target.value;
+    setFee(value);
+    console.log("Fee state updated to:", value);
+  };
+
   const handleJobPost = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage("");
     setSuccessMessage("");
+
     console.log("Handling job post submission...");
+    console.log("Fee state before submission:", fee);
 
     const minorCategoryIds = selectedMinorCategories.map(
       (category) => category.value
@@ -411,7 +419,7 @@ function JobRegister() {
                 step="1"
                 className={`${styles.inputValue} ${styles.noSpinner}`}
                 value={fee}
-                onChange={(e) => setFee(e.target.value)}
+                onChange={handleFeeChange}
                 required
                 placeholder="0에서 100 사이의 숫자를 입력하세요"
               />

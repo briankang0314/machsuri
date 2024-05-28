@@ -1,15 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 
+const AUTO_LOGOUT_TIME = 30 * 60 * 1000; // 30 minutes in milliseconds
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const navigate = useNavigate();
+  const logoutTimer = useRef(null);
+
+  const startLogoutTimer = () => {
+    if (logoutTimer.current) clearTimeout(logoutTimer.current);
+    logoutTimer.current = setTimeout(() => {
+      handleLogout();
+    }, AUTO_LOGOUT_TIME);
+  };
+
+  const refreshAccessToken = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      handleLogout();
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:5001/users/refresh-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token }),
+        }
+      );
+
+      if (!response.ok) {
+        handleLogout();
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem("access_token", data.token);
+      startLogoutTimer();
+    } catch (error) {
+      handleLogout();
+    }
+  };
+
+  useEffect(() => {
+    const resetTimer = () => {
+      refreshAccessToken();
+      startLogoutTimer();
+    };
+
+    window.addEventListener("mousemove", resetTimer);
+    window.addEventListener("keypress", resetTimer);
+    window.addEventListener("click", resetTimer);
+
+    return () => {
+      if (logoutTimer.current) clearTimeout(logoutTimer.current);
+      window.removeEventListener("mousemove", resetTimer);
+      window.removeEventListener("keypress", resetTimer);
+      window.removeEventListener("click", resetTimer);
+    };
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,6 +102,7 @@ function Login() {
         // Checking for the token
         localStorage.setItem("access_token", data.token);
         localStorage.setItem("user_id", data.user.id);
+        startLogoutTimer();
         console.log("Login successful, navigating to homepage");
         navigate("/"); // Navigate to the homepage
       } else {
@@ -52,6 +112,12 @@ function Login() {
       setErrorMessage(error.message);
       console.error("로그인 실패:", error);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
+    navigate("/users/login");
   };
 
   return (

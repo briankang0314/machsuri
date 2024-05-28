@@ -17,9 +17,9 @@ const JobListHeader = ({ jobCount, setFilter }) => {
           onChange={handleStatusFilterChange}
           className={styles.statusFilter}
         >
-          <option value="">All</option>
-          <option value="open">Open</option>
-          <option value="closed">Closed</option>
+          <option value="">전체</option>
+          <option value="open">신청 가능</option>
+          <option value="closed">마감</option>
         </select>
       </div>
     </header>

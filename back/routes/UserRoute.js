@@ -13,6 +13,10 @@ router.post("/register", UserController.register);
 // Open to all users without authentication.
 router.post("/login", UserController.login);
 
+// Route to refresh a user's token
+// Open to all users without authentication.
+router.post("/refresh-token", UserController.refreshToken);
+
 // Route to retrieve all users
 // Uses the userValidateToken middleware to ensure the user is authenticated as an user.
 router.get(

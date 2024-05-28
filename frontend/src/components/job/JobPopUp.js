@@ -64,7 +64,9 @@ const JobPopup = ({ job, onClose }) => {
         <div className={styles.fee}>
           <span>수수료: {feePercentage}</span>
         </div>
-        <button className={styles.applyButton}>신청 가능</button>
+        <button className={styles.applyButton}>
+          {job.status === "open" ? "신청 가능" : "마감"}
+        </button>
       </div>
     </div>
   );

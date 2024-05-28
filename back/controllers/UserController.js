@@ -54,6 +54,23 @@ const login = async (req, res) => {
   }
 };
 
+const refreshToken = async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(403).json({ message: "Token is required" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const newToken = jwt.sign({ id: decoded.id }, process.env.SECRET_KEY, {
+      expiresIn: "30m",
+    });
+    res.json({ token: newToken });
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid token" });
+  }
+};
+
 /**
  * Handles fetching all users.
  * @param {Object} req - The request object.
@@ -222,6 +239,7 @@ const softDeleteUser = async (req, res) => {
 module.exports = {
   register,
   login,
+  refreshToken,
   getAllUsers,
   getProfile,
   updateProfile,

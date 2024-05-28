@@ -16,7 +16,7 @@ const JobItem = ({ job, onClick }) => {
     : FRONT_PORT + "/images/logo/tool.png";
 
   // print the path to the image
-  console.log("path to the image: " + jobImage);
+  // console.log("path to the image: " + jobImage);
 
   // Format the posted time
   const postedTime = formatTimeAgo(job.created_at);
@@ -64,7 +64,9 @@ const JobItem = ({ job, onClick }) => {
         <div className={styles.fee}>
           <span>{feePercentage}</span>
         </div>
-        <button className={styles.applyButton}>신청 가능</button>
+        <button className={styles.applyButton}>
+          {job.status === "open" ? "신청 가능" : "마감"}
+        </button>
       </div>
     </div>
   );
