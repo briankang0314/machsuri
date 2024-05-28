@@ -109,6 +109,7 @@ const JobDao = {
             },
           },
           images: true,
+          user: true,
         },
       });
       return jobs;
@@ -146,6 +147,7 @@ const JobDao = {
             },
           },
           images: true,
+          user: true,
         },
       });
       return job;

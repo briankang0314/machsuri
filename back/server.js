@@ -11,8 +11,17 @@ const prisma = new PrismaClient();
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from the 'uploads' directory
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve static files from the 'uploads/profile_pictures' directory
+app.use(
+  "/uploads/profile_pictures",
+  express.static(path.join(__dirname, "uploads", "profile_pictures"))
+);
+
+// Serve static files from the 'uploads/job_post_images' directory
+app.use(
+  "/uploads/job_post_images",
+  express.static(path.join(__dirname, "uploads", "job_post_images"))
+);
 
 app.use(routes);
 

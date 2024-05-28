@@ -5,7 +5,7 @@ const userValidateToken = require("../middleware/userValidateToken");
 const roleCheck = require("../middleware/roleCheck");
 const verifyJobPoster = require("../middleware/verifyJobPoster");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/job_post_images/" });
 
 // Route to post a new job.
 router.post(

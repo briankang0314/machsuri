@@ -18,7 +18,7 @@ const userValidateToken = async (req, res, next) => {
     console.log("Token received:", token);
 
     // Verify the token
-    jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
       if (err) {
         console.error("Error verifying token:", err.message);
         throw errorGenerator({

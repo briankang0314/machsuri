@@ -37,7 +37,9 @@ model User {
   email                  String  @unique // Unique email for user, used for login.
   password               String  // Password for user's account.
   name                   String  // Full name of the user.
-  role                   Role    @default(general) // either general or admin
+  openchat_name          String  @default("") // Name used in kakao openchat.
+  role                   Role    @default(general) // either general or admin.
+  business_name          String? // Optional business name.
   profile_image_url      String? // Optional profile image URL.
   intro                  String? // Optional short introduction or bio.
   phone_number           String? // Optional contact phone number.

@@ -5,29 +5,38 @@ const jwt = require("jsonwebtoken");
 /**
  * Registers a new user with the provided details.
  * @param {string} name - The full name of the user.
+ * @param {string} openchatName - The Openchat username of the user.
+ * @param {string} businessName - The business name of the user (optional).
  * @param {string} email - The email address of the user.
  * @param {string} password - The password for the user's account.
  * @param {string} phoneNumber - The phone number of the user (optional).
  * @param {number} cityId - The ID of the city where the user is located.
  * @param {string} role - The role of the user (e.g., "general" or "admin").
+ * @param {Object} profileImage - The uploaded profile image file (optional).
  * @returns {Object} The newly created user object.
  * @throws Will throw an error if the registration fails.
  */
 const registerUser = async (
   name,
+  openchatName,
+  businessName,
   email,
   password,
   phoneNumber,
   cityId,
-  role
+  role,
+  profileImage
 ) => {
   console.log("Input parameters to UserService.registerUser:", {
     name,
+    openchatName,
+    businessName,
     email,
     password,
     phoneNumber,
     cityId,
     role,
+    profileImage,
   });
   // Regular expressions for input validation
   const emailReg =
@@ -63,14 +72,21 @@ const registerUser = async (
   // Hash the password
   const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
 
+  const profileImagePath = profileImage
+    ? `/uploads/profile_pictures/${profileImage.filename}`
+    : null;
+
   try {
     const newUser = await UserDao.createUser(
       name,
+      openchatName,
+      businessName,
       email,
       hashedPassword,
       phoneNumber,
       cityId,
-      role
+      role,
+      profileImagePath
     );
     console.log("New user created by UserService.registerUser:", newUser);
     return newUser;
@@ -118,6 +134,38 @@ const authenticateUser = async (email, password) => {
     );
     console.error("Error generating token:", error);
     throw new Error("Failed to generate token: " + error.message);
+  }
+};
+
+/**
+ * Updates a user's profile image.
+ * @param {number} userId - The ID of the user to update.
+ * @param {Object} profileImage - The uploaded profile image file.
+ * @returns {Object} The updated user profile.
+ * @throws Will throw an error if the update operation fails or user is not found.
+ */
+const updateUserProfileImage = async (userId, profileImage) => {
+  console.log("Input parameters to UserService.updateUserProfileImage:", {
+    userId,
+    profileImage,
+  });
+
+  // Validate input
+  if (!userId || !profileImage) {
+    throw new Error("Missing required fields");
+  }
+
+  const profileImagePath = `/uploads/profile_pictures/${profileImage.filename}`;
+
+  try {
+    const updatedUser = await UserDao.updateUserProfile(userId, {
+      profile_image: profileImagePath,
+    });
+    return updatedUser;
+  } catch (error) {
+    console.log("Error updating user profile image:", error);
+    console.error("Error updating user profile image:", error);
+    throw new Error("Failed to update profile image");
   }
 };
 
@@ -322,6 +370,7 @@ const softDeleteUser = async (userId) => {
 module.exports = {
   registerUser,
   authenticateUser,
+  updateUserProfileImage,
   updateUserProfile,
   updateUserLocation,
   updateUserPreferences,

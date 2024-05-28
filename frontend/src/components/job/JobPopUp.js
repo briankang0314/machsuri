@@ -5,6 +5,8 @@ import styles from "./JobPopUp.module.scss";
 const JobPopup = ({ job, onClose }) => {
   if (!job) return null;
 
+  console.log("Job object:", job);
+
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
     ? job.images.find((image) => image.is_thumbnail)
@@ -13,6 +15,15 @@ const JobPopup = ({ job, onClose }) => {
   const jobImage = thumbnail
     ? SERVER_PORT + "/" + thumbnail.url
     : FRONT_PORT + "/images/logo/tool.png";
+
+  // Find the job poster's profile image from job, if it exists
+  const profileImage =
+    job.user && job.user.profile_image_url
+      ? SERVER_PORT + job.user.profile_image_url
+      : FRONT_PORT + "/public/images/profile/profile_sample.jpeg";
+
+  console.log("Profile image:", profileImage);
+  console.log(FRONT_PORT + "/public/images/profile/profile_sample.jpeg");
 
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
@@ -24,7 +35,11 @@ const JobPopup = ({ job, onClose }) => {
           X
         </button>
         <div className={styles.header}>
-          <img src={jobImage} alt={job.title} className={styles.profileImage} />
+          <img
+            src={profileImage}
+            alt={job.title}
+            className={styles.profileImage}
+          />
           <div className={styles.headerDetails}>
             <div className={styles.location}>
               <span>

@@ -7,17 +7,31 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The response object for sending responses.
  */
 const register = async (req, res) => {
-  const { name, email, password, phoneNumber, cityId, role } = req.body;
+  const {
+    name,
+    openchatName,
+    businessName,
+    email,
+    password,
+    phoneNumber,
+    cityId,
+    role,
+  } = req.body;
+  const profileImage = req.file;
   console.log("Request body to UserController.register:", req.body);
+  console.log("Uploaded file:", profileImage);
 
   try {
     const user = await UserService.registerUser(
       name,
+      openchatName,
+      businessName,
       email,
       password,
       phoneNumber,
       cityId,
-      role
+      role,
+      profileImage
     );
     console.log("New user created by UserController.register:", user);
     res.status(201).json(user);
@@ -68,6 +82,41 @@ const refreshToken = async (req, res) => {
     res.json({ token: newToken });
   } catch (err) {
     return res.status(403).json({ message: "Invalid token" });
+  }
+};
+
+/**
+ * Handles updating a user's profile image.
+ * @param {Object} req - The request object containing the profile image file in req.file.
+ * @param {Object} res - The response object for sending responses.
+ */
+const updateProfileImage = async (req, res) => {
+  const { userId } = req.params;
+  console.log(
+    "Request params to UserController.updateProfileImage:",
+    req.params
+  );
+  const profileImage = req.file;
+  console.log("Uploaded file:", profileImage);
+
+  try {
+    if (!profileImage) {
+      throw new Error("Profile image is required");
+    }
+
+    const user = await UserService.updateUserProfileImage(userId, profileImage);
+    console.log(
+      "User profile image updated by UserController.updateProfileImage:",
+      user
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error in UserController.updateProfileImage:", error);
+    const err = await errorGenerator({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Error updating profile image",
+    });
+    res.status(err.statusCode).json({ message: err.message });
   }
 };
 
@@ -240,6 +289,7 @@ module.exports = {
   register,
   login,
   refreshToken,
+  updateProfileImage,
   getAllUsers,
   getProfile,
   updateProfile,
