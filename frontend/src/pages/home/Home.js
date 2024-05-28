@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import JobListContents from "../../components/job/JobListContents";
+import JobListHeader from "../../components/job/JobListHeader";
 import styles from "./Home.module.scss";
 import { SERVER_PORT } from "../../config";
 

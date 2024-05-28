@@ -25,8 +25,8 @@ const JobListContents = (props) => {
 
   return (
     <section className={styles.jobListContents}>
-      <JobListHeader onFilterChange={handleFilterChange} />{" "}
-      {/* Add JobListHeader */}
+      <JobListHeader jobCount={jobs.length} setFilter={handleFilterChange} />{" "}
+      {/* Pass jobCount and setFilter */}
       {filteredJobs.map((job) => (
         <JobItem key={job.id} job={job} onClick={handleJobClick} />
       ))}
