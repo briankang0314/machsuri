@@ -61,4 +61,31 @@ router.delete(
   JobController.deleteJob
 );
 
+// Route to add images to a job post
+// POST /jobs/:jobId/images
+router.post(
+  "/:jobId/images",
+  userValidateToken,
+  verifyJobPoster,
+  JobController.addJobImages
+);
+
+// Route to retrieve images for a job post
+// GET /jobs/:jobId/images
+router.get(
+  "/:jobId/images",
+  userValidateToken,
+  verifyJobPoster,
+  JobController.getJobImages
+);
+
+// Route to delete images for a job post
+// DELETE /jobs/:jobId/images
+router.delete(
+  "/:jobId/images",
+  userValidateToken,
+  verifyJobPoster,
+  JobController.deleteJobImages
+);
+
 module.exports = router;

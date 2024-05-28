@@ -235,6 +235,64 @@ const softDeleteJob = async (jobId) => {
   }
 };
 
+/**
+ * Adds images to a job post in the database.
+ * Throws an error if there's a database error.
+ * @param {number} jobPostId - The ID of the job post to add images to.
+ * @param {Array} images - An array of image URLs to add to the job post.
+ * @returns {Array} The added images for the job post.
+ */
+const addJobImages = async (jobId, images) => {
+  console.log("Input parameters to JobService.addJobImages:", {
+    jobId,
+    images,
+  });
+  try {
+    // Call the JobDao to add images
+    const addedImages = await JobDao.addJobImages(jobId, images);
+    return addedImages;
+  } catch (error) {
+    console.error("Error in JobService.addJobImages:", error);
+    throw error;
+  }
+};
+
+/**
+ * Retrieves images for a job post from the database.
+ * Throws an error if there's a database error.
+ * @param {number} jobPostId - The ID of the job post to retrieve images for.
+ * @returns {Array} The images for the job post.
+ */
+const getJobImages = async (jobId) => {
+  console.log("Input parameters to JobService.getJobImages:", jobId);
+  try {
+    // Call the JobDao to retrieve images
+    const images = await JobDao.getJobImages(jobId);
+    return images;
+  } catch (error) {
+    console.error("Error in JobService.getJobImages:", error);
+    throw error;
+  }
+};
+
+/**
+ * Deletes images for a job post from the database.
+ * Throws an error if there's a database error.
+ * @param {number} jobPostId - The ID of the job post to delete images for.
+ * @returns {Array} The images for the job post.
+ */
+const deleteJobImages = async (jobId) => {
+  console.log("Input parameters to JobService.deleteJobImages:", jobId);
+  try {
+    // Call the JobDao to delete images
+    const deleteResult = await JobDao.deleteJobImages(jobId);
+    return deleteResult;
+  } catch (error) {
+    console.error("Error in JobService.deleteJobImages:", error);
+    throw error;
+  }
+};
+
 // Export the service functions to be used by other parts of the application.
 module.exports = {
   postJob,
@@ -245,4 +303,7 @@ module.exports = {
   softDeleteJob,
   updateJobStatus,
   updateJobLocation,
+  addJobImages,
+  getJobImages,
+  deleteJobImages,
 };

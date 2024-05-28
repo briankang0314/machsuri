@@ -13,7 +13,7 @@ const JobItem = ({ job, onClick }) => {
   // Use the thumbnail image if available, otherwise use a default image
   const jobImage = thumbnail
     ? FRONT_PORT + thumbnail.url
-    : FRONT_PORT + "/images/profile/profileNotFound.svg";
+    : FRONT_PORT + "/images/logo/tool.png";
 
   // Format the posted time
   const postedTime = formatTimeAgo(job.created_at);

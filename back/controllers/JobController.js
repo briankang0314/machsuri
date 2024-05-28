@@ -16,7 +16,7 @@ const postJob = async (req, res) => {
     fee,
     contactInfo,
     minorCategoryIds,
-    thumbnailIndex,
+    // thumbnailIndex,
   } = req.body;
   const userId = req.user.id;
 
@@ -322,6 +322,65 @@ const softDeleteJob = async (req, res) => {
   }
 };
 
+/**
+ * Controller to add images to a job post.
+ * Job post ID is provided as a URL parameter and images in the request body.
+ *
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const addJobImages = async (req, res) => {
+  const { jobId } = req.params; // Extract job post ID from the request parameters
+  const { images } = req.body; // Extract images from the request body
+
+  try {
+    // Call the JobService to add images
+    const addedImages = await JobService.addJobImages(jobId, images);
+    return res.status(201).json({ success: true, data: addedImages });
+  } catch (error) {
+    console.error("Error in JobController.addJobImages:", error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+/**
+ * Controller to retrieve images for a job post.
+ * Job post ID is provided as a URL parameter.
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const getJobImages = async (req, res) => {
+  const { jobId } = req.params; // Extract job post ID from the request parameters
+
+  try {
+    // Call the JobService to retrieve images
+    const images = await JobService.getJobImages(jobId);
+    return res.status(200).json({ success: true, data: images });
+  } catch (error) {
+    console.error("Error in JobController.getJobImages:", error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+/**
+ * Controller to delete images for a job post.
+ * Job post ID is provided as a URL parameter.
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object used to send responses.
+ */
+const deleteJobImages = async (req, res) => {
+  const { jobId } = req.params; // Extract job post ID from the request parameters
+
+  try {
+    // Call the JobService to delete images
+    const deleteResult = await JobService.deleteJobImages(jobId);
+    return res.status(200).json({ success: true, data: deleteResult });
+  } catch (error) {
+    console.error("Error in JobController.deleteJobImages:", error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   postJob,
   findJobs,
@@ -331,4 +390,7 @@ module.exports = {
   updateJobLocation,
   softDeleteJob,
   deleteJob,
+  addJobImages,
+  getJobImages,
+  deleteJobImages,
 };

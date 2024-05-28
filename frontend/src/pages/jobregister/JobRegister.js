@@ -123,18 +123,64 @@ function JobRegister() {
     const minorCategoryIds = selectedMinorCategories.map(
       (category) => category.value
     );
-    if (
-      !title ||
-      !summary ||
-      (!isNegotiable && !amount) ||
-      !fee ||
-      !contactInfo ||
-      !selectedRegion ||
-      !cityId ||
-      !selectedMajorCategory ||
-      selectedMinorCategories.length === 0
-    ) {
-      setErrorMessage("All fields are required and must be properly filled.");
+
+    if (!title) {
+      setErrorMessage("Title is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (!summary) {
+      setErrorMessage("Summary is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (!isNegotiable && !amount) {
+      setErrorMessage("Amount is required when it is not negotiable.");
+      setLoading(false);
+      return;
+    }
+
+    // Validate amount to ensure it is a valid number
+    if (!isNegotiable && isNaN(amount)) {
+      setErrorMessage("Amount must be a valid number.");
+      setLoading(false);
+      return;
+    }
+
+    if (!fee) {
+      setErrorMessage("Fee is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (!contactInfo) {
+      setErrorMessage("Contact information is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (!selectedRegion) {
+      setErrorMessage("Region is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (!cityId) {
+      setErrorMessage("City is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (!selectedMajorCategory) {
+      setErrorMessage("Major category is required.");
+      setLoading(false);
+      return;
+    }
+
+    if (selectedMinorCategories.length === 0) {
+      setErrorMessage("At least one minor category is required.");
       setLoading(false);
       return;
     }
@@ -152,16 +198,16 @@ function JobRegister() {
     formData.append("isMinimumAmount", isMinimumAmount); // Append 최소금액부터 state
     formData.append("minorCategoryIds", JSON.stringify(minorCategoryIds)); // Convert to JSON string
 
-    if (images.length > 0) {
-      images.forEach((image, index) => {
-        formData.append("images", image);
-        if (index === thumbnailIndex) {
-          formData.append("thumbnailIndex", index);
-        }
-      });
-    } else {
-      formData.append("thumbnailIndex", -1); // Indicate no thumbnail selected
-    }
+    // if (images.length > 0) {
+    //   images.forEach((image, index) => {
+    //     formData.append("images", image);
+    //     if (index === thumbnailIndex) {
+    //       formData.append("thumbnailIndex", index);
+    //     }
+    //   });
+    // } else {
+    //   formData.append("thumbnailIndex", -1); // Indicate no thumbnail selected
+    // }
 
     for (let pair of formData.entries()) {
       console.log(pair[0], pair[1]);
@@ -208,9 +254,6 @@ function JobRegister() {
 
   const handleAmountChange = (e) => {
     let value = e.target.value;
-    if (isMinimumAmount && value && !value.endsWith("~")) {
-      value += "~";
-    }
     setAmount(value);
   };
 
@@ -232,6 +275,20 @@ function JobRegister() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 placeholder="작업 공고의 제목을 입력하세요"
+              />
+            </div>
+
+            <div className={styles.inputBox}>
+              <label className={styles.inputName} htmlFor="summary">
+                설명
+              </label>
+              <textarea
+                id="summary"
+                className={styles.inputValue}
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                required
+                placeholder="작업 일자 및 특이사항을 입력하세요"
               />
             </div>
 
@@ -381,7 +438,7 @@ function JobRegister() {
               />
             </div>
 
-            <div className={styles.inputBox}>
+            {/* <div className={styles.inputBox}>
               <label className={styles.inputName} htmlFor="images">
                 이미지 업로드(5장까지)
               </label>
@@ -409,7 +466,7 @@ function JobRegister() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {loading && <p>Loading...</p>}
             {successMessage && (

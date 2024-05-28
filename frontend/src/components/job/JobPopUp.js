@@ -11,7 +11,7 @@ const JobPopup = ({ job, onClose }) => {
     : null;
   const jobImage = thumbnail
     ? FRONT_PORT + thumbnail.url
-    : FRONT_PORT + "/images/profile/profileNotFound.svg";
+    : FRONT_PORT + "/images/logo/tool.png";
 
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
