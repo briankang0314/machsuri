@@ -10,7 +10,7 @@ const JobListHeader = ({ jobCount, setFilter }) => {
     <header className={styles.jobListHeader}>
       <div className={styles.headerNav}>
         <h1>작업찾기</h1>
-        <span>{jobCount} 개의 작업</span>
+        <span>총 {jobCount} 개의 작업을 찾았습니다.</span>
       </div>
       <div className={styles.headerCategory}>
         <select
