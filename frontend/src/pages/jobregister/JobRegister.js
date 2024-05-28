@@ -16,7 +16,7 @@ function JobRegister() {
   const [selectedMinorCategories, setSelectedMinorCategories] = useState([]);
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [fee, setFee] = useState("");
   const [contactInfo, setContactInfo] = useState("");
   const [cityId, setCityId] = useState("");
@@ -102,11 +102,13 @@ function JobRegister() {
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files).slice(0, 5);
     setImages(files);
-
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews(previews);
+    document.getElementById(
+      "file-chosen"
+    ).textContent = `${files.length} 파일 선택됨`;
   };
 
   const handleThumbnailClick = (index) => {
@@ -187,24 +189,30 @@ function JobRegister() {
 
     console.log("Formatted minorCategoryIds:", minorCategoryIds);
 
-    const jobData = {
-      cityId,
-      title,
-      summary,
-      amount,
-      fee,
-      contactInfo,
-      minorCategoryIds,
-    };
+    const formData = new FormData();
+    formData.append("cityId", cityId);
+    formData.append("title", title);
+    formData.append("summary", summary);
+    formData.append("amount", amount);
+    formData.append("fee", fee);
+    formData.append("contactInfo", contactInfo);
+    formData.append("minorCategoryIds", JSON.stringify(minorCategoryIds));
+    images.forEach((image, index) => {
+      formData.append("images", image);
+    });
+    formData.append("thumbnailIndex", thumbnailIndex);
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
 
     try {
       const response = await fetch("http://localhost:5001/jobs", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
-        body: JSON.stringify(jobData),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -229,7 +237,7 @@ function JobRegister() {
   const handleNegotiableChange = () => {
     setIsNegotiable(true);
     setIsMinimumAmount(false);
-    setAmount(""); // Clear amount when 협의필요 is selected
+    setAmount(0); // Clear amount when 협의필요 is selected
   };
 
   const handleMinimumAmountChange = () => {
@@ -421,6 +429,45 @@ function JobRegister() {
                 required
                 placeholder="지원자로부터 연락 받으실 전화번호를 입력하세요"
               />
+            </div>
+
+            <div className={styles.inputBox}>
+              <label className={styles.inputName} htmlFor="images">
+                이미지 업로드(5장까지)
+              </label>
+              <div>
+                <input
+                  id="images"
+                  type="file"
+                  className={styles.inputValue}
+                  onChange={handleImageChange}
+                  multiple
+                />
+                <label htmlFor="images" className={styles.customFileUpload}>
+                  파일 선택
+                </label>
+                <span id="file-chosen" className={styles.fileChosen}>
+                  {imagePreviews.length > 0
+                    ? `${imagePreviews.length} 파일 선택됨`
+                    : "파일을 선택해주세요"}
+                </span>
+              </div>
+            </div>
+            <div className={styles.inputBox}>
+              <label className={styles.inputName}>썸네일 선택</label>
+              <div className={styles.thumbnailGrid}>
+                {imagePreviews.map((preview, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.thumbnail} ${
+                      thumbnailIndex === index ? styles.selectedThumbnail : ""
+                    }`}
+                    onClick={() => handleThumbnailClick(index)}
+                  >
+                    <img src={preview} alt={`Thumbnail ${index}`} />
+                  </div>
+                ))}
+              </div>
             </div>
 
             {loading && <p>Loading...</p>}

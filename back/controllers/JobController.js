@@ -12,6 +12,8 @@ const postJob = async (req, res) => {
   const { cityId, title, summary, amount, fee, contactInfo, minorCategoryIds } =
     req.body;
   const userId = req.user.id;
+  const images = req.files;
+  const thumbnailIndex = req.body.thumbnailIndex;
 
   console.log("Request body:", req.body);
   console.log("Raw minorCategoryIds:", minorCategoryIds);
@@ -19,6 +21,13 @@ const postJob = async (req, res) => {
   // Ensure fee and thumbnailIndex are integers
   const parsedFee = parseInt(fee, 10);
   const parsedAmount = parseInt(amount, 10);
+  const parsedThumbnailIndex = parseInt(thumbnailIndex, 10);
+
+  let minorCategoryIdsArray = minorCategoryIds
+    .replace(/[\[\]]/g, "") // Remove brackets
+    .split(",") // Split by comma
+    .map(Number) // Convert to numbers
+    .filter((id) => !isNaN(id)); // Filter out any NaN values
 
   console.log("Input parameters to JobController.postJob:", {
     userId,
@@ -29,6 +38,8 @@ const postJob = async (req, res) => {
     fee: parsedFee,
     contactInfo,
     minorCategoryIds,
+    images,
+    thumbnailIndex: parsedThumbnailIndex,
   });
 
   const errorMessages = [];
@@ -40,10 +51,10 @@ const postJob = async (req, res) => {
   if (isNaN(parsedAmount)) errorMessages.push("Amount must be a valid number.");
   if (isNaN(parsedFee)) errorMessages.push("Fee must be a valid number.");
   if (!contactInfo) errorMessages.push("Contact info is required.");
-  if (!Array.isArray(minorCategoryIds)) {
+  if (!Array.isArray(minorCategoryIdsArray)) {
     errorMessages.push("Minor category IDs must be an array.");
   }
-  if (Array.isArray(minorCategoryIds) && minorCategoryIds.length === 0) {
+  if (Array.isArray(minorCategoryIdsArray) && minorCategoryIds.length === 0) {
     errorMessages.push("At least one minor category ID is required.");
   }
 
@@ -65,7 +76,9 @@ const postJob = async (req, res) => {
       parsedAmount,
       parsedFee,
       contactInfo,
-      minorCategoryIds
+      minorCategoryIdsArray,
+      images,
+      thumbnailIndex
     );
     console.log("Job created by JobController.postJob:", newJob);
     res.status(201).json(newJob);
@@ -297,62 +310,42 @@ const softDeleteJob = async (req, res) => {
   }
 };
 
-/**
- * Controller to add images to a job post.
- * Job post ID is provided as a URL parameter and images in the request body.
- *
- * @param {Object} req - The HTTP request object.
- * @param {Object} res - The HTTP response object used to send responses.
- */
 const addJobImages = async (req, res) => {
-  const { jobId } = req.params; // Extract job post ID from the request parameters
-  const { images } = req.body; // Extract images from the request body
+  const { jobId } = req.params;
+  const images = req.files;
+  const thumbnailIndex = req.body.thumbnailIndex;
 
   try {
-    // Call the JobService to add images
-    const addedImages = await JobService.addJobImages(jobId, images);
-    return res.status(201).json({ success: true, data: addedImages });
+    const addedImages = await jobService.addJobImages(
+      jobId,
+      images,
+      thumbnailIndex
+    );
+    res.status(201).json({ success: true, data: addedImages });
   } catch (error) {
-    console.error("Error in JobController.addJobImages:", error);
-    return res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
-/**
- * Controller to retrieve images for a job post.
- * Job post ID is provided as a URL parameter.
- * @param {Object} req - The HTTP request object.
- * @param {Object} res - The HTTP response object used to send responses.
- */
 const getJobImages = async (req, res) => {
-  const { jobId } = req.params; // Extract job post ID from the request parameters
+  const { jobId } = req.params;
 
   try {
-    // Call the JobService to retrieve images
-    const images = await JobService.getJobImages(jobId);
-    return res.status(200).json({ success: true, data: images });
+    const images = await jobService.getJobImages(jobId);
+    res.status(200).json({ success: true, data: images });
   } catch (error) {
-    console.error("Error in JobController.getJobImages:", error);
-    return res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
-/**
- * Controller to delete images for a job post.
- * Job post ID is provided as a URL parameter.
- * @param {Object} req - The HTTP request object.
- * @param {Object} res - The HTTP response object used to send responses.
- */
 const deleteJobImages = async (req, res) => {
-  const { jobId } = req.params; // Extract job post ID from the request parameters
+  const { jobId } = req.params;
 
   try {
-    // Call the JobService to delete images
-    const deleteResult = await JobService.deleteJobImages(jobId);
-    return res.status(200).json({ success: true, data: deleteResult });
+    const deleteResult = await jobService.deleteJobImages(jobId);
+    res.status(200).json({ success: true, data: deleteResult });
   } catch (error) {
-    console.error("Error in JobController.deleteJobImages:", error);
-    return res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { FRONT_PORT } from "../../config";
+import { FRONT_PORT, SERVER_PORT } from "../../config";
 import { formatTimeAgo } from "../../utils/formatTimeAgo";
 
 import styles from "./JobItem.module.scss";
@@ -12,8 +12,11 @@ const JobItem = ({ job, onClick }) => {
 
   // Use the thumbnail image if available, otherwise use a default image
   const jobImage = thumbnail
-    ? FRONT_PORT + thumbnail.url
+    ? SERVER_PORT + "/" + thumbnail.url
     : FRONT_PORT + "/images/logo/tool.png";
+
+  // print the path to the image
+  console.log("path to the image: " + jobImage);
 
   // Format the posted time
   const postedTime = formatTimeAgo(job.created_at);
@@ -52,7 +55,11 @@ const JobItem = ({ job, onClick }) => {
           <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
         </div>
         <div className={styles.fee}>
-          <span>{job.amount.toLocaleString() + " ~"}</span>
+          {job.amount === 0 ? (
+            <span>협의 필요</span>
+          ) : (
+            <span>{job.amount.toLocaleString() + " ~"}</span>
+          )}
         </div>
         <div className={styles.fee}>
           <span>{feePercentage}</span>

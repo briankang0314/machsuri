@@ -1,5 +1,5 @@
 import React from "react";
-import { FRONT_PORT } from "../../config";
+import { FRONT_PORT, SERVER_PORT } from "../../config";
 import styles from "./JobPopUp.module.scss";
 
 const JobPopup = ({ job, onClose }) => {
@@ -9,8 +9,9 @@ const JobPopup = ({ job, onClose }) => {
   const thumbnail = job.images
     ? job.images.find((image) => image.is_thumbnail)
     : null;
+
   const jobImage = thumbnail
-    ? FRONT_PORT + thumbnail.url
+    ? SERVER_PORT + "/" + thumbnail.url
     : FRONT_PORT + "/images/logo/tool.png";
 
   // Convert fee to a number and truncate the decimal part
@@ -45,7 +46,7 @@ const JobPopup = ({ job, onClose }) => {
           {job.images.map((image, index) => (
             <img
               key={index}
-              src={FRONT_PORT + image.url}
+              src={SERVER_PORT + "/" + image.url}
               alt={`Job Image ${index + 1}`}
             />
           ))}
@@ -54,7 +55,11 @@ const JobPopup = ({ job, onClose }) => {
           <span>{job.description}</span>
         </div>
         <div className={styles.fee}>
-          <span>{job.amount.toLocaleString() + " ~"}</span>
+          {job.amount === 0 ? (
+            <span>협의 필요</span>
+          ) : (
+            <span>{job.amount.toLocaleString() + " ~"}</span>
+          )}
         </div>
         <div className={styles.fee}>
           <span>수수료: {feePercentage}</span>

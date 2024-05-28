@@ -4,12 +4,15 @@ const JobController = require("../controllers/JobController");
 const userValidateToken = require("../middleware/userValidateToken");
 const roleCheck = require("../middleware/roleCheck");
 const verifyJobPoster = require("../middleware/verifyJobPoster");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 // Route to post a new job.
 router.post(
   "/",
   userValidateToken,
   roleCheck(["general", "admin"]),
+  upload.array("images", 5),
   JobController.postJob
 );
 
@@ -61,26 +64,20 @@ router.delete(
   JobController.deleteJob
 );
 
-// Route to add images to a job post
-// POST /jobs/:jobId/images
 router.post(
   "/:jobId/images",
   userValidateToken,
   verifyJobPoster,
+  upload.array("images", 5),
   JobController.addJobImages
 );
 
-// Route to retrieve images for a job post
-// GET /jobs/:jobId/images
 router.get(
   "/:jobId/images",
   userValidateToken,
   verifyJobPoster,
   JobController.getJobImages
 );
-
-// Route to delete images for a job post
-// DELETE /jobs/:jobId/images
 router.delete(
   "/:jobId/images",
   userValidateToken,

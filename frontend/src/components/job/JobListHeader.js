@@ -7,7 +7,7 @@ const JobListHeader = ({ onFilterChange }) => {
 
   return (
     <header>
-      <select onChange={handleStatusChange} className="status-filter">
+      <select onChange={handleStatusChange}>
         <option value="">All</option>
         <option value="open">Open</option>
         <option value="closed">Closed</option>
