@@ -17,6 +17,7 @@ const postJob = async (
   cityId,
   title,
   summary,
+  amount,
   fee,
   contactInfo,
   minorCategoryIds
@@ -26,6 +27,7 @@ const postJob = async (
     cityId,
     title,
     summary,
+    amount,
     fee,
     contactInfo,
     minorCategoryIds,
@@ -37,6 +39,7 @@ const postJob = async (
     !cityId ||
     !title ||
     !summary ||
+    amount === undefined ||
     fee === undefined ||
     !contactInfo ||
     !Array.isArray(minorCategoryIds) ||
@@ -52,6 +55,7 @@ const postJob = async (
       cityId,
       title,
       summary,
+      amount,
       fee,
       contactInfo,
       minorCategoryIds,

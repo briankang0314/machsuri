@@ -187,39 +187,24 @@ function JobRegister() {
 
     console.log("Formatted minorCategoryIds:", minorCategoryIds);
 
-    const formData = new FormData();
-    formData.append("cityId", cityId);
-    formData.append("title", title);
-    formData.append("summary", summary);
-    formData.append("amount", amount); // Append amount
-    formData.append("fee", fee);
-    formData.append("contactInfo", contactInfo);
-    formData.append("isNegotiable", isNegotiable); // Append 협의필요 state
-    formData.append("isMinimumAmount", isMinimumAmount); // Append 최소금액부터 state
-    formData.append("minorCategoryIds", JSON.stringify(minorCategoryIds)); // Convert to JSON string
-
-    // if (images.length > 0) {
-    //   images.forEach((image, index) => {
-    //     formData.append("images", image);
-    //     if (index === thumbnailIndex) {
-    //       formData.append("thumbnailIndex", index);
-    //     }
-    //   });
-    // } else {
-    //   formData.append("thumbnailIndex", -1); // Indicate no thumbnail selected
-    // }
-
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+    const jobData = {
+      cityId,
+      title,
+      summary,
+      amount,
+      fee,
+      contactInfo,
+      minorCategoryIds,
+    };
 
     try {
       const response = await fetch("http://localhost:5001/jobs", {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
-        body: formData,
+        body: JSON.stringify(jobData),
       });
 
       if (!response.ok) {
@@ -288,7 +273,7 @@ function JobRegister() {
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 required
-                placeholder="작업 일자 및 특이사항을 입력하세요"
+                placeholder="작업일자 및 특이사항을 입력하세요"
               />
             </div>
 
@@ -437,36 +422,6 @@ function JobRegister() {
                 placeholder="지원자로부터 연락 받으실 전화번호를 입력하세요"
               />
             </div>
-
-            {/* <div className={styles.inputBox}>
-              <label className={styles.inputName} htmlFor="images">
-                이미지 업로드(5장까지)
-              </label>
-              <input
-                id="images"
-                type="file"
-                className={styles.inputValue}
-                onChange={handleImageChange}
-                multiple
-              />
-            </div>
-
-            <div className={styles.inputBox}>
-              <label className={styles.inputName}>썸네일 선택</label>
-              <div className={styles.thumbnailGrid}>
-                {imagePreviews.map((preview, index) => (
-                  <div
-                    key={index}
-                    className={`${styles.thumbnail} ${
-                      thumbnailIndex === index ? styles.selectedThumbnail : ""
-                    }`}
-                    onClick={() => handleThumbnailClick(index)}
-                  >
-                    <img src={preview} alt={`Thumbnail ${index}`} />
-                  </div>
-                ))}
-              </div>
-            </div> */}
 
             {loading && <p>Loading...</p>}
             {successMessage && (

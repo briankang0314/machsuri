@@ -52,6 +52,9 @@ const JobItem = ({ job, onClick }) => {
           <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
         </div>
         <div className={styles.fee}>
+          <span>{job.amount.toLocaleString() + " ~"}</span>
+        </div>
+        <div className={styles.fee}>
           <span>{feePercentage}</span>
         </div>
         <button className={styles.applyButton}>신청 가능</button>

@@ -7,6 +7,9 @@ function Register() {
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("");
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [thumbnailIndex, setThumbnailIndex] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:5001/locations/regions")
@@ -23,6 +26,14 @@ function Register() {
       .then((response) => response.json())
       .then((data) => setCities(data))
       .catch((error) => console.error("Error fetching cities:", error));
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(previews);
   };
 
   const sendUserSignUp = () => {
@@ -113,6 +124,32 @@ function Register() {
               이름을 입력해주세요.
             </div>
           </div>
+
+          <div className={styles.inputBox}>
+            <p className={styles.inputName}>카카오톡 오픈챗 대화명</p>
+            <input
+              className={
+                2 <= name.length || !name
+                  ? styles.inputValue
+                  : `${styles.inputValue} ${styles.invalid}`
+              }
+              type="text"
+              placeholder="서울, 경기 설비 누수 하수구 인테리어 업체 오더방 에서 사용하고 계시는 대화명을 입력해주세요"
+              name="name"
+              onChange={onChange}
+            />
+            <div
+              ref={invalidNameTag}
+              className={
+                2 <= name.length || !name
+                  ? `${styles.invalidInput} ${styles.Off}`
+                  : `${styles.invalidInput}`
+              }
+            >
+              상호명을 입력해주세요.
+            </div>
+          </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>이메일</p>
             <input
@@ -137,6 +174,7 @@ function Register() {
               이메일 주소를 입력해주세요.
             </div>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>비밀번호</p>
             <div className={styles.pwBox}>
@@ -179,6 +217,7 @@ function Register() {
               비밀번호를 입력해주세요.
             </div>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>전화번호</p>
             <input
@@ -203,6 +242,7 @@ function Register() {
               올바른 전화번호를 입력해주세요.
             </div>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>지역</p>
             <select
@@ -223,6 +263,7 @@ function Register() {
               ))}
             </select>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>도시</p>
             <select
@@ -244,6 +285,51 @@ function Register() {
               ))}
             </select>
           </div>
+
+          <div className={styles.inputBox}>
+            <p className={styles.inputName}>상호명(선택)</p>
+            <input
+              className={
+                2 <= name.length || !name
+                  ? styles.inputValue
+                  : `${styles.inputValue} ${styles.invalid}`
+              }
+              type="text"
+              placeholder="상호명을 입력해주세요"
+              name="name"
+              onChange={onChange}
+            />
+            <div
+              ref={invalidNameTag}
+              className={
+                2 <= name.length || !name
+                  ? `${styles.invalidInput} ${styles.Off}`
+                  : `${styles.invalidInput}`
+              }
+            >
+              상호명을 입력해주세요.
+            </div>
+          </div>
+
+          <div className={styles.inputBox}>
+            <label className={styles.inputName} htmlFor="profileImages">
+              프로필 사진 업로드(선택)
+            </label>
+            <small className={styles.instructionText}>
+              {`상호명, 연락처 기재 된`}
+            </small>
+            <small className={styles.instructionText}>
+              {`명함 / 작업차량 랩핑 / 사무실 간판`}
+            </small>
+            <input
+              id="profileImages"
+              type="file"
+              className={styles.inputValue}
+              onChange={handleImageChange}
+              multiple
+            />
+          </div>
+
           <div className={styles.checkBox}>
             <input
               id="checkbox1"
@@ -265,6 +351,7 @@ function Register() {
               이용약관에 동의해주세요.
             </p>
           </div>
+
           <div className={styles.checkBox}>
             <input
               id="checkbox2"

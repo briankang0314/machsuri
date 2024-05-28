@@ -76,8 +76,9 @@ model JobPost {
   // Attributes
   title         String // Title of the job post.
   summary       String // Short summary or description of the job post.
+  amount        Int     @default(0)
   fee           Decimal @db.Decimal(10, 2) // Offered fee for the job.
-  contact_info  String // Contact information for job applications.
+  contact_info  String  // Contact information for job applications.
   status        Status  @default(open) // Status of the job post (e.g., open, closed).
 
   // Flags

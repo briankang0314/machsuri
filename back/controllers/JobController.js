@@ -9,50 +9,26 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const postJob = async (req, res) => {
-  const {
-    cityId,
-    title,
-    summary,
-    fee,
-    contactInfo,
-    minorCategoryIds,
-    // thumbnailIndex,
-  } = req.body;
+  const { cityId, title, summary, amount, fee, contactInfo, minorCategoryIds } =
+    req.body;
   const userId = req.user.id;
 
   console.log("Request body:", req.body);
   console.log("Raw minorCategoryIds:", minorCategoryIds);
 
-  // Parse minorCategoryIds if it is a JSON string
-  let parsedMinorCategoryIds;
-  try {
-    parsedMinorCategoryIds = JSON.parse(minorCategoryIds);
-    console.log("Parsed minorCategoryIds:", parsedMinorCategoryIds);
-    if (!Array.isArray(parsedMinorCategoryIds)) {
-      throw new Error("Minor category IDs must be an array");
-    }
-  } catch (error) {
-    console.error("Error parsing minorCategoryIds:", error);
-    const validationError = {
-      statusCode: 400,
-      message: "Invalid minorCategoryIds format or not an array",
-    };
-    return res
-      .status(validationError.statusCode)
-      .json({ message: validationError.message });
-  }
-
   // Ensure fee and thumbnailIndex are integers
   const parsedFee = parseInt(fee, 10);
+  const parsedAmount = parseInt(amount, 10);
 
   console.log("Input parameters to JobController.postJob:", {
     userId,
     cityId,
     title,
     summary,
+    amount: parsedAmount,
     fee: parsedFee,
     contactInfo,
-    minorCategoryIds: parsedMinorCategoryIds,
+    minorCategoryIds,
   });
 
   const errorMessages = [];
@@ -61,15 +37,13 @@ const postJob = async (req, res) => {
   if (!cityId) errorMessages.push("City ID is required.");
   if (!title) errorMessages.push("Title is required.");
   if (!summary) errorMessages.push("Summary is required.");
+  if (isNaN(parsedAmount)) errorMessages.push("Amount must be a valid number.");
   if (isNaN(parsedFee)) errorMessages.push("Fee must be a valid number.");
   if (!contactInfo) errorMessages.push("Contact info is required.");
-  if (!Array.isArray(parsedMinorCategoryIds)) {
+  if (!Array.isArray(minorCategoryIds)) {
     errorMessages.push("Minor category IDs must be an array.");
   }
-  if (
-    Array.isArray(parsedMinorCategoryIds) &&
-    parsedMinorCategoryIds.length === 0
-  ) {
+  if (Array.isArray(minorCategoryIds) && minorCategoryIds.length === 0) {
     errorMessages.push("At least one minor category ID is required.");
   }
 
@@ -88,9 +62,10 @@ const postJob = async (req, res) => {
       cityId,
       title,
       summary,
+      parsedAmount,
       parsedFee,
       contactInfo,
-      parsedMinorCategoryIds
+      minorCategoryIds
     );
     console.log("Job created by JobController.postJob:", newJob);
     res.status(201).json(newJob);
