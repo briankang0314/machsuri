@@ -20,10 +20,10 @@ const JobPopup = ({ job, onClose }) => {
   const profileImage =
     job.user && job.user.profile_image_url
       ? SERVER_PORT + job.user.profile_image_url
-      : FRONT_PORT + "/public/images/profile/profile_sample.jpeg";
+      : FRONT_PORT + "/images/profile/profile_sample.jpeg";
 
   console.log("Profile image:", profileImage);
-  console.log(FRONT_PORT + "/public/images/profile/profile_sample.jpeg");
+  console.log(FRONT_PORT + "/images/profile/profile_sample.jpeg");
 
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
@@ -78,15 +78,17 @@ const JobPopup = ({ job, onClose }) => {
         <div className={styles.description}>
           <span>{job.description}</span>
         </div>
-        <div className={styles.fee}>
-          {job.amount === 0 ? (
-            <span>견적: 협의 필요</span>
-          ) : (
-            <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
-          )}
-        </div>
-        <div className={styles.fee}>
-          <span>수수료: {feePercentage}</span>
+        <div className={styles.feeContainer}>
+          <div className={styles.amount}>
+            {job.amount === 0 ? (
+              <span>견적: 협의 필요</span>
+            ) : (
+              <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
+            )}
+          </div>
+          <div className={styles.fee}>
+            <span>수수료: {feePercentage}</span>
+          </div>
         </div>
         <button className={styles.applyButton}>
           {job.status === "open" ? "신청 가능" : "마감"}

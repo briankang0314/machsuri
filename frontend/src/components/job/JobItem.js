@@ -15,9 +15,6 @@ const JobItem = ({ job, onClick }) => {
     ? SERVER_PORT + "/" + thumbnail.url
     : FRONT_PORT + "/images/logo/tool.png";
 
-  // print the path to the image
-  // console.log("path to the image: " + jobImage);
-
   // Format the posted time
   const postedTime = formatTimeAgo(job.created_at);
 
@@ -27,16 +24,21 @@ const JobItem = ({ job, onClick }) => {
   return (
     <div onClick={() => onClick(job)} className={styles.jobItem}>
       <picture className={styles.imageWrapper}>
-        <img src={jobImage} alt={job.title} />
+        <img src={jobImage} alt={job.title} className={styles.jobImage} />
       </picture>
       <div className={styles.jobDetails}>
-        <div className={styles.location}>
-          <span>
-            {job.city.region.name} · {job.city.name} · {postedTime}
-          </span>
-        </div>
-        <div className={styles.title}>
-          <h2>{job.title}</h2>
+        <div className={styles.header}>
+          <div className={styles.title}>
+            <h2>{job.title}</h2>
+          </div>
+          <div className={styles.location}>
+            <span>
+              {job.city.region.name} · {job.city.name}
+            </span>
+          </div>
+          <div className={styles.postedTime}>
+            <span>{postedTime}</span>
+          </div>
         </div>
         <div className={styles.categories}>
           {job.job_categories && job.job_categories.length > 0 ? (
@@ -54,15 +56,17 @@ const JobItem = ({ job, onClick }) => {
         <div className={styles.description}>
           <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
         </div>
-        <div className={styles.fee}>
-          {job.amount === 0 ? (
-            <span>견적: 협의 필요</span>
-          ) : (
-            <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
-          )}
-        </div>
-        <div className={styles.fee}>
-          <span>{feePercentage}</span>
+        <div className={styles.feeContainer}>
+          <div className={styles.amount}>
+            {job.amount === 0 ? (
+              <span>견적: 협의 필요</span>
+            ) : (
+              <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
+            )}
+          </div>
+          <div className={styles.fee}>
+            <span>수수료: {feePercentage}</span>
+          </div>
         </div>
         <button className={styles.applyButton}>
           {job.status === "open" ? "신청 가능" : "마감"}
