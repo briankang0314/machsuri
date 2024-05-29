@@ -62,7 +62,7 @@ function Header() {
 
   const profileOutline = () => {
     if (isLogin) {
-      navigate("/profile/" + localStorage.getItem("user_id"));
+      navigate("/users/profile/" + localStorage.getItem("user_id"));
     }
   };
 

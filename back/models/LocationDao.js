@@ -35,7 +35,7 @@ const LocationDao = {
   getRegionById: async (id) => {
     try {
       const region = await prisma.region.findUnique({
-        where: { id },
+        where: { id: parseInt(id, 10) },
       });
 
       if (!region) {
@@ -79,7 +79,11 @@ const LocationDao = {
    */
   getCities: async () => {
     try {
-      const cities = await prisma.city.findMany();
+      const cities = await prisma.city.findMany({
+        include: {
+          region: true, // Includes the region to which each city belongs
+        },
+      });
 
       if (cities.length === 0) {
         throw new Error("No cities found.");
@@ -101,7 +105,7 @@ const LocationDao = {
   getCitiesByRegion: async (regionId) => {
     try {
       const cities = await prisma.city.findMany({
-        where: { region_id: regionId }, // Corrected to use region_id which matches the database schema
+        where: { region_id: parseInt(regionId, 10) }, // Corrected to use region_id which matches the database schema
       });
 
       if (cities.length === 0) {
@@ -122,9 +126,13 @@ const LocationDao = {
    * @throws Will throw an error if the database operation fails.
    */
   getCityById: async (id) => {
+    console.log("(LocationDao) id", id);
     try {
       const city = await prisma.city.findUnique({
-        where: { id },
+        where: { id: parseInt(id, 10) },
+        include: {
+          region: true, // Includes the region to which the city belongs
+        },
       });
 
       if (!city) {

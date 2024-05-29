@@ -26,10 +26,10 @@ const listRegions = async (req, res) => {
  * @param {Response} res - The Express Response object.
  */
 const findRegionById = async (req, res) => {
-  const { id } = req.params;
+  const { regionId } = req.params;
 
   try {
-    const region = await LocationService.getRegionById(Number(id));
+    const region = await LocationService.getRegionById(Number(regionId));
     res.status(200).json(region);
   } catch (error) {
     console.error("Failed to get region by ID:", error);
@@ -108,10 +108,11 @@ const listCitiesByRegion = async (req, res) => {
  * @param {Response} res - The Express Response object.
  */
 const findCityById = async (req, res) => {
-  const { id } = req.params;
+  console.log(req.params);
+  const { cityId } = req.params;
 
   try {
-    const city = await LocationService.getCityById(Number(id));
+    const city = await LocationService.getCityById(Number(cityId));
     res.status(200).json(city);
   } catch (error) {
     console.error("Failed to get city by ID:", error);

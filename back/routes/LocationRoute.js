@@ -24,16 +24,10 @@ router.get("/regions/:regionId/cities", LocationController.listCitiesByRegion);
 
 // Route to retrieve a city by ID.
 // Open to all users without authentication.
-router.get(
-  "/regions/:regionId/cities/:cityId",
-  LocationController.findCityById
-);
+router.get("/cities/:cityId", LocationController.findCityById);
 
 // Route to retrieve a city by name.
 // Open to all users without authentication.
-router.get(
-  "/regions/:regionId/cities/name/:cityName",
-  LocationController.findCityByName
-);
+router.get("/cities/name/:cityName", LocationController.findCityByName);
 
 module.exports = router;

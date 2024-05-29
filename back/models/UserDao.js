@@ -123,6 +123,7 @@ const UserDao = {
     try {
       const user = await prisma.user.findUnique({
         where: { id: parseInt(userId) },
+        include: { city: true },
       });
 
       if (!user) {
@@ -196,13 +197,28 @@ const UserDao = {
     try {
       // Validate profileData object
       if (!profileData || Object.keys(profileData).length === 0) {
+        console.log("Invalid profile data:", profileData);
         throw new Error("Invalid profile data");
       }
 
-      return await prisma.user.update({
+      // Extract allowed fields from profileData
+      const { city, ...allowedFields } = profileData;
+      console.log("Extracted city from profileData:", city);
+      console.log("Allowed fields from profileData:", allowedFields);
+
+      const data = {
+        ...allowedFields,
+        city_id: city ? parseInt(city.id) : undefined,
+      };
+      console.log("Prepared data for update:", data);
+
+      const updatedUser = await prisma.user.update({
         where: { id: parseInt(userId) },
-        data: profileData,
+        data,
       });
+
+      console.log("Updated user profile:", updatedUser);
+      return updatedUser;
     } catch (error) {
       console.log("Error in UserDao.updateUserProfile:", error);
       console.error("Failed to update user profile:", error);
@@ -397,28 +413,6 @@ const UserDao = {
     } catch (error) {
       console.log("Error in UserDao.softDeleteUser:", error);
       console.error("Failed to delete user:", error);
-      throw error;
-    }
-  },
-
-  updateUserProfile: async (userId, profileData) => {
-    console.log("Input parameters to UserDao.updateUserProfile:", {
-      userId,
-      profileData,
-    });
-    try {
-      // Validate profileData object
-      if (!profileData || Object.keys(profileData).length === 0) {
-        throw new Error("Invalid profile data");
-      }
-
-      return await prisma.user.update({
-        where: { id: parseInt(userId) },
-        data: profileData,
-      });
-    } catch (error) {
-      console.log("Error in UserDao.updateUserProfile:", error);
-      console.error("Failed to update user profile:", error);
       throw error;
     }
   },
