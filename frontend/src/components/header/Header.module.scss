@@ -5,7 +5,7 @@
   background-color: white;
   border-bottom: 1px solid rgb(233, 233, 233);
   overflow: hidden;
-  z-index: 10;
+  z-index: 9998;
 }
 
 .header {
@@ -32,6 +32,7 @@
   padding-right: 20px;
   list-style: none;
   letter-spacing: 2px;
+  position: relative;
 }
 
 .headerBtn li {
@@ -98,6 +99,24 @@
 
 .hidden {
   display: none;
+}
+
+.notificationIcon {
+  position: relative; // Add this to position the dropdown relative to the notification icon
+}
+
+.notifications {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 9999;
+  padding: 10px;
 }
 
 @media screen and (max-width: 761px) {

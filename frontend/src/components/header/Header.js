@@ -12,6 +12,7 @@ function Header() {
     "/images/profile/profileNotFound.svg"
   );
   const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
   const profile = useRef();
 
   const handleLogout = () => {
@@ -67,7 +68,7 @@ function Header() {
         .then((data) => {
           if (data) {
             console.log("Notifications:", data);
-            setShowNotifications(data);
+            setNotifications(data);
           }
         })
         .catch((error) => {
@@ -93,6 +94,10 @@ function Header() {
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
+  };
+
+  const handleNotificationRead = (updatedNotifications) => {
+    setNotifications(updatedNotifications);
   };
 
   return (
@@ -121,11 +126,13 @@ function Header() {
                 <FaRegBell size="1.3em" className={styles.bell} />
                 {showNotifications && (
                   <div className={styles.notifications}>
-                    <Notification />
+                    <Notification
+                      notifications={notifications}
+                      onNotificationRead={handleNotificationRead}
+                    />
                   </div>
                 )}
               </li>
-
               <li>
                 <div className={styles.flexRow}>
                   <img
