@@ -5,7 +5,7 @@ import JobListHeader from "./JobListHeader"; // Import JobListHeader
 import styles from "./JobListContents.module.scss";
 
 const JobListContents = (props) => {
-  const { jobs } = props;
+  const { jobs, currentUser } = props;
   const [selectedJob, setSelectedJob] = useState(null);
   const [filter, setFilter] = useState("");
 
@@ -28,9 +28,20 @@ const JobListContents = (props) => {
       <JobListHeader jobCount={jobs.length} setFilter={handleFilterChange} />{" "}
       {/* Pass jobCount and setFilter */}
       {filteredJobs.map((job) => (
-        <JobItem key={job.id} job={job} onClick={handleJobClick} />
+        <JobItem
+          key={job.id}
+          job={job}
+          onClick={handleJobClick}
+          currentUser={currentUser} // Pass currentUser
+        />
       ))}
-      {selectedJob && <JobPopup job={selectedJob} onClose={handleClosePopup} />}
+      {selectedJob && (
+        <JobPopup
+          job={selectedJob}
+          onClose={handleClosePopup}
+          currentUser={currentUser} // Pass currentUser
+        />
+      )}
     </section>
   );
 };

@@ -4,7 +4,9 @@ import { formatTimeAgo } from "../../utils/formatTimeAgo";
 
 import styles from "./JobItem.module.scss";
 
-const JobItem = ({ job, onClick }) => {
+const JobItem = ({ job, onClick, currentUser }) => {
+  console.log("JobItem Job object:", job);
+
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
     ? job.images.find((image) => image.is_thumbnail)
@@ -21,6 +23,9 @@ const JobItem = ({ job, onClick }) => {
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
 
+  // Check if the job belongs to the current user
+  const isOwnedByCurrentUser = currentUser && job.user_id === currentUser.id;
+
   return (
     <div onClick={() => onClick(job)} className={styles.jobItem}>
       <picture className={styles.imageWrapper}>
@@ -30,6 +35,9 @@ const JobItem = ({ job, onClick }) => {
         <div className={styles.header}>
           <div className={styles.title}>
             <h2>{job.title}</h2>
+            {isOwnedByCurrentUser && (
+              <span className={styles.ownedBadge}>내가 올린 게시물</span>
+            )}
           </div>
           <div className={styles.location}>
             <span>

@@ -2,10 +2,10 @@ import React from "react";
 import { FRONT_PORT, SERVER_PORT } from "../../config";
 import styles from "./JobPopUp.module.scss";
 
-const JobPopup = ({ job, onClose }) => {
+const JobPopup = ({ job, onClose, currentUser }) => {
   if (!job) return null;
 
-  console.log("Job object:", job);
+  console.log("JobPopUp Job object:", job);
 
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
@@ -27,6 +27,9 @@ const JobPopup = ({ job, onClose }) => {
 
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
+
+  // Check if the job belongs to the current user
+  const isOwnedByCurrentUser = currentUser && job.user_id === currentUser.id;
 
   return (
     <div className={styles.popupOverlay} onClick={onClose}>
@@ -62,6 +65,9 @@ const JobPopup = ({ job, onClose }) => {
         </div>
         <div className={styles.title}>
           <h2>{job.title}</h2>
+          {isOwnedByCurrentUser && (
+            <span className={styles.ownedBadge}>내가 올린 게시물</span>
+          )}
         </div>
         <div className={styles.subtitle}>
           <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
