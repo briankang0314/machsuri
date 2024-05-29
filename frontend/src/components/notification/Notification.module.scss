@@ -1,0 +1,38 @@
+.notification {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+  padding: 10px;
+}
+
+.loading {
+  padding: 10px;
+  text-align: center;
+}
+
+.error {
+  padding: 10px;
+  color: red;
+  text-align: center;
+}
+
+.notificationItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notificationItem button {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+}
