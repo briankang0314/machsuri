@@ -27,6 +27,37 @@ const JobPopup = ({ job, onClose, currentUser }) => {
   // Check if the job belongs to the current user
   const isOwnedByCurrentUser = currentUser && job.user_id === currentUser.id;
 
+  const handleApply = async () => {
+    if (isOwnedByCurrentUser) {
+      // If the job is owned by the current user, do not allow applying
+      return;
+    }
+
+    if (!currentUser) {
+      alert("먼저 로그인해주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${SERVER_PORT}/applications`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({ job_post_id: job.id }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("신청이 완료되었습니다.");
+      } else {
+        alert(data.message || "Failed to submit job application.");
+      }
+    } catch (error) {
+      alert("신청을 제출하는 동안 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
   return (
     <div className={styles.popupOverlay} onClick={onClose}>
       <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
@@ -92,7 +123,7 @@ const JobPopup = ({ job, onClose, currentUser }) => {
             <span>수수료: {feePercentage}</span>
           </div>
         </div>
-        <button className={styles.applyButton}>
+        <button className={styles.applyButton} onClick={handleApply}>
           {job.status === "open" ? "신청 가능" : "마감"}
         </button>
       </div>

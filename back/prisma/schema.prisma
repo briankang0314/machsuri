@@ -62,8 +62,31 @@ model User {
   received_reviews           Review[]                @relation("ReceivedReviews") // Reviews received by the user.
   written_reviews            Review[]                @relation("WrittenReviews") // Reviews written by the user.
   preferences                UserPreference[]        // User's preferences for minor categories.
+  notifications              Notification[]
 
   @@map("user")
+}
+
+// Model representing notification for user.
+model Notification {
+  // Identifiers
+  id            Int @id @default(autoincrement())
+
+  // Foreign Keys
+  user_id       Int
+
+  // Attributes
+  type          String
+  message       String
+  
+  // Flags
+  is_read       Boolean @default(false)
+
+  // Metadata
+  created_at    DateTime @default(now()) // Timestamp when the job post was created.
+
+  // Relations
+  user          User       @relation(fields: [user_id], references: [id])
 }
 
 // Model representing job post created by user.

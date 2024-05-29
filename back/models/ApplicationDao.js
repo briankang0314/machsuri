@@ -6,20 +6,18 @@ const ApplicationDao = {
    * Creates a new job application in the database with the provided details.
    * @param {number} jobPostId - The ID of the job post to apply for.
    * @param {number} applicantId - The ID of the applicant applying for the job.
-   * @param {string} coverLetter - The cover letter submitted with the application.
    * @returns {Object} The newly created job application.
    * @throws Will throw an error if the database operation fails.
    */
-  createApplication: async (jobPostId, applicantId, coverLetter) => {
+  createApplication: async (jobPostId, applicantId) => {
     console.log(
       "Input parameters to ApplicationDao.createApplication:",
       jobPostId,
-      applicantId,
-      coverLetter
+      applicantId
     );
 
     // Input validation
-    if (!jobPostId || !applicantId || !coverLetter) {
+    if (!jobPostId || !applicantId) {
       throw new Error("Missing required fields for creating job application.");
     }
     try {
@@ -27,7 +25,6 @@ const ApplicationDao = {
         data: {
           job_post_id: parseInt(jobPostId),
           applicant_id: parseInt(applicantId),
-          cover_letter: coverLetter,
         },
       });
       console.log("New job application created successfully:", newApplication);

@@ -8,20 +8,19 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const submitApplication = async (req, res) => {
-  const { jobPostId, coverLetter } = req.body;
+  console.log("Request body:", req.body);
+  const { job_post_id } = req.body;
   const applicantId = req.user.id; // Assuming user ID is stored in req.user by auth middleware
   console.log(
     "Input parameters to ApplicationController.submitApplication:",
-    jobPostId,
-    applicantId,
-    coverLetter
+    job_post_id,
+    applicantId
   );
 
   try {
     const application = await ApplicationService.submitApplication(
-      jobPostId,
-      applicantId,
-      coverLetter
+      job_post_id,
+      applicantId
     );
     console.log("New job application created successfully:", application);
     res
