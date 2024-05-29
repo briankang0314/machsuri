@@ -19,6 +19,7 @@ function Notification({ notifications, onNotificationRead }) {
       onNotificationRead(updatedNotifications);
     } catch (error) {
       console.error("Failed to mark notification as read", error);
+      setError("Failed to mark notification as read");
     }
   };
 
@@ -27,14 +28,22 @@ function Notification({ notifications, onNotificationRead }) {
       <h2>알림</h2>
       {error && <div className={styles.error}>{error}</div>}
       <ul>
-        {notifications.map((notification) => (
-          <li key={notification.id} className={styles.notificationItem}>
-            {notification.message}
-            <button onClick={() => markAsRead(notification.id)}>
-              읽음 처리
-            </button>
-          </li>
-        ))}
+        {notifications.map((notification) => {
+          const [firstPart, ...rest] = notification.message.split(". ");
+          const secondPart = rest.join(": "); // Re-join the rest if there are multiple colons
+          return (
+            <li key={notification.id} className={styles.notificationItem}>
+              <span className={styles.message}>
+                {firstPart}
+                <br />
+                {secondPart}
+              </span>
+              <button onClick={() => markAsRead(notification.id)}>
+                읽음 처리
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
