@@ -76,7 +76,7 @@ model Notification {
   user_id       Int
 
   // Attributes
-  type          String
+  type          String?
   message       String
   
   // Flags

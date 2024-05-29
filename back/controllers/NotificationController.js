@@ -2,9 +2,10 @@ const NotificationService = require("../services/NotificationService");
 
 const NotificationController = {
   createNotification: async (req, res) => {
+    console.log("Request body:", req.body);
     const { userId, type, message } = req.body;
     try {
-      console.log("Creating notification...");
+      console.log("(NotificationController)Creating notification...");
       const notification = await NotificationService.createNotification(
         userId,
         type,

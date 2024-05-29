@@ -1,4 +1,6 @@
 const ApplicationService = require("../services/ApplicationService");
+const JobService = require("../services/JobService");
+const NotificationService = require("../services/NotificationService");
 const errorGenerator = require("../utils/errorGenerator");
 
 /**
@@ -23,6 +25,14 @@ const submitApplication = async (req, res) => {
       applicantId
     );
     console.log("New job application created successfully:", application);
+
+    const jobPost = await JobService.findJobById(job_post_id);
+
+    await NotificationService.createNotification(
+      jobPost.user_id,
+      "info",
+      `새로운 지원서가 도착했습니다. 작업 공고 제목: ${jobPost.title}`
+    );
     res
       .status(201)
       .json({ message: "Application submitted successfully", application });

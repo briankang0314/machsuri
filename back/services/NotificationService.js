@@ -2,7 +2,7 @@ const NotificationDao = require("../models/NotificationDao");
 
 const NotificationService = {
   createNotification: async (userId, type, message) => {
-    console.log("Creating notification...");
+    console.log("(NotificationService)Creating notification...");
     const notificationData = { userId, type, message };
     const notification = await NotificationDao.createNotification(
       notificationData

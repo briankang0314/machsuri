@@ -4,13 +4,24 @@ const prisma = new PrismaClient();
 
 const NotificationDao = {
   createNotification: async (notificationData) => {
-    console.log("Creating notification...");
+    console.log("(NotificationDao)Creating notification...");
     console.log("Notification data:", notificationData);
-    const result = await prisma.notification.create({
-      data: notificationData,
-    });
-    console.log("Notification created:", result);
-    return result;
+
+    try {
+      const result = await prisma.notification.create({
+        data: {
+          user_id: notificationData.userId,
+          message: notificationData.message,
+          type: notificationData.type || "info",
+          is_read: false,
+          created_at: new Date(),
+        },
+      });
+      return result;
+    } catch (error) {
+      console.error("Error creating notification:", error);
+      throw error;
+    }
   },
   getNotificationsByUserId: async (userId) => {
     console.log("Fetching notifications for user:", userId);
