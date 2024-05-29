@@ -5,21 +5,18 @@ import { formatTimeAgo } from "../../utils/formatTimeAgo";
 import styles from "./JobItem.module.scss";
 
 const JobItem = ({ job, onClick, currentUser }) => {
-  console.log("JobItem Job object:", job);
+  // console.log("JobItem Job object:", job);
 
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
     ? job.images.find((image) => image.is_thumbnail)
     : null;
-
   // Use the thumbnail image if available, otherwise use a default image
   const jobImage = thumbnail
     ? SERVER_PORT + "/" + thumbnail.url
     : FRONT_PORT + "/images/logo/tool.png";
-
   // Format the posted time
   const postedTime = formatTimeAgo(job.created_at);
-
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
 
@@ -28,6 +25,9 @@ const JobItem = ({ job, onClick, currentUser }) => {
 
   return (
     <div onClick={() => onClick(job)} className={styles.jobItem}>
+      {isOwnedByCurrentUser && (
+        <span className={styles.ownedBadge}>내가 올린 게시물</span>
+      )}
       <picture className={styles.imageWrapper}>
         <img src={jobImage} alt={job.title} className={styles.jobImage} />
       </picture>
@@ -35,9 +35,6 @@ const JobItem = ({ job, onClick, currentUser }) => {
         <div className={styles.header}>
           <div className={styles.title}>
             <h2>{job.title}</h2>
-            {isOwnedByCurrentUser && (
-              <span className={styles.ownedBadge}>내가 올린 게시물</span>
-            )}
           </div>
           <div className={styles.location}>
             <span>
@@ -83,5 +80,4 @@ const JobItem = ({ job, onClick, currentUser }) => {
     </div>
   );
 };
-
 export default JobItem;

@@ -1,4 +1,5 @@
 .jobItem {
+  position: relative;
   display: flex;
   flex-direction: row;
   background-color: #ffffff;
@@ -8,119 +9,118 @@
   padding: 15px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   cursor: pointer;
-
   &:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
+}
 
-  .imageWrapper {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-right: 15px;
-    position: relative; // Add relative positioning to allow absolute positioning of the badge
-  }
+.ownedBadge {
+  background-color: #ff9800; /* Change the background color */
+  color: white; /* Ensure text color contrasts with background */
+  padding: 0.3rem 0.6rem; /* Add some padding for better appearance */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 0.8rem; /* Adjust font size */
+  font-weight: bold; /* Make text bold */
+  position: absolute; /* Allow positioning */
+  top: 10px; /* Position at the top */
+  right: 10px; /* Position at the right */
+  z-index: 1; /* Ensure it appears above other elements */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
 
-  .ownedBadge {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #ffc107;
-    color: #fff;
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-size: 0.65em;
-    font-weight: bold;
-    text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.imageWrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 15px;
+}
 
-  .jobImage {
-    max-width: 100%;
-    max-height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
+.jobImage {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
 
-  .jobDetails {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+.jobDetails {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-  .header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-  }
+.header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
 
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-  }
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
 
-  .location,
-  .postedTime {
-    font-size: 0.875rem;
-    color: #777;
-    margin-top: 5px;
-  }
+.location,
+.postedTime {
+  font-size: 0.875rem;
+  color: #777;
+  margin-top: 5px;
+}
 
-  .categories {
-    margin-bottom: 10px;
-  }
+.categories {
+  margin-bottom: 10px;
+}
 
-  .minorCategories {
-    display: flex;
-    flex-wrap: wrap;
-  }
+.minorCategories {
+  display: flex;
+  flex-wrap: wrap;
+}
 
-  .category {
-    background-color: #f2f2f2;
-    color: #555;
-    padding: 5px 10px;
-    border-radius: 4px;
-    margin: 5px 5px 0 0;
-    font-size: 0.875rem;
-  }
+.category {
+  background-color: #f2f2f2;
+  color: #555;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 5px 5px 0 0;
+  font-size: 0.875rem;
+}
 
-  .description {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 10px;
-  }
+.description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
 
-  .feeContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+.feeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
-  .amount,
-  .fee {
-    font-size: 1rem;
-    color: #333;
-    font-weight: bold;
-  }
+.amount,
+.fee {
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+}
 
-  .applyButton {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #48bbed;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.applyButton {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #48bbed;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
-    &:hover {
-      background-color: #3399cc;
-    }
+  &:hover {
+    background-color: #3399cc;
   }
 }

@@ -110,7 +110,7 @@ const findJobs = async (req, res) => {
   try {
     // Retrieve jobs using filters and send them
     const jobs = await jobService.getJobs(filter, sortBy, sortOrder);
-    console.log("Jobs retrieved by JobController.findJobs:", jobs);
+    // console.log("Jobs retrieved by JobController.findJobs:", jobs);
     if (jobs.length === 0) {
       const error = await errorGenerator({
         statusCode: 404,

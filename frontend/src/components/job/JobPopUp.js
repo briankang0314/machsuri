@@ -5,26 +5,22 @@ import styles from "./JobPopUp.module.scss";
 const JobPopup = ({ job, onClose, currentUser }) => {
   if (!job) return null;
 
-  console.log("JobPopUp Job object:", job);
+  // console.log("JobPopUp Job object:", job);
 
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
     ? job.images.find((image) => image.is_thumbnail)
     : null;
-
   const jobImage = thumbnail
     ? SERVER_PORT + "/" + thumbnail.url
     : FRONT_PORT + "/images/logo/tool.png";
-
   // Find the job poster's profile image from job, if it exists
   const profileImage =
     job.user && job.user.profile_image_url
       ? SERVER_PORT + job.user.profile_image_url
       : FRONT_PORT + "/images/profile/profile_sample.jpeg";
-
   console.log("Profile image:", profileImage);
   console.log(FRONT_PORT + "/images/profile/profile_sample.jpeg");
-
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
 
@@ -37,6 +33,9 @@ const JobPopup = ({ job, onClose, currentUser }) => {
         <button className={styles.closeButton} onClick={onClose}>
           X
         </button>
+        {isOwnedByCurrentUser && (
+          <span className={styles.ownedBadge}>내가 올린 게시물</span>
+        )}
         <div className={styles.header}>
           <img
             src={profileImage}
@@ -65,9 +64,6 @@ const JobPopup = ({ job, onClose, currentUser }) => {
         </div>
         <div className={styles.title}>
           <h2>{job.title}</h2>
-          {isOwnedByCurrentUser && (
-            <span className={styles.ownedBadge}>내가 올린 게시물</span>
-          )}
         </div>
         <div className={styles.subtitle}>
           <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
@@ -103,5 +99,4 @@ const JobPopup = ({ job, onClose, currentUser }) => {
     </div>
   );
 };
-
 export default JobPopup;

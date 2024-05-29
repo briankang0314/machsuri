@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./Header.module.scss";
 import { FaRegBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { FRONT_PORT, SERVER_PORT } from "../../config";
+import { SERVER_PORT } from "../../config";
 
 function Header() {
   const navigate = useNavigate();
@@ -12,6 +12,15 @@ function Header() {
   );
   const profile = useRef();
 
+  const handleLogout = () => {
+    console.log("Logging out");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("currentUser");
+    setIsLogin(false);
+    navigate("/users/login");
+  };
+
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     const userId = localStorage.getItem("user_id");
@@ -20,6 +29,13 @@ function Header() {
     console.log("userId:", userId);
 
     if (accessToken) {
+      const { exp } = JSON.parse(atob(accessToken.split(".")[1]));
+      if (Date.now() >= exp * 1000) {
+        console.log("Token expired, logging out");
+        handleLogout();
+        return;
+      }
+
       setIsLogin(true);
       // Fetch user profile data
       fetch(`${SERVER_PORT}/users/profile/${userId}`, {
@@ -43,12 +59,6 @@ function Header() {
       setIsLogin(false);
     }
   }, []);
-
-  const logoutBtn = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user_id");
-    setIsLogin(false);
-  };
 
   const profileOutline = () => {
     if (isLogin) {
@@ -79,7 +89,7 @@ function Header() {
         <ul className={styles.headerBtn}>
           {isLogin ? (
             <>
-              <li onClick={logoutBtn}>
+              <li onClick={handleLogout}>
                 <div className={styles.flexRow}>로그아웃</div>
               </li>
               <li>
