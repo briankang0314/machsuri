@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styles from "./JobRegister.module.scss";
@@ -8,6 +8,8 @@ import { SERVER_PORT, FRONT_PORT } from "../../config";
 
 function JobRegister() {
   const navigate = useNavigate();
+  const amountInputRef = useRef(null);
+  const feeInputRef = useRef(null);
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
   const [majorCategories, setMajorCategories] = useState([]);
@@ -29,6 +31,29 @@ function JobRegister() {
   const [successMessage, setSuccessMessage] = useState("");
   const [isNegotiable, setIsNegotiable] = useState(false); // State for 협의필요
   const [isMinimumAmount, setIsMinimumAmount] = useState(false); // State for 최소금액부터
+
+  useEffect(() => {
+    const disableScroll = (e) => e.preventDefault();
+
+    const amountInput = amountInputRef.current;
+    const feeInput = feeInputRef.current;
+
+    if (amountInput) {
+      amountInput.addEventListener("wheel", disableScroll);
+    }
+    if (feeInput) {
+      feeInput.addEventListener("wheel", disableScroll);
+    }
+
+    return () => {
+      if (amountInput) {
+        amountInput.removeEventListener("wheel", disableScroll);
+      }
+      if (feeInput) {
+        feeInput.removeEventListener("wheel", disableScroll);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     console.log("Fetching regions data...");
@@ -400,12 +425,16 @@ function JobRegister() {
               <input
                 id="amount"
                 type="number"
+                min="0"
+                step="1"
+                inputMode="numeric"
                 className={`${styles.inputValue} ${styles.noSpinner}`}
                 value={amount}
                 onChange={handleAmountChange}
                 disabled={isNegotiable}
                 required={!isNegotiable}
                 placeholder="금액을 입력하세요"
+                ref={amountInputRef}
               />
             </div>
 
@@ -419,11 +448,13 @@ function JobRegister() {
                 min="0"
                 max="100"
                 step="1"
+                inputMode="numeric"
                 className={`${styles.inputValue} ${styles.noSpinner}`}
                 value={fee}
                 onChange={handleFeeChange}
                 required
                 placeholder="0에서 100 사이의 숫자를 입력하세요"
+                ref={feeInputRef}
               />
             </div>
 
