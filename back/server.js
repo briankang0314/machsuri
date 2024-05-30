@@ -17,17 +17,6 @@ app.use(
   })
 );
 
-// File upload endpoint
-app.post("/upload", upload.single("file"), async (req, res) => {
-  try {
-    const result = await uploadFile(req.file);
-    res.status(200).send({ url: result.Location });
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    res.status(500).send("Error uploading file");
-  }
-});
-
 app.use(routes);
 
 const server = createServer(app);
