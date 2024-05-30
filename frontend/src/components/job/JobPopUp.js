@@ -5,8 +5,34 @@ import styles from "./JobPopUp.module.scss";
 const JobPopup = ({ job, onClose, currentUser, onUpdateJob }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedJob, setUpdatedJob] = useState({ ...job });
+  const [status, setStatus] = useState(job.status);
 
   if (!job) return null;
+
+  const handleStatusChange = async (newStatus) => {
+    setStatus(newStatus);
+    try {
+      const response = await fetch(`${SERVER_PORT}/jobs/${job.id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (response.ok) {
+        const updatedJob = await response.json();
+        onUpdateJob(updatedJob);
+      } else {
+        alert("Failed to update job status.");
+      }
+    } catch (error) {
+      alert(
+        "An error occurred while updating the job status. Please try again."
+      );
+    }
+  };
 
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
@@ -143,7 +169,9 @@ const JobPopup = ({ job, onClose, currentUser, onUpdateJob }) => {
               <div className={styles.headerDetails}>
                 <div className={styles.location}>
                   <span>
-                    {job.city.region.name} · {job.city.name}
+                    {job.city
+                      ? `${job.city.region.name} · ${job.city.name}`
+                      : "위치 정보 없음"}
                   </span>
                 </div>
                 <div className={styles.date}>
@@ -191,11 +219,28 @@ const JobPopup = ({ job, onClose, currentUser, onUpdateJob }) => {
               </div>
             </div>
             {isOwnedByCurrentUser && (
-              <button className={styles.editButton} onClick={handleEditToggle}>
-                오더 수정
-              </button>
+              <>
+                <button
+                  className={styles.editButton}
+                  onClick={handleEditToggle}
+                >
+                  오더 수정
+                </button>
+                <select
+                  value={status}
+                  onChange={(e) => handleStatusChange(e.target.value)}
+                  className={styles.statusDropdown}
+                >
+                  <option value="open">오더 열림</option>
+                  <option value="closed">오더 닫힘</option>
+                </select>
+              </>
             )}
-            <button className={styles.applyButton} onClick={handleApply}>
+            <button
+              className={styles.applyButton}
+              onClick={handleApply}
+              disabled={job.status !== "open"}
+            >
               {job.status === "open" ? "신청 가능" : "마감"}
             </button>
           </div>

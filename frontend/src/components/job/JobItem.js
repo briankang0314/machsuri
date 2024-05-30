@@ -38,7 +38,9 @@ const JobItem = ({ job, onClick, currentUser }) => {
           </div>
           <div className={styles.location}>
             <span>
-              {job.city.region.name} · {job.city.name}
+              {job.city
+                ? `${job.city.region.name} · ${job.city.name}`
+                : "위치 정보 없음"}
             </span>
           </div>
           <div className={styles.postedTime}>
