@@ -9,7 +9,13 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Adjust as needed
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Serve static files from the 'uploads/profile_pictures' directory
 app.use(

@@ -289,7 +289,7 @@ function JobRegister() {
     <>
       <Header />
       <div className={styles.section}>
-        <h1 className={styles.title}>작업 등록</h1>
+        <h1 className={styles.title}>오더 등록</h1>
         <div className={styles.card}>
           <form className={styles.form} onSubmit={handleJobPost}>
             <div className={styles.inputBox}>
