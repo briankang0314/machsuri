@@ -36,6 +36,8 @@
   min-height: 650px;
   padding-top: 90px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
   .notFoundJob {
     display: flex;
     height: 300px;

@@ -12,11 +12,11 @@ export function formatTimeAgo(date) {
   const months = Math.floor(days / 30);
   const years = Math.floor(days / 365);
 
-  if (seconds < 60) return `${seconds} seconds ago`;
-  if (minutes < 60) return `${minutes} minutes ago`;
-  if (hours < 24) return `${hours} hours ago`;
-  if (days < 7) return `${days} days ago`;
-  if (weeks < 4) return `${weeks} weeks ago`;
-  if (months < 12) return `${months} months ago`;
-  return `${years} years ago`;
+  if (seconds < 60) return `${seconds}초 전`;
+  if (minutes < 60) return `${minutes}분 전`;
+  if (hours < 24) return `${hours}시간 전`;
+  if (days < 7) return `${days}일 전`;
+  if (weeks < 4) return `${weeks}주 전`;
+  if (months < 12) return `${months}달 전`;
+  return `${years}년 전`;
 }

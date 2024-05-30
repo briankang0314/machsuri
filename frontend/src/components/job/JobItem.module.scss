@@ -1,82 +1,126 @@
 .jobItem {
+  position: relative;
   display: flex;
-  border: 1px solid #ddd;
-  padding: 16px;
-  margin-bottom: 16px;
-  cursor: pointer;
+  flex-direction: row;
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  background-color: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.ownedBadge {
+  background-color: #ff9800; /* Change the background color */
+  color: white; /* Ensure text color contrasts with background */
+  padding: 0.3rem 0.6rem; /* Add some padding for better appearance */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 0.8rem; /* Adjust font size */
+  font-weight: bold; /* Make text bold */
+  position: absolute; /* Allow positioning */
+  top: 10px; /* Position at the top */
+  right: 10px; /* Position at the right */
+  z-index: 1; /* Ensure it appears above other elements */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 .imageWrapper {
-  flex: 0 0 150px;
-  margin-right: 16px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 15px;
 }
 
-.imageWrapper img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.jobImage {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .jobDetails {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
-.location {
-  font-size: 0.9rem;
-  color: #888;
-  margin-bottom: 4px;
+.header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .title {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 8px;
+  color: #333;
+}
+
+.location,
+.postedTime {
+  font-size: 0.875rem;
+  color: #777;
+  margin-top: 5px;
 }
 
 .categories {
-  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.minorCategories {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.category {
+  background-color: #f2f2f2;
   color: #555;
-  margin-bottom: 8px;
-
-  .minorCategories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .category {
-    background-color: #f0f0f0;
-    padding: 4px 8px;
-    border-radius: 4px;
-  }
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 5px 5px 0 0;
+  font-size: 0.875rem;
 }
 
 .description {
   font-size: 1rem;
-  color: #333;
-  margin-bottom: 8px;
+  color: #555;
+  margin-bottom: 10px;
 }
 
+.feeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.amount,
 .fee {
   font-size: 1rem;
-  color: #e60023; /* red color for fee */
-  margin-bottom: 16px;
+  color: #333;
+  font-weight: bold;
 }
 
 .applyButton {
-  align-self: flex-end;
-  padding: 8px 16px;
-  background-color: #00aaff; /* blue color for the button */
-  color: #fff;
+  padding: 10px;
   border: none;
   border-radius: 4px;
+  background-color: #48bbed;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-}
+  transition: background-color 0.3s ease;
 
-.applyButton:hover {
-  background-color: #008ecc;
+  &:hover {
+    background-color: #3399cc;
+  }
 }

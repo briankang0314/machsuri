@@ -1,4 +1,4 @@
-$sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩니다.
+$sign-color: #48bbed; // 시그니처 컬러 변수지정해서 사용하면 됩니다.
 
 @media (max-width: 690px) {
   .jobListHeader {
@@ -38,7 +38,7 @@ $sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩�
     display: flex;
     flex-direction: row;
     margin: 20px 0px;
-    button {
+    select {
       border: 0px;
       width: 220px;
       padding: 8px;
@@ -48,12 +48,6 @@ $sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩�
       font-size: 13px;
       color: #656565;
       cursor: pointer;
-      .icon {
-        margin-right: 6px;
-      }
-    }
-    .locationBtn {
-      margin-right: 12px;
     }
   }
   .headerSort {
@@ -62,16 +56,6 @@ $sign-color: #48bbed; //시그니처 컬러 변수지정해서 사용하면 됩�
     justify-content: space-between;
     align-items: center;
     margin: 20px 0px;
-    .jobCounterWapper {
-      font-size: 13px;
-      span:nth-child(1) {
-        margin-left: 5px;
-        font-weight: 500;
-      }
-      span:nth-child(2) {
-        color: #656565;
-      }
-    }
     .dropDownWrapper {
       position: relative;
       display: inline-block;

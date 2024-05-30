@@ -4,57 +4,29 @@
   width: 100%;
   background-color: white;
   border-bottom: 1px solid rgb(233, 233, 233);
-  overflow: hidden;
-  z-index: 10;
+  z-index: 9998;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 1000px;
-  margin: 0px auto;
+  width: 100%;
+  max-width: 1200px; /* Adjust maximum width to center */
+  margin: 0 auto; /* Center the header */
   height: 70px;
-}
-
-.headerTitle {
-  display: flex;
-  align-items: center;
+  padding: 0 20px; /* Add padding to ensure spacing */
 }
 
 .headerLogo {
+  display: flex; /* Ensure logo is centered */
+  align-items: center;
   cursor: pointer;
 }
 
-.headerSearchBox {
-  position: relative;
-}
-
-.headerSearch {
-  display: none;
-  width: 300px;
-  margin: auto;
-  margin-left: 20px;
-  padding: 14px;
-  border: 1px solid lightgray;
-  border-radius: 6px;
-  color: lightgray;
-  font-size: 90%;
-  text-indent: 30px;
-}
-
-.headerSearch:focus {
-  outline: 2px solid #48bbed;
-  border: 1px solid white;
-}
-
-.searchIcon {
-  display: none;
-  position: absolute;
-  top: 12px;
-  left: 34px;
-  color: lightgray;
-  font-size: large;
+.headerLogo img {
+  height: 50px; /* Adjust the height to fit the header */
+  width: auto; /* Maintain aspect ratio */
 }
 
 .headerBtn {
@@ -63,20 +35,12 @@
   padding-right: 20px;
   list-style: none;
   letter-spacing: 2px;
+  position: relative;
 }
 
 .headerBtn li {
   margin-left: 20px;
   cursor: pointer;
-}
-
-.marketNew {
-  margin-left: 2px;
-  padding: 3px;
-  border-radius: 4px;
-  color: #ff5861;
-  background-color: #fff0f1;
-  font-size: small;
 }
 
 .userSignup {
@@ -86,10 +50,13 @@
   color: white;
   background-color: #48bbed;
   font-weight: 600;
-}
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
-.menuBtn {
-  position: absolute;
+  &:hover {
+    background-color: #3399cc;
+    transform: translateY(-2px);
+  }
 }
 
 .profileImg {
@@ -97,40 +64,35 @@
   height: 40px;
   margin-right: 6px;
   border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: #48bbed;
+  }
 }
 
-.searchBtn {
-  position: absolute;
-}
-
-.grayColor {
-  color: gray;
-}
-
-.redDot {
-  position: relative;
-  top: -8px;
-  width: 6px;
-  height: 6px;
-  background-color: #ff3131;
-  border-radius: 50%;
-}
-
-.chatNum {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 22px;
-  height: 16px;
+.jobRegisterBtn {
+  padding: 14px;
+  border: 0px solid white;
+  border-radius: 8px;
   color: white;
-  background-color: #fa5963;
-  border-radius: 12px;
-  font-size: x-small;
-  text-align: center;
+  background-color: #48bbed;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #3399cc;
+    transform: translateY(-2px);
+  }
 }
 
 .bell {
   margin-left: 16px;
+  cursor: pointer;
 }
 
 .flexRow {
@@ -142,8 +104,22 @@
   display: none;
 }
 
-.disabled {
-  opacity: 50%;
+.notificationIcon {
+  position: relative; // Add this to position the dropdown relative to the notification icon
+}
+
+.notifications {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 450px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 10000; /* Increase z-index */
+  padding: 20px;
 }
 
 @media screen and (max-width: 761px) {
@@ -151,6 +127,7 @@
     width: 100vw;
     margin: 0;
     justify-content: space-around;
+    padding: 0 10px; /* Ensure padding for small screens */
   }
 
   .headerBox {
@@ -162,35 +139,5 @@
     display: none;
     flex-direction: column;
     align-items: center;
-  }
-
-  .headerSearch {
-    display: none;
-    position: relative;
-    margin: 0 auto;
-    width: 90vw;
-    padding: 14px;
-    border: 0;
-    outline: 2px solid #48bbed;
-  }
-
-  .searchIcon {
-    display: none;
-    position: absolute;
-    top: 12px;
-    left: 10px;
-  }
-
-  .menuBtn {
-    display: none;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: large;
-    cursor: pointer;
-  }
-
-  .searchBtn {
-    display: none;
   }
 }

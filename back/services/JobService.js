@@ -10,7 +10,8 @@ const JobDao = require("../models/JobDao");
  * @param {number} fee - The fee or payment amount for the job.
  * @param {string} contactInfo - Contact information for the job post.
  * @param {Array} minorCategoryIds - An array of minor category IDs linked to the job.
- * @param {Array} images - An array of images uploaded with the job post.
+ * @param {Array} images - An array of image URLs to associate with the job post.
+ * @param {number} thumbnailIndex - The index of the image to set as the thumbnail.
  * @returns {Object} The newly created job post with category links.
  */
 const postJob = async (
@@ -18,20 +19,24 @@ const postJob = async (
   cityId,
   title,
   summary,
+  amount,
   fee,
   contactInfo,
   minorCategoryIds,
-  images
+  images,
+  thumbnailIndex
 ) => {
   console.log("Input parameters to JobService.postJob:", {
     userId,
     cityId,
     title,
     summary,
+    amount,
     fee,
     contactInfo,
     minorCategoryIds,
     images,
+    thumbnailIndex,
   });
 
   // Validate input to ensure no essential details are missing.
@@ -40,11 +45,11 @@ const postJob = async (
     !cityId ||
     !title ||
     !summary ||
+    amount === undefined ||
     fee === undefined ||
     !contactInfo ||
     !Array.isArray(minorCategoryIds) ||
-    minorCategoryIds.length === 0 ||
-    !Array.isArray(images)
+    minorCategoryIds.length === 0
   ) {
     throw new Error("Required fields missing or invalid minor category IDs");
   }
@@ -56,14 +61,14 @@ const postJob = async (
       cityId,
       title,
       summary,
+      amount,
       fee,
       contactInfo,
       minorCategoryIds,
+      images,
+      thumbnailIndex,
     });
 
-    if (images && images.length > 0) {
-      await JobDao.addJobImages(newJob.id, images);
-    }
     console.log("Job created by JobService.postJob:", newJob);
 
     // Return the newly created job object.
@@ -242,6 +247,78 @@ const softDeleteJob = async (jobId) => {
   }
 };
 
+/**
+ * Adds images to a job post in the database.
+ * Throws an error if the job is not found or if there's a database error.
+ * @param {number} jobId - The ID of the job post to add images to.
+ * @param {Array} images - An array of image URLs to add to the job post.
+ * @param {number} thumbnailIndex - The index of the image to set as the thumbnail.
+ * @returns {Object} The updated job image object with the new images.
+ */
+const addJobImages = async (jobId, images, thumbnailIndex) => {
+  console.log("Input parameters to JobService.addJobImages:", {
+    jobId,
+    images,
+    thumbnailIndex,
+  });
+  try {
+    // Optionally add logic here to check job existence or permissions
+    const imageDetails = images.map((image, index) => ({
+      url: image.path,
+      is_thumbnail: index === parseInt(thumbnailIndex),
+    }));
+    const jobImages = await JobDao.addJobImages(jobId, imageDetails);
+    console.log("Job images added by JobService.addJobImages:", jobImages);
+    return jobImages;
+  } catch (error) {
+    console.log("Error in JobService.addJobImages:", error);
+    console.error("Service Error: Failed to add job images:", error);
+    throw new Error("Could not add job images. Please try again later.");
+  }
+};
+
+/**
+ * Retrieves images associated with a job post from the database.
+ * Throws an error if the job is not found or if there's a database error.
+ * @param {number} jobId - The ID of the job post to retrieve images from.
+ * @returns {Array} An array of image objects associated with the job post.
+ */
+const getJobImages = async (jobId) => {
+  console.log("Input parameters to JobService.getJobImages:", jobId);
+  try {
+    // Optionally add logic here to check job existence or permissions
+    const jobImages = await JobDao.getJobImages(jobId);
+    console.log("Job images retrieved by JobService.getJobImages:", jobImages);
+    return jobImages;
+  } catch (error) {
+    console.log("Error in JobService.getJobImages:", error);
+    console.error("Service Error: Failed to get job images:", error);
+    throw new Error("Could not get job images. Please try again later.");
+  }
+};
+
+/**
+ * Deletes images associated with a job post from the database.
+ * Throws an error if there's a database error.
+ * @param {number} jobId - The ID of the job post to delete images from.
+ * @returns {Object} The result of the delete operation.
+ */
+const deleteJobImages = async (jobId) => {
+  console.log("Input parameters to JobService.deleteJobImages:", jobId);
+  try {
+    const deleteResult = await JobDao.deleteJobImages(jobId);
+    console.log(
+      "Job images deleted by JobService.deleteJobImages:",
+      deleteResult
+    );
+    return deleteResult;
+  } catch (error) {
+    console.log("Error in JobService.deleteJobImages:", error);
+    console.error("Service Error: Failed to delete job images:", error);
+    throw new Error("Could not delete job images. Please try again later.");
+  }
+};
+
 // Export the service functions to be used by other parts of the application.
 module.exports = {
   postJob,
@@ -252,4 +329,7 @@ module.exports = {
   softDeleteJob,
   updateJobStatus,
   updateJobLocation,
+  addJobImages,
+  getJobImages,
+  deleteJobImages,
 };

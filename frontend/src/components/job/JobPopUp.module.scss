@@ -2,9 +2,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,14 +12,29 @@
 }
 
 .popupContent {
-  background: #fff;
-  padding: 20px;
+  background-color: #ffffff;
   border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
+  width: 80%;
+  max-width: 800px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  overflow-y: auto;
-  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ownedBadge {
+  background-color: #ff9800; /* Change the background color */
+  color: white; /* Ensure text color contrasts with background */
+  padding: 0.3rem 0.6rem; /* Add some padding for better appearance */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 0.8rem; /* Adjust font size */
+  font-weight: bold; /* Make text bold */
+  position: absolute; /* Allow positioning */
+  top: 50px; /* Position below the close button */
+  right: 10px; /* Position at the right */
+  z-index: 1; /* Ensure it appears above other elements */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 .closeButton {
@@ -28,21 +43,22 @@
   right: 10px;
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .profileImage {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-right: 16px;
+  object-fit: cover;
+  margin-right: 15px;
 }
 
 .headerDetails {
@@ -52,56 +68,137 @@
 
 .location,
 .date {
-  font-size: 0.9rem;
-  color: #888;
+  font-size: 0.875rem;
+  color: #777;
 }
 
-.title h2 {
+.title {
   font-size: 1.5rem;
-  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
 }
 
 .subtitle {
   font-size: 1rem;
   color: #555;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .imageGallery {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 16px;
-
-  img {
-    width: 100px;
-    height: auto;
-    border-radius: 4px;
-  }
+  margin-bottom: 20px;
 }
 
-.description {
+.imageGallery img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.summary {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.feeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.amount,
+.fee {
   font-size: 1rem;
   color: #333;
-  margin-bottom: 16px;
-}
-
-.fee {
-  font-size: 1.2rem;
-  color: #e60023; /* red color for fee */
-  margin-bottom: 16px;
+  font-weight: bold;
 }
 
 .applyButton {
-  display: block;
-  width: 100%;
-  padding: 10px 0;
-  background-color: #00aaff; /* blue color for the button */
-  color: #fff;
+  padding: 10px;
   border: none;
   border-radius: 4px;
+  background-color: #48bbed;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #3399cc;
+  }
 }
 
-.applyButton:hover {
-  background-color: #008ecc;
+.editButton {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #ff9800;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute; /* Add this line */
+  bottom: 20px; /* Add this line */
+  right: 20px; /* Add this line */
+  &:hover {
+    background-color: #e68900;
+  }
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increase the gap for better spacing */
+  margin-top: 20px; /* Add some top margin for separation */
+}
+
+.editForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Increase the gap for better readability */
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.editForm input,
+.editForm textarea {
+  padding: 12px; /* Increase padding for better touch target */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem; /* Increase font size for better readability */
+  resize: vertical; /* Allow vertical resizing of textarea */
+}
+
+.editForm button {
+  background: #48bbed;
+  color: white;
+  border: none;
+  padding: 12px 24px; /* Increase padding for better touch target */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem; /* Increase font size for better readability */
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Add transition for hover effect */
+}
+
+.editForm button:hover {
+  background: #3399cc; /* Add hover effect */
+}
+
+.editForm button[type="button"] {
+  background: #f0f0f0; /* Use a lighter background color */
+  color: #333; /* Use a darker text color */
+  margin-left: 10px; /* Add some left margin for separation */
+}
+
+.editForm button[type="button"]:hover {
+  background: #e0e0e0; /* Add hover effect */
 }

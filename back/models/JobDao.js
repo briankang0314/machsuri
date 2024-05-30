@@ -16,9 +16,12 @@ const JobDao = {
         cityId,
         title,
         summary,
+        amount,
         fee,
         contactInfo,
         minorCategoryIds,
+        images,
+        thumbnailIndex,
       } = jobDetails;
       const newJob = await prisma.jobPost.create({
         data: {
@@ -26,6 +29,7 @@ const JobDao = {
           city_id: parseInt(cityId),
           title,
           summary,
+          amount: parseInt(amount),
           fee: parseFloat(fee),
           contact_info: contactInfo,
         },
@@ -43,6 +47,22 @@ const JobDao = {
           console.log("Linked job to category:", categoryLink);
         }
       }
+
+      console.log("Processing images and thumbnail...");
+      const jobImages = await prisma.jobImage.createMany({
+        data: images.map((image, index) => {
+          const isThumbnail = index === parseInt(thumbnailIndex);
+          console.log(
+            `Image ${index}: path=${image.path}, isThumbnail=${isThumbnail}`
+          );
+          return {
+            job_post_id: newJob.id,
+            url: image.path,
+            is_thumbnail: isThumbnail,
+          };
+        }),
+      });
+      console.log("New job images created:", jobImages);
 
       return newJob;
     } catch (error) {
@@ -89,6 +109,7 @@ const JobDao = {
             },
           },
           images: true,
+          user: true,
         },
       });
       return jobs;
@@ -126,6 +147,7 @@ const JobDao = {
             },
           },
           images: true,
+          user: true,
         },
       });
       return job;
@@ -275,19 +297,19 @@ const JobDao = {
 
   /**
    * Adds images to a job post.
-   * @param {number} jobPostId - The ID of the job post.
+   * @param {number} jobId - The ID of the job post.
    * @param {Array} images - An array of image URLs with a flag indicating if it is a thumbnail.
    * @returns {Object} The newly created job images.
    */
-  addJobImages: async (jobPostId, images) => {
+  addJobImages: async (jobId, images) => {
     console.log("Input parameters to JobDao.addJobImages:", {
-      jobPostId,
+      jobId,
       images,
     });
     try {
       const jobImages = await prisma.jobImage.createMany({
         data: images.map((image) => ({
-          job_post_id: jobPostId,
+          job_post_id: jobId,
           url: image.url,
           is_thumbnail: image.is_thumbnail || false,
         })),
@@ -301,14 +323,14 @@ const JobDao = {
 
   /**
    * Retrieves images for a specific job post.
-   * @param {number} jobPostId - The ID of the job post.
+   * @param {number} jobId - The ID of the job post.
    * @returns {Array} An array of job images.
    */
-  getJobImages: async (jobPostId) => {
-    console.log("Input parameters to JobDao.getJobImages:", jobPostId);
+  getJobImages: async (jobId) => {
+    console.log("Input parameters to JobDao.getJobImages:", jobId);
     try {
       const jobImages = await prisma.jobImage.findMany({
-        where: { job_post_id: jobPostId },
+        where: { job_post_id: jobId },
       });
       return jobImages;
     } catch (error) {
@@ -319,14 +341,14 @@ const JobDao = {
 
   /**
    * Deletes images for a specific job post.
-   * @param {number} jobPostId - The ID of the job post.
+   * @param {number} jobId - The ID of the job post.
    * @returns {Object} The result of the delete operation.
    */
-  deleteJobImages: async (jobPostId) => {
-    console.log("Input parameters to JobDao.deleteJobImages:", jobPostId);
+  deleteJobImages: async (jobId) => {
+    console.log("Input parameters to JobDao.deleteJobImages:", jobId);
     try {
       const deleteResult = await prisma.jobImage.deleteMany({
-        where: { job_post_id: jobPostId },
+        where: { job_post_id: jobId },
       });
       return deleteResult;
     } catch (error) {

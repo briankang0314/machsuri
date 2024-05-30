@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `job_post` ADD COLUMN `amount` INTEGER NOT NULL DEFAULT 0;

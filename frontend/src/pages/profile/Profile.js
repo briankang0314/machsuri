@@ -1,175 +1,120 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import styles from "./Profile.module.scss";
 import { SERVER_PORT } from "../../config";
 
 function Profile() {
+  const { userId } = useParams();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("user_id");
-  const [user, setUser] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const mainRef = useRef(null);
+  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [city, setCity] = useState({});
+  const [region, setRegion] = useState({});
 
   useEffect(() => {
-    if (!userId) {
-      // If no user ID is found, navigate to login
-      navigate("/users/login");
-    } else {
-      fetchProfile();
-      adjustMainMargin();
-      window.addEventListener("resize", adjustMainMargin);
-      return () => {
-        window.removeEventListener("resize", adjustMainMargin);
-      };
-    }
-  }, [userId]);
+    const fetchProfile = async () => {
+      const accessToken = localStorage.getItem("access_token");
 
-  const adjustMainMargin = () => {
-    const header = document.querySelector("header"); // Update with the correct header selector
-    if (header && mainRef.current) {
-      mainRef.current.style.marginTop = `${header.offsetHeight}px`;
-    }
-  };
+      if (!accessToken) {
+        navigate("/users/login");
+        return;
+      }
 
-  const fetchProfile = () => {
-    setIsLoading(true);
-    fetch(`${SERVER_PORT}/users/profile/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+      try {
+        const response = await fetch(`${SERVER_PORT}/users/profile/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setProfile(data);
+          fetchCityAndRegion(data.city_id);
+        } else {
+          setError(data.message || "Failed to fetch profile");
         }
-        return response.json();
-      })
-      .then((data) => {
-        setUser(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching profile:", error);
-        setIsLoading(false);
-      });
-  };
-
-  const handleUpdateProfile = (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    const updatedData = {
-      name: user.name,
-      profile_image_url: user.profile_image_url,
-      intro: user.intro,
-      phone_number: user.phone_number,
-      work_start_time: user.work_start_time,
-      work_end_time: user.work_end_time,
-      work_experience: user.work_experience,
+      } catch (error) {
+        setError("Failed to fetch profile");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetch(`${SERVER_PORT}/users/profile/${userId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    const fetchCityAndRegion = async (cityId) => {
+      try {
+        const cityResponse = await fetch(
+          `${SERVER_PORT}/locations/cities/${parseInt(cityId, 10)}`
+        );
+        const cityData = await cityResponse.json();
+        if (cityResponse.ok) {
+          setCity(cityData);
+          const regionResponse = await fetch(
+            `${SERVER_PORT}/locations/regions/${cityData.region_id}`
+          );
+          const regionData = await regionResponse.json();
+          if (regionResponse.ok) {
+            setRegion(regionData);
+          }
         }
-        return response.json();
-      })
-      .then((data) => {
-        setUser(data);
-        setIsLoading(false);
-        alert("프로필이 성공적으로 업데이트되었습니다.");
-      })
-      .catch((error) => {
-        console.error("Error updating profile:", error);
-        setIsLoading(false);
-      });
-  };
+      } catch (error) {
+        setError("Failed to fetch city and region");
+      }
+    };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
-  };
+    fetchProfile();
+  }, [userId, navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
       <Header />
-      <main className={styles.profile} ref={mainRef}>
-        {isLoading && <div className={styles.loading}>로딩 중...</div>}
-        <form onSubmit={handleUpdateProfile}>
-          <label htmlFor="profile_image_url">프로필 이미지</label>
-          <input
-            type="text"
-            id="profile_image_url"
-            name="profile_image_url"
-            value={user.profile_image_url || ""}
-            onChange={handleChange}
+      <main className={styles.profileContainer}>
+        <div className={styles.profileHeader}>
+          <img
+            src={
+              SERVER_PORT + profile.profile_image_url ||
+              "/images/profile/profile_sample.svg"
+            }
+            alt="Profile"
+            className={styles.profileImage}
           />
-
-          <label htmlFor="name">이름</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={user.name || ""}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="intro">소개</label>
-          <textarea
-            id="intro"
-            name="intro"
-            value={user.intro || ""}
-            onChange={handleChange}
-          ></textarea>
-
-          <label htmlFor="phone_number">전화번호</label>
-          <input
-            type="text"
-            id="phone_number"
-            name="phone_number"
-            value={user.phone_number || ""}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="work_start_time">업무 시작 시간</label>
-          <input
-            type="time"
-            id="work_start_time"
-            name="work_start_time"
-            value={user.work_start_time || ""}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="work_end_time">업무 종료 시간</label>
-          <input
-            type="time"
-            id="work_end_time"
-            name="work_end_time"
-            value={user.work_end_time || ""}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="work_experience">경력 (년)</label>
-          <input
-            type="number"
-            id="work_experience"
-            name="work_experience"
-            value={user.work_experience || ""}
-            onChange={handleChange}
-          />
-
-          <button type="submit" disabled={isLoading}>
-            프로필 업데이트
-          </button>
-        </form>
+          <h1>{profile.name}</h1>
+          <p>{profile.email}</p>
+        </div>
+        <div className={styles.profileDetails}>
+          <div className={styles.profileField}>
+            <strong>카카오톡 오픈챗 대화명:</strong>{" "}
+            <span>{profile.openchat_name}</span>
+          </div>
+          <div className={styles.profileField}>
+            <strong>상호명:</strong> <span>{profile.business_name}</span>
+          </div>
+          <div className={styles.profileField}>
+            <strong>전화번호:</strong> <span>{profile.phone_number}</span>
+          </div>
+          <div className={styles.profileField}>
+            <strong>지역:</strong> <span>{region.name}</span>
+          </div>
+          <div className={styles.profileField}>
+            <strong>도시:</strong> <span>{city.name}</span>
+          </div>
+        </div>
+        <button
+          className={styles.editProfileButton}
+          onClick={() => navigate(`/users/profile/${userId}/edit`)}
+        >
+          프로필 수정
+        </button>
       </main>
       <Footer />
     </div>

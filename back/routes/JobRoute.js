@@ -1,52 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const JobController = require("../controllers/JobController");
 const userValidateToken = require("../middleware/userValidateToken");
 const roleCheck = require("../middleware/roleCheck");
 const verifyJobPoster = require("../middleware/verifyJobPoster");
-const UploadService = require("../services/UploadService");
-
-// Configure multer storage and file handling
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Invalid file type, only images are allowed!"), false);
-    }
-  },
-});
-
-// Define multer fields configuration
-const uploadFields = upload.fields([{ name: "images", maxCount: 5 }]);
-
-// Middleware to handle image uploads
-const handleImageUploads = async (req, res, next) => {
-  try {
-    if (req.files && req.files.images) {
-      const uploadPromises = req.files.images.map((file) =>
-        UploadService.uploadToStorage(file)
-      );
-      const imageUrls = await Promise.all(uploadPromises);
-      req.body.images = req.body.images = imageUrls;
-    }
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
+const multer = require("multer");
+const upload = multer({ dest: "uploads/job_post_images/" });
 
 // Route to post a new job.
 router.post(
   "/",
   userValidateToken,
   roleCheck(["general", "admin"]),
-  uploadFields,
-  handleImageUploads,
+  upload.array("images", 5),
   JobController.postJob
 );
 
@@ -96,6 +62,27 @@ router.delete(
   userValidateToken,
   verifyJobPoster,
   JobController.deleteJob
+);
+
+router.post(
+  "/:jobId/images",
+  userValidateToken,
+  verifyJobPoster,
+  upload.array("images", 5),
+  JobController.addJobImages
+);
+
+router.get(
+  "/:jobId/images",
+  userValidateToken,
+  verifyJobPoster,
+  JobController.getJobImages
+);
+router.delete(
+  "/:jobId/images",
+  userValidateToken,
+  verifyJobPoster,
+  JobController.deleteJobImages
 );
 
 module.exports = router;

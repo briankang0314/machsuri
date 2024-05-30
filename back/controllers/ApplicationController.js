@@ -1,4 +1,6 @@
 const ApplicationService = require("../services/ApplicationService");
+const JobService = require("../services/JobService");
+const NotificationService = require("../services/NotificationService");
 const errorGenerator = require("../utils/errorGenerator");
 
 /**
@@ -8,22 +10,29 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const submitApplication = async (req, res) => {
-  const { jobPostId, coverLetter } = req.body;
+  console.log("Request body:", req.body);
+  const { job_post_id } = req.body;
   const applicantId = req.user.id; // Assuming user ID is stored in req.user by auth middleware
   console.log(
     "Input parameters to ApplicationController.submitApplication:",
-    jobPostId,
-    applicantId,
-    coverLetter
+    job_post_id,
+    applicantId
   );
 
   try {
     const application = await ApplicationService.submitApplication(
-      jobPostId,
-      applicantId,
-      coverLetter
+      job_post_id,
+      applicantId
     );
     console.log("New job application created successfully:", application);
+
+    const jobPost = await JobService.findJobById(job_post_id);
+
+    await NotificationService.createNotification(
+      jobPost.user_id,
+      "info",
+      `새로운 지원서가 도착했습니다. 오더 제목: ${jobPost.title}`
+    );
     res
       .status(201)
       .json({ message: "Application submitted successfully", application });

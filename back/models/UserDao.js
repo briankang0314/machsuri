@@ -5,6 +5,8 @@ const UserDao = {
   /**
    * Creates a new user in the database.
    * @param {string} name - The full name of the user.
+   * @param {string} openchatName - The OpenChat username of the user.
+   * @param {string} businessName - The business name of the user (optional).
    * @param {string} email - The email address of the user, must be unique.
    * @param {string} password - The hashed password for the user's account.
    * @param {string} phoneNumber - The phone number of the user (optional).
@@ -13,14 +15,27 @@ const UserDao = {
    * @returns {Object} The newly created user object.
    * @throws Will throw an error if the database operation fails.
    */
-  createUser: async (name, email, password, phoneNumber, cityId, role) => {
+  createUser: async (
+    name,
+    openchatName,
+    businessName,
+    email,
+    password,
+    phoneNumber,
+    cityId,
+    role,
+    profileImagePath
+  ) => {
     console.log("Input parameters to UserDao.createUser:", {
       name,
+      openchatName,
+      businessName,
       email,
       password,
       phoneNumber,
       cityId,
       role,
+      profileImagePath,
     });
     try {
       // Validate input parameters
@@ -31,11 +46,14 @@ const UserDao = {
       return await prisma.user.create({
         data: {
           name,
+          openchat_name: openchatName,
+          business_name: businessName,
           email,
           password,
           phone_number: phoneNumber,
           city_id: parseInt(cityId),
           role,
+          profile_image_url: profileImagePath,
         },
       });
     } catch (error) {
@@ -105,12 +123,14 @@ const UserDao = {
     try {
       const user = await prisma.user.findUnique({
         where: { id: parseInt(userId) },
+        include: { city: true },
       });
 
       if (!user) {
         throw new Error("User not found");
       }
 
+      // console.log("User found by ID:", user);
       return user;
     } catch (error) {
       console.log("Error in UserDao.getUserById:", error);
@@ -177,13 +197,28 @@ const UserDao = {
     try {
       // Validate profileData object
       if (!profileData || Object.keys(profileData).length === 0) {
+        console.log("Invalid profile data:", profileData);
         throw new Error("Invalid profile data");
       }
 
-      return await prisma.user.update({
+      // Extract allowed fields from profileData
+      const { city, ...allowedFields } = profileData;
+      console.log("Extracted city from profileData:", city);
+      console.log("Allowed fields from profileData:", allowedFields);
+
+      const data = {
+        ...allowedFields,
+        city_id: city ? parseInt(city.id) : undefined,
+      };
+      console.log("Prepared data for update:", data);
+
+      const updatedUser = await prisma.user.update({
         where: { id: parseInt(userId) },
-        data: profileData,
+        data,
       });
+
+      console.log("Updated user profile:", updatedUser);
+      return updatedUser;
     } catch (error) {
       console.log("Error in UserDao.updateUserProfile:", error);
       console.error("Failed to update user profile:", error);

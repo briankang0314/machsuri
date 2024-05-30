@@ -2,75 +2,46 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Register.module.scss";
 import Header from "../../components/header/Header";
+import imageCompression from "browser-image-compression";
+import { SERVER_PORT } from "../../config";
 
 function Register() {
+  const navigate = useNavigate();
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:5001/locations/regions")
-      .then((response) => response.json())
-      .then((data) => setRegions(data))
-      .catch((error) => console.error("Error fetching regions:", error));
-  }, []);
-
-  const handleRegionChange = (e) => {
-    const regionId = e.target.value;
-    setSelectedRegion(regionId);
-
-    fetch(`http://localhost:5001/locations/regions/${regionId}/cities`)
-      .then((response) => response.json())
-      .then((data) => setCities(data))
-      .catch((error) => console.error("Error fetching cities:", error));
-  };
-
-  const sendUserSignUp = () => {
-    fetch("http://localhost:5001/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signupValue),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((res) => {
-        alert("회원가입 성공");
-      })
-      .then(() => navigate("/"))
-      // 에러핸들링 수정 필요
-      .catch((err) => {
-        alert(err.message);
-      });
-  };
-
-  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [signupValue, setSignupValue] = useState({
     name: "",
-    password: "",
+    openchatName: "",
+    businessName: "",
     email: "",
+    password: "",
     phoneNumber: "",
-    cityId: 1,
+    cityId: "",
     role: "general",
   });
 
-  const { name, password, email, phoneNumber, cityId } = signupValue;
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setSignupValue({
-      ...signupValue,
-      [name]: value,
-    });
-  };
+  const {
+    name,
+    openchatName,
+    businessName,
+    email,
+    password,
+    phoneNumber,
+    cityId,
+  } = signupValue;
 
   const [visiblePW, setPwVisible] = useState("password");
   const [agreeCheck, setAgreeCheck] = useState(false);
   const [ageCheck, setAgeCheck] = useState(false);
+
   const invalidNameTag = useRef("");
-  const invalidIdTag = useRef("");
+  const invalidOpenchatNameTag = useRef("");
+  const invalidBusinessNameTag = useRef("");
+  const invalidEmailTag = useRef("");
   const invalidPwTag = useRef("");
   const invalidPhoneTag = useRef("");
   const invalidAgreeTag = useRef("");
@@ -80,6 +51,89 @@ function Register() {
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
   const pwReg = /(?=.*\d)(?=.*[a-zA-ZS]).{8,}/;
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+
+  useEffect(() => {
+    fetch(SERVER_PORT + "/locations/regions")
+      .then((response) => response.json())
+      .then((data) => setRegions(data))
+      .catch((error) => console.error("Error fetching regions:", error));
+  }, []);
+
+  const handleRegionChange = (e) => {
+    const regionId = e.target.value;
+    setSelectedRegion(regionId);
+
+    fetch(`${SERVER_PORT}/locations/regions/${regionId}/cities`)
+      .then((response) => response.json())
+      .then((data) => setCities(data))
+      .catch((error) => console.error("Error fetching cities:", error));
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5242880) {
+        alert("이미지 파일 크기가 5MB를 초과합니다. 압축 중...");
+        try {
+          const compressedFile = await imageCompression(file, {
+            maxSizeMB: 5,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+          });
+          setImage(compressedFile);
+          const preview = URL.createObjectURL(compressedFile);
+          setImagePreview(preview);
+        } catch (error) {
+          console.error("이미지 압축 중 오류 발생:", error);
+          alert("이미지 압축에 실패했습니다. 다른 이미지를 선택해주세요.");
+        }
+      } else {
+        setImage(file);
+        const preview = URL.createObjectURL(file);
+        setImagePreview(preview);
+      }
+    }
+  };
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setSignupValue({
+      ...signupValue,
+      [name]: value,
+    });
+  };
+
+  const sendUserSignUp = () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("openchatName", openchatName);
+    formData.append("businessName", businessName);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("cityId", cityId);
+    formData.append("role", "general");
+    if (image) {
+      formData.append("profileImage", image);
+    }
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    fetch(SERVER_PORT + "/users/register", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        alert("회원가입 성공");
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
   return (
     <section className={styles.section}>
@@ -113,6 +167,32 @@ function Register() {
               이름을 입력해주세요.
             </div>
           </div>
+
+          <div className={styles.inputBox}>
+            <p className={styles.inputName}>카카오톡 오픈챗 대화명</p>
+            <input
+              className={
+                2 <= openchatName.length || !openchatName
+                  ? styles.inputValue
+                  : `${styles.inputValue} ${styles.invalid}`
+              }
+              type="text"
+              placeholder="오픈챗에서 사용하고 계시는 대화명을 입력해주세요"
+              name="openchatName"
+              onChange={onChange}
+            />
+            <div
+              ref={invalidOpenchatNameTag}
+              className={
+                2 <= openchatName.length || !openchatName
+                  ? `${styles.invalidInput} ${styles.Off}`
+                  : `${styles.invalidInput}`
+              }
+            >
+              대화명을 입력해주세요.
+            </div>
+          </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>이메일</p>
             <input
@@ -127,7 +207,7 @@ function Register() {
               onChange={onChange}
             />
             <div
-              ref={invalidIdTag}
+              ref={invalidEmailTag}
               className={
                 emailReg.test(email) || !email
                   ? `${styles.invalidInput} ${styles.Off}`
@@ -137,6 +217,7 @@ function Register() {
               이메일 주소를 입력해주세요.
             </div>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>비밀번호</p>
             <div className={styles.pwBox}>
@@ -153,19 +234,12 @@ function Register() {
               />
               <button
                 className={`${styles.pwType}`}
-                value="표시"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (e.target.childNodes[0].data === "표시") {
-                    setPwVisible("text");
-                    e.target.childNodes[0].data = "숨김";
-                  } else {
-                    setPwVisible("password");
-                    e.target.childNodes[0].data = "표시";
-                  }
+                  setPwVisible(visiblePW === "password" ? "text" : "password");
                 }}
               >
-                표시
+                {visiblePW === "password" ? "표시" : "숨김"}
               </button>
             </div>
             <div
@@ -179,6 +253,7 @@ function Register() {
               비밀번호를 입력해주세요.
             </div>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>전화번호</p>
             <input
@@ -203,6 +278,7 @@ function Register() {
               올바른 전화번호를 입력해주세요.
             </div>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>지역</p>
             <select
@@ -223,6 +299,7 @@ function Register() {
               ))}
             </select>
           </div>
+
           <div className={styles.inputBox}>
             <p className={styles.inputName}>도시</p>
             <select
@@ -244,6 +321,57 @@ function Register() {
               ))}
             </select>
           </div>
+
+          <div className={styles.inputBox}>
+            <p className={styles.inputName}>상호명(선택)</p>
+            <input
+              className={
+                2 <= businessName.length || !businessName
+                  ? styles.inputValue
+                  : `${styles.inputValue} ${styles.invalid}`
+              }
+              type="text"
+              placeholder="상호명을 입력해주세요"
+              name="businessName"
+              onChange={onChange}
+            />
+            <div
+              ref={invalidBusinessNameTag}
+              className={
+                2 <= businessName.length || !businessName
+                  ? `${styles.invalidInput} ${styles.Off}`
+                  : `${styles.invalidInput}`
+              }
+            >
+              상호명을 입력해주세요.
+            </div>
+          </div>
+
+          <div className={styles.inputBox}>
+            <label className={styles.inputName} htmlFor="profileImage">
+              프로필 사진 업로드(선택)
+            </label>
+            <small className={`${styles.instructionText} ${styles.spacing}`}>
+              {`상호명 또는 연락처가 기재된`}
+            </small>
+            <small className={`${styles.instructionText} ${styles.spacing}`}>
+              {`명함 / 작업차량 랩핑 / 사무실 간판`}
+            </small>
+            <input
+              id="profileImage"
+              type="file"
+              className={styles.inputValue}
+              onChange={handleImageChange}
+            />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Profile Preview"
+                className={styles.imagePreview}
+              />
+            )}
+          </div>
+
           <div className={styles.checkBox}>
             <input
               id="checkbox1"
@@ -265,6 +393,7 @@ function Register() {
               이용약관에 동의해주세요.
             </p>
           </div>
+
           <div className={styles.checkBox}>
             <input
               id="checkbox2"
@@ -303,9 +432,8 @@ function Register() {
               if (name.length < 2) {
                 invalidNameTag.current.className = `${styles.invalidInput}`;
               }
-
               if (!emailReg.test(email)) {
-                invalidIdTag.current.style.display = "block";
+                invalidEmailTag.current.style.display = "block";
               }
               if (!pwReg.test(password)) {
                 invalidPwTag.current.style.display = "block";

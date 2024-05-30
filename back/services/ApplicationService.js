@@ -5,21 +5,17 @@ const ApplicationDao = require("../models/ApplicationDao");
  * Throws an error if the applicant has already applied to the job.
  * @param {number} jobPostId - The ID of the job post to apply for.
  * @param {number} applicantId - The ID of the applicant submitting the application.
- * @param {string} coverLetter - The cover letter submitted with the application.
  * @returns {Object} The newly created job application.
  */
-const submitApplication = async (jobPostId, applicantId, coverLetter) => {
+const submitApplication = async (jobPostId, applicantId) => {
   console.log(
     "Input parameters to ApplicationService.submitApplication:",
     jobPostId,
-    applicantId,
-    coverLetter
+    applicantId
   );
   // Validate input or check business rules here
-  if (!jobPostId || !applicantId || !coverLetter) {
-    throw new Error(
-      "All fields (jobPostId, applicantId, coverLetter) must be provided"
-    );
+  if (!jobPostId || !applicantId) {
+    throw new Error("All fields (jobPostId, applicantId) must be provided");
   }
   const existingApplication = await ApplicationDao.getApplicationsByApplicant(
     applicantId
@@ -29,11 +25,7 @@ const submitApplication = async (jobPostId, applicantId, coverLetter) => {
   }
 
   // Call the DAO to create the application
-  return await ApplicationDao.createApplication(
-    jobPostId,
-    applicantId,
-    coverLetter
-  );
+  return await ApplicationDao.createApplication(jobPostId, applicantId);
 };
 
 /**

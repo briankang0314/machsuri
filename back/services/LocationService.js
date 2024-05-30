@@ -62,6 +62,7 @@ const getCitiesByRegion = async (regionId) => {
  * @throws {Error} If no city is found with the given ID.
  */
 const getCityById = async (id) => {
+  console.log("(LocationService) id", id);
   const city = await LocationDao.getCityById(id);
   if (!city) {
     throw new Error("City not found.");

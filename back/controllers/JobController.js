@@ -9,60 +9,37 @@ const errorGenerator = require("../utils/errorGenerator");
  * @param {Object} res - The HTTP response object used to send responses.
  */
 const postJob = async (req, res) => {
-  const {
-    cityId,
-    title,
-    summary,
-    fee,
-    contactInfo,
-    minorCategoryIds,
-    thumbnailIndex,
-  } = req.body;
+  const { cityId, title, summary, amount, fee, contactInfo, minorCategoryIds } =
+    req.body;
   const userId = req.user.id;
+  const images = req.files;
+  const thumbnailIndex = req.body.thumbnailIndex;
 
   console.log("Request body:", req.body);
   console.log("Raw minorCategoryIds:", minorCategoryIds);
-  console.log("Request files:", req.files);
-
-  // Parse minorCategoryIds if it is a JSON string
-  let parsedMinorCategoryIds;
-  try {
-    parsedMinorCategoryIds = JSON.parse(minorCategoryIds);
-    console.log("Parsed minorCategoryIds:", parsedMinorCategoryIds);
-    if (!Array.isArray(parsedMinorCategoryIds)) {
-      throw new Error("Minor category IDs must be an array");
-    }
-  } catch (error) {
-    console.error("Error parsing minorCategoryIds:", error);
-    const validationError = {
-      statusCode: 400,
-      message: "Invalid minorCategoryIds format or not an array",
-    };
-    return res
-      .status(validationError.statusCode)
-      .json({ message: validationError.message });
-  }
 
   // Ensure fee and thumbnailIndex are integers
   const parsedFee = parseInt(fee, 10);
+  const parsedAmount = parseInt(amount, 10);
   const parsedThumbnailIndex = parseInt(thumbnailIndex, 10);
 
-  const images = req.files["images"]
-    ? req.files["images"].map((file, index) => ({
-        url: file.buffer.toString("base64"), // Convert buffer to base64 or handle accordingly
-        is_thumbnail: index === parsedThumbnailIndex,
-      }))
-    : [];
+  let minorCategoryIdsArray = minorCategoryIds
+    .replace(/[\[\]]/g, "") // Remove brackets
+    .split(",") // Split by comma
+    .map(Number) // Convert to numbers
+    .filter((id) => !isNaN(id)); // Filter out any NaN values
 
   console.log("Input parameters to JobController.postJob:", {
     userId,
     cityId,
     title,
     summary,
+    amount: parsedAmount,
     fee: parsedFee,
     contactInfo,
-    minorCategoryIds: parsedMinorCategoryIds,
+    minorCategoryIds,
     images,
+    thumbnailIndex: parsedThumbnailIndex,
   });
 
   const errorMessages = [];
@@ -71,15 +48,13 @@ const postJob = async (req, res) => {
   if (!cityId) errorMessages.push("City ID is required.");
   if (!title) errorMessages.push("Title is required.");
   if (!summary) errorMessages.push("Summary is required.");
+  if (isNaN(parsedAmount)) errorMessages.push("Amount must be a valid number.");
   if (isNaN(parsedFee)) errorMessages.push("Fee must be a valid number.");
   if (!contactInfo) errorMessages.push("Contact info is required.");
-  if (!Array.isArray(parsedMinorCategoryIds)) {
+  if (!Array.isArray(minorCategoryIdsArray)) {
     errorMessages.push("Minor category IDs must be an array.");
   }
-  if (
-    Array.isArray(parsedMinorCategoryIds) &&
-    parsedMinorCategoryIds.length === 0
-  ) {
+  if (Array.isArray(minorCategoryIdsArray) && minorCategoryIds.length === 0) {
     errorMessages.push("At least one minor category ID is required.");
   }
 
@@ -98,10 +73,12 @@ const postJob = async (req, res) => {
       cityId,
       title,
       summary,
+      parsedAmount,
       parsedFee,
       contactInfo,
-      parsedMinorCategoryIds,
-      images
+      minorCategoryIdsArray,
+      images,
+      thumbnailIndex
     );
     console.log("Job created by JobController.postJob:", newJob);
     res.status(201).json(newJob);
@@ -133,7 +110,7 @@ const findJobs = async (req, res) => {
   try {
     // Retrieve jobs using filters and send them
     const jobs = await jobService.getJobs(filter, sortBy, sortOrder);
-    console.log("Jobs retrieved by JobController.findJobs:", jobs);
+    // console.log("Jobs retrieved by JobController.findJobs:", jobs);
     if (jobs.length === 0) {
       const error = await errorGenerator({
         statusCode: 404,
@@ -333,6 +310,45 @@ const softDeleteJob = async (req, res) => {
   }
 };
 
+const addJobImages = async (req, res) => {
+  const { jobId } = req.params;
+  const images = req.files;
+  const thumbnailIndex = req.body.thumbnailIndex;
+
+  try {
+    const addedImages = await jobService.addJobImages(
+      jobId,
+      images,
+      thumbnailIndex
+    );
+    res.status(201).json({ success: true, data: addedImages });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const getJobImages = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    const images = await jobService.getJobImages(jobId);
+    res.status(200).json({ success: true, data: images });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const deleteJobImages = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    const deleteResult = await jobService.deleteJobImages(jobId);
+    res.status(200).json({ success: true, data: deleteResult });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   postJob,
   findJobs,
@@ -342,4 +358,7 @@ module.exports = {
   updateJobLocation,
   softDeleteJob,
   deleteJob,
+  addJobImages,
+  getJobImages,
+  deleteJobImages,
 };
