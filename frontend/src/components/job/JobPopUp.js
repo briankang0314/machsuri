@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { FRONT_PORT, SERVER_PORT } from "../../config";
 import styles from "./JobPopUp.module.scss";
 
-const JobPopup = ({ job, onClose, currentUser }) => {
-  if (!job) return null;
+const JobPopup = ({ job, onClose, currentUser, onUpdateJob }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedJob, setUpdatedJob] = useState({ ...job });
 
-  // console.log("JobPopUp Job object:", job);
+  if (!job) return null;
 
   // Find the thumbnail image from job images, if images exist
   const thumbnail = job.images
@@ -19,8 +20,7 @@ const JobPopup = ({ job, onClose, currentUser }) => {
     job.user && job.user.profile_image_url
       ? SERVER_PORT + job.user.profile_image_url
       : FRONT_PORT + "/images/profile/profile_sample.jpeg";
-  console.log("Profile image:", profileImage);
-  console.log(FRONT_PORT + "/images/profile/profile_sample.jpeg");
+
   // Convert fee to a number and truncate the decimal part
   const feePercentage = Math.trunc(Number(job.fee)) + "%";
 
@@ -58,6 +58,47 @@ const JobPopup = ({ job, onClose, currentUser }) => {
     }
   };
 
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedJob({ ...updatedJob, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Updating job with data:", updatedJob, "in JobPopup");
+
+    try {
+      const response = await fetch(`${SERVER_PORT}/jobs/${updatedJob.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify(updatedJob),
+      });
+
+      console.log("Response status:", response.status);
+      const responseBody = await response.json();
+      console.log("Response body:", responseBody);
+
+      if (response.ok) {
+        console.log("Job updated successfully:", responseBody);
+        onUpdateJob(updatedJob);
+        setIsEditing(false);
+      } else {
+        console.error("Failed to update job post:", responseBody.message);
+        alert("Failed to update job post.");
+      }
+    } catch (error) {
+      console.error("Error during job update:", error);
+      alert("업데이트하는 동안 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
   return (
     <div className={styles.popupOverlay} onClick={onClose}>
       <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
@@ -65,69 +106,103 @@ const JobPopup = ({ job, onClose, currentUser }) => {
           X
         </button>
         {isOwnedByCurrentUser && (
-          <span className={styles.ownedBadge}>내가 올린 게시물</span>
+          <span className={styles.ownedBadge}>내가 올린 오더</span>
         )}
-        <div className={styles.header}>
-          <img
-            src={profileImage}
-            alt={job.title}
-            className={styles.profileImage}
-          />
-          <div className={styles.headerDetails}>
-            <div className={styles.location}>
-              <span>
-                {job.city.region.name} · {job.city.name}
-              </span>
+        {isEditing ? (
+          <form onSubmit={handleSubmit} className={styles.editForm}>
+            <label>
+              오더 제목:
+              <input
+                type="text"
+                name="title"
+                value={updatedJob.title}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              작업 설명:
+              <textarea
+                name="summary"
+                value={updatedJob.summary}
+                onChange={handleChange}
+              />
+            </label>
+            <button type="submit">수정</button>
+            <button type="button" onClick={handleEditToggle}>
+              취소
+            </button>
+          </form>
+        ) : (
+          <div>
+            <div className={styles.header}>
+              <img
+                src={profileImage}
+                alt={job.title}
+                className={styles.profileImage}
+              />
+              <div className={styles.headerDetails}>
+                <div className={styles.location}>
+                  <span>
+                    {job.city.region.name} · {job.city.name}
+                  </span>
+                </div>
+                <div className={styles.date}>
+                  <span>
+                    {new Date(job.created_at).toLocaleString("ko-KR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    })}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className={styles.date}>
-              <span>
-                {new Date(job.created_at).toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  hour12: true,
-                })}
-              </span>
+            <div className={styles.title}>
+              <h2>{job.title}</h2>
             </div>
-          </div>
-        </div>
-        <div className={styles.title}>
-          <h2>{job.title}</h2>
-        </div>
-        <div className={styles.subtitle}>
-          <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
-        </div>
-        <div className={styles.imageGallery}>
-          {job.images.map((image, index) => (
-            <img
-              key={index}
-              src={SERVER_PORT + "/" + image.url}
-              alt={`Job Image ${index + 1}`}
-            />
-          ))}
-        </div>
-        <div className={styles.description}>
-          <span>{job.description}</span>
-        </div>
-        <div className={styles.feeContainer}>
-          <div className={styles.amount}>
-            {job.amount === 0 ? (
-              <span>견적: 협의 필요</span>
-            ) : (
-              <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
+            <div className={styles.subtitle}>
+              <span>{job.summary ? job.summary : "설명이 없습니다."}</span>
+            </div>
+            <div className={styles.imageGallery}>
+              {job.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={SERVER_PORT + "/" + image.url}
+                  alt={`Job Image ${index + 1}`}
+                />
+              ))}
+            </div>
+            <div className={styles.summary}>
+              <span>{job.summary}</span>
+            </div>
+            <div className={styles.feeContainer}>
+              <div className={styles.amount}>
+                {job.amount === 0 ? (
+                  <span>견적: 협의 필요</span>
+                ) : (
+                  <span>{"견적: " + job.amount.toLocaleString() + " ~"}</span>
+                )}
+              </div>
+              <div className={styles.fee}>
+                <span>수수료: {feePercentage}</span>
+              </div>
+            </div>
+            {isOwnedByCurrentUser && (
+              <button className={styles.editButton} onClick={handleEditToggle}>
+                오더 수정
+              </button>
             )}
+            <button className={styles.applyButton} onClick={handleApply}>
+              {job.status === "open" ? "신청 가능" : "마감"}
+            </button>
           </div>
-          <div className={styles.fee}>
-            <span>수수료: {feePercentage}</span>
-          </div>
-        </div>
-        <button className={styles.applyButton} onClick={handleApply}>
-          {job.status === "open" ? "신청 가능" : "마감"}
-        </button>
+        )}
       </div>
     </div>
   );
 };
+
 export default JobPopup;

@@ -302,7 +302,7 @@ function JobRegister() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                placeholder="작업 공고의 제목을 입력하세요"
+                placeholder="오더의 제목을 입력하세요"
               />
             </div>
 

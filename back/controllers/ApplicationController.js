@@ -31,7 +31,7 @@ const submitApplication = async (req, res) => {
     await NotificationService.createNotification(
       jobPost.user_id,
       "info",
-      `새로운 지원서가 도착했습니다. 작업 공고 제목: ${jobPost.title}`
+      `새로운 지원서가 도착했습니다. 오더 제목: ${jobPost.title}`
     );
     res
       .status(201)

@@ -26,7 +26,7 @@ const JobItem = ({ job, onClick, currentUser }) => {
   return (
     <div onClick={() => onClick(job)} className={styles.jobItem}>
       {isOwnedByCurrentUser && (
-        <span className={styles.ownedBadge}>내가 올린 게시물</span>
+        <span className={styles.ownedBadge}>내가 올린 오더</span>
       )}
       <picture className={styles.imageWrapper}>
         <img src={jobImage} alt={job.title} className={styles.jobImage} />
