@@ -107,7 +107,7 @@ function Header() {
           <span className={styles.headerLogo}>
             <img
               onClick={() => handleNavigate("/")}
-              src="/images/logo/fix.png"
+              src="/images/logo/tool.svg"
               width="100px"
               alt="Logo"
             />

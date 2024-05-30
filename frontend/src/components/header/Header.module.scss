@@ -11,18 +11,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 1000px;
-  margin: 0px auto;
+  width: 100%;
+  max-width: 1200px; /* Adjust maximum width to center */
+  margin: 0 auto; /* Center the header */
   height: 70px;
-}
-
-.headerTitle {
-  display: flex;
-  align-items: center;
+  padding: 0 20px; /* Add padding to ensure spacing */
 }
 
 .headerLogo {
+  display: flex; /* Ensure logo is centered */
+  align-items: center;
   cursor: pointer;
+}
+
+.headerLogo img {
+  height: 50px; /* Adjust the height to fit the header */
+  width: auto; /* Maintain aspect ratio */
 }
 
 .headerBtn {
@@ -123,6 +127,7 @@
     width: 100vw;
     margin: 0;
     justify-content: space-around;
+    padding: 0 10px; /* Ensure padding for small screens */
   }
 
   .headerBox {
