@@ -5,13 +5,47 @@ const userValidateToken = require("../middleware/userValidateToken");
 const roleCheck = require("../middleware/roleCheck");
 const verifyUserIdentity = require("../middleware/verifyUserIdentity");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/profile_pictures/" });
+const AWS = require("aws-sdk");
+
+// Configure AWS SDK
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+// Set up multer for in-memory storage
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Function to upload file to S3
+const uploadFile = (file) => {
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: `profile_pictures/${file.originalname}`,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+  return s3.upload(params).promise();
+};
 
 // Route to register a new user
 // Open to all users without authentication.
 router.post(
   "/register",
   upload.single("profileImage"),
+  async (req, res, next) => {
+    try {
+      if (req.file) {
+        const result = await uploadFile(req.file);
+        req.body.profileImageUrl = result.Location; // Attach the URL of the uploaded image to the request body
+      }
+      next();
+    } catch (error) {
+      console.error("Error uploading profile image to S3:", error);
+      res.status(500).send("Error uploading profile image");
+    }
+  },
   UserController.register
 );
 

@@ -17,17 +17,16 @@ app.use(
   })
 );
 
-// Serve static files from the 'uploads/profile_pictures' directory
-app.use(
-  "/uploads/profile_pictures",
-  express.static(path.join(__dirname, "uploads", "profile_pictures"))
-);
-
-// Serve static files from the 'uploads/job_post_images' directory
-app.use(
-  "/uploads/job_post_images",
-  express.static(path.join(__dirname, "uploads", "job_post_images"))
-);
+// File upload endpoint
+app.post("/upload", upload.single("file"), async (req, res) => {
+  try {
+    const result = await uploadFile(req.file);
+    res.status(200).send({ url: result.Location });
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    res.status(500).send("Error uploading file");
+  }
+});
 
 app.use(routes);
 

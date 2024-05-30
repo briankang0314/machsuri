@@ -1,6 +1,25 @@
 const UserDao = require("../models/UserDao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const AWS = require("aws-sdk");
+
+// Configure AWS SDK
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+// Function to upload file to S3
+const uploadFileToS3 = (file) => {
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: `profile_pictures/${file.originalname}`,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+  return s3.upload(params).promise();
+};
 
 /**
  * Registers a new user with the provided details.
@@ -12,7 +31,7 @@ const jwt = require("jsonwebtoken");
  * @param {string} phoneNumber - The phone number of the user (optional).
  * @param {number} cityId - The ID of the city where the user is located.
  * @param {string} role - The role of the user (e.g., "general" or "admin").
- * @param {Object} profileImage - The uploaded profile image file (optional).
+ * @param {Object} profileImageUrl - The uploaded profile image file (optional).
  * @returns {Object} The newly created user object.
  * @throws Will throw an error if the registration fails.
  */
@@ -25,7 +44,7 @@ const registerUser = async (
   phoneNumber,
   cityId,
   role,
-  profileImage
+  profileImageUrl
 ) => {
   console.log("Input parameters to UserService.registerUser:", {
     name,
@@ -36,7 +55,7 @@ const registerUser = async (
     phoneNumber,
     cityId,
     role,
-    profileImage,
+    profileImageUrl,
   });
   // Regular expressions for input validation
   const emailReg =
@@ -72,10 +91,6 @@ const registerUser = async (
   // Hash the password
   const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
 
-  const profileImagePath = profileImage
-    ? `/uploads/profile_pictures/${profileImage.filename}`
-    : null;
-
   try {
     const newUser = await UserDao.createUser(
       name,
@@ -86,7 +101,7 @@ const registerUser = async (
       phoneNumber,
       cityId,
       role,
-      profileImagePath
+      profileImageUrl
     );
     console.log("New user created by UserService.registerUser:", newUser);
     return newUser;
@@ -155,12 +170,15 @@ const updateUserProfileImage = async (userId, profileImage) => {
     throw new Error("Missing required fields");
   }
 
-  const profileImagePath = `/uploads/profile_pictures/${profileImage.filename}`;
-
   try {
+    const result = await uploadFileToS3(profileImage);
+    const profileImageUrl = result.Location;
+
     const updatedUser = await UserDao.updateUserProfile(userId, {
-      profile_image: profileImagePath,
+      profile_image: profileImageUrl,
     });
+
+    console.log("Updated user profile image URL:", profileImageUrl);
     return updatedUser;
   } catch (error) {
     console.log("Error updating user profile image:", error);
